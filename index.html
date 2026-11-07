@@ -3,94 +3,107 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>KontrolVet - Gestión y Seguimiento Veterinario</title>
+  <title>KontrolVet - Seguimiento Veterinario</title>
   
-  <!-- Librerías para exportar a PDF y JPG -->
+  <!-- Librerías de exportación a PDF y JPG -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     /* =========================================================
-       VARIABLES Y PALETA DE COLOR (EXTRAÍDA DEL LOGO ANIMADO)
+       PALETA DE COLORES EXTRAÍDA DEL LOGO ANIMADO Y GAFETE
        ========================================================= */
     :root {
-      --primary: #3B185F;         /* Morado oscuro de contornos y texto */
-      --primary-light: #5B2C82;   /* Variante morada */
-      --secondary: #BA68C8;       /* Rosa de la fachada */
-      --accent: #81D4FA;          /* Azul pastel de la puerta */
-      --bg: #FDF4F8;              /* Fondo suave */
-      --surface: #FFFFFF;         /* Contenedores y tarjetas */
-      --badge-bg: #FFF9E6;        /* Amarillo suave del círculo */
-      --text: #2A0845;            /* Texto principal */
-      --text-muted: #7E658E;      /* Texto atenuado */
-      --border: #F3D2E3;          /* Bordes */
-      --danger: #E53935;
-      --success: #43A047;
+      --primary: #2B0938;          /* Morado profundo del texto y bordes */
+      --primary-accent: #7E57C2;   /* Lila vibrante de la flor/insignia */
+      --secondary: #D81B60;        /* Magenta / Fucsia del logotipo */
+      --secondary-light: #FCE4EC;  /* Rosa suave pastel de fondo */
+      --blue-accent: #81D4FA;      /* Azul pastel de puerta y toldo */
+      --yellow-accent: #FFF9C4;    /* Amarillo suave de fondo interior */
+      --surface: #FFFFFF;          /* Blanco de tarjetas y paneles */
+      --text: #2B0938;             /* Color principal de texto */
+      --text-muted: #7A6282;       /* Texto secundario */
+      --border: #F3C4D8;           /* Bordes suaves */
+      --success: #2E7D32;
+      --danger: #C2185B;
     }
 
     [data-theme="dark"] {
-      --primary: #BA68C8;
-      --primary-light: #CE93D8;
-      --secondary: #81D4FA;
-      --accent: #FFF2B2;
-      --bg: #1A1024;
-      --surface: #261734;
-      --badge-bg: #342247;
+      --primary: #CE93D8;
+      --primary-accent: #9575CD;
+      --secondary: #F06292;
+      --secondary-light: #2A172D;
+      --blue-accent: #4FC3F7;
+      --yellow-accent: #FFF176;
+      --surface: #1E1222;
       --text: #FDEBF4;
       --text-muted: #BFA5C9;
-      --border: #42295B;
+      --border: #4D265A;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
     }
 
     body {
-      background-color: var(--bg);
+      background-color: var(--secondary-light);
       color: var(--text);
       display: flex;
       min-height: 100vh;
+      overflow-x: hidden;
       transition: background 0.3s, color 0.3s;
     }
 
-    /* BARRA LATERAL */
+    /* =========================================================
+       MENÚ DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
+       ========================================================= */
     #sidebar {
-      width: 280px;
+      width: 290px;
       background: var(--surface);
       border-right: 1px solid var(--border);
       display: flex;
       flex-direction: column;
-      padding: 1.5rem 1rem;
-      gap: 0.6rem;
-      z-index: 100;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      z-index: 1000;
+      transition: transform 0.3s ease;
+      overflow-y: auto;
+      box-shadow: 2px 0 12px rgba(43, 9, 56, 0.06);
     }
 
-    .brand-header {
+    #sidebar.collapsed {
+      transform: translateX(-100%);
+    }
+
+    .sidebar-header {
+      padding: 1.2rem 1rem;
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding-bottom: 1rem;
       border-bottom: 1px solid var(--border);
-      margin-bottom: 0.5rem;
     }
 
+    /* Animación del logotipo */
     .brand-logo-svg {
-      width: 48px;
-      height: 48px;
+      width: 46px;
+      height: 46px;
+      flex-shrink: 0;
       animation: logoPulse 2.8s infinite ease-in-out;
     }
 
     @keyframes logoPulse {
       0%, 100% { transform: scale(1); }
-      50% { transform: scale(1.06) rotate(-1.5deg); }
+      50% { transform: scale(1.08) rotate(-1.5deg); }
     }
 
     .brand-title {
-      font-size: 1.3rem;
-      font-weight: 800;
+      font-size: 1.25rem;
+      font-weight: 900;
       color: var(--primary);
       letter-spacing: 0.5px;
     }
@@ -99,54 +112,123 @@
       color: var(--secondary);
     }
 
-    .nav-btn {
+    .menu-group-title {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      font-weight: 800;
+      color: var(--text-muted);
+      padding: 0.8rem 1.2rem 0.3rem;
+      letter-spacing: 0.6px;
+    }
+
+    .menu-item {
       display: flex;
       align-items: center;
       gap: 0.75rem;
-      padding: 0.75rem 1rem;
-      border-radius: 8px;
+      padding: 0.65rem 1.2rem;
       background: none;
       border: none;
       color: var(--text);
+      font-size: 0.9rem;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
+      width: 100%;
       transition: background 0.2s, color 0.2s;
     }
 
-    .nav-btn:hover, .nav-btn.active {
-      background: rgba(186, 104, 200, 0.15);
-      color: var(--primary);
+    .menu-item:hover, .menu-item.active {
+      background: rgba(216, 27, 96, 0.12);
+      color: var(--secondary);
+      border-left: 4px solid var(--secondary);
     }
 
-    /* PANEL PRINCIPAL */
-    #main-content {
+    /* =========================================================
+       ÁREA PRINCIPAL DE CONTENIDO
+       ========================================================= */
+    #main-wrapper {
       flex: 1;
-      padding: 2rem;
-      overflow-y: auto;
-    }
-
-    .top-actions {
+      margin-left: 290px;
       display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 2rem;
+      flex-direction: column;
+      min-height: 100vh;
+      transition: margin-left 0.3s ease;
     }
 
+    #main-wrapper.expanded {
+      margin-left: 0;
+    }
+
+    .top-navbar {
+      height: 64px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 90;
+    }
+
+    .btn-toggle-menu {
+      background: none;
+      border: none;
+      font-size: 1.4rem;
+      cursor: pointer;
+      color: var(--primary);
+      display: flex;
+      align-items: center;
+      padding: 0.4rem;
+      border-radius: 6px;
+    }
+
+    .btn-toggle-menu:hover {
+      background: rgba(0,0,0,0.05);
+    }
+
+    .current-pet-selector {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .current-pet-selector select {
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: var(--secondary-light);
+      color: var(--primary);
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .content-area {
+      padding: 2rem;
+      flex: 1;
+    }
+
+    /* BOTONES */
     .btn {
       padding: 0.65rem 1.25rem;
       border-radius: 8px;
       border: none;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
       transition: opacity 0.2s, transform 0.1s;
     }
 
-    .btn:hover { opacity: 0.92; transform: translateY(-1px); }
-    .btn-primary { background: var(--primary); color: white; }
-    .btn-secondary { background: var(--secondary); color: white; }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary { background: var(--secondary); color: white; }
+    .btn-secondary { background: var(--primary-accent); color: white; }
+    .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
 
-    /* CUADRÍCULA DE MASCOTAS */
+    /* CUADRÍCULA DE MASCOTAS (PANTALLA PRINCIPAL) */
     .pets-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -159,15 +241,15 @@
       border: 1px solid var(--border);
       overflow: hidden;
       cursor: pointer;
-      transition: box-shadow 0.2s, transform 0.2s;
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
     .pet-card:hover {
       transform: translateY(-4px);
-      box-shadow: 0 10px 24px rgba(59, 24, 95, 0.1);
+      box-shadow: 0 10px 22px rgba(43, 9, 56, 0.12);
     }
 
-    .pet-card-img {
+    .pet-card-photo {
       width: 100%;
       height: 180px;
       object-fit: cover;
@@ -176,36 +258,221 @@
       align-items: center;
       justify-content: center;
       color: var(--text-muted);
-      font-size: 0.9rem;
+      font-size: 0.85rem;
     }
 
-    .pet-card-body {
+    .pet-card-content {
       padding: 1.2rem;
     }
 
-    .pet-card-title {
+    .pet-card-name {
       font-size: 1.25rem;
-      font-weight: 700;
-      color: var(--primary);
-      margin-bottom: 0.3rem;
+      font-weight: 800;
+      color: var(--secondary);
+      margin-bottom: 0.25rem;
     }
 
-    /* MODALES Y PESTAÑAS CLÍNICAS */
-    .modal {
+    /* SECCIONES Y PANELES */
+    .section-panel {
+      background: var(--surface);
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      padding: 1.8rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 4px 14px rgba(43, 9, 56, 0.04);
+    }
+
+    .section-panel h2 {
+      color: var(--primary);
+      margin-bottom: 1.2rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* FORMULARIOS Y TABLAS */
+    .form-row {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.35rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 0.65rem 0.85rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--secondary-light);
+      color: var(--text);
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--secondary);
+    }
+
+    .custom-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 1.2rem;
+      font-size: 0.85rem;
+    }
+
+    .custom-table th, .custom-table td {
+      border: 1px solid var(--border);
+      padding: 0.65rem 0.8rem;
+      text-align: left;
+    }
+
+    .custom-table th {
+      background: rgba(216, 27, 96, 0.08);
+      color: var(--primary);
+      font-weight: 700;
+    }
+
+    /* =========================================================
+       ESTILO DE LA CARTILLA VETERINARIA (DEL ARCHIVO PDF)
+       ========================================================= */
+    .cartilla-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      margin: 1.5rem 0;
+    }
+
+    /* Cara 1: Frontal con datos y tablas */
+    .cartilla-front {
+      width: 480px;
+      min-height: 640px;
+      background: linear-gradient(135deg, #7E57C2 0%, #D81B60 100%);
+      border-radius: 20px;
+      padding: 1.5rem;
+      color: white;
+      box-shadow: 0 14px 30px rgba(43, 9, 56, 0.25);
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .cartilla-avatar-box {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .cartilla-avatar {
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      border: 4px solid white;
+      object-fit: cover;
+      background: #F8BBD0;
+    }
+
+    .cartilla-header-title {
+      font-size: 1.5rem;
+      font-weight: 900;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+    }
+
+    .cartilla-field-pill {
+      background: white;
+      color: #2B0938;
+      border-radius: 12px;
+      padding: 0.35rem 0.75rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .cartilla-table-box {
+      background: white;
+      color: #2B0938;
+      border-radius: 14px;
+      padding: 0.6rem;
+      font-size: 0.76rem;
+    }
+
+    .cartilla-table-title {
+      font-weight: 900;
+      color: var(--secondary);
+      margin-bottom: 0.3rem;
+      text-transform: uppercase;
+    }
+
+    /* Cara 2: Reverso con datos de Familia / Propietaria */
+    .cartilla-back {
+      width: 480px;
+      min-height: 640px;
+      background: linear-gradient(135deg, #FCE4EC 0%, #F8BBD0 100%);
+      border-radius: 20px;
+      padding: 2rem 1.8rem;
+      color: #2B0938;
+      box-shadow: 0 14px 30px rgba(43, 9, 56, 0.25);
+      display: flex;
+      flex-direction: column;
+      border: 3px solid var(--primary-accent);
+      position: relative;
+    }
+
+    .insignia-box {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 1rem;
+    }
+
+    .insignia-svg {
+      width: 110px;
+      height: 110px;
+    }
+
+    .cartilla-back-title {
+      text-align: center;
+      font-size: 1.3rem;
+      font-weight: 900;
+      color: var(--secondary);
+      margin-bottom: 1.2rem;
+      letter-spacing: 0.8px;
+    }
+
+    .cartilla-propietario-row {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1.5px dotted var(--primary-accent);
+      padding: 0.5rem 0;
+      font-size: 0.85rem;
+    }
+
+    /* MODAL DE INFORME EJECUTIVO */
+    .modal-overlay {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
-      background: rgba(42, 8, 69, 0.45);
-      backdrop-filter: blur(3px);
+      background: rgba(43, 9, 56, 0.5);
+      backdrop-filter: blur(4px);
       display: none;
       align-items: center;
       justify-content: center;
-      z-index: 1000;
+      z-index: 2000;
       padding: 1rem;
     }
 
-    .modal.active { display: flex; }
+    .modal-overlay.active { display: flex; }
 
-    .modal-content {
+    .modal-card {
       background: var(--surface);
       border-radius: 16px;
       max-width: 850px;
@@ -213,858 +480,1016 @@
       max-height: 92vh;
       overflow-y: auto;
       padding: 2rem;
-      position: relative;
       border: 1px solid var(--border);
     }
 
-    .tabs-bar {
-      display: flex;
-      gap: 0.5rem;
-      border-bottom: 2px solid var(--border);
-      margin-bottom: 1.5rem;
-      overflow-x: auto;
-      padding-bottom: 0.5rem;
-    }
-
-    .tab-btn {
-      padding: 0.5rem 1rem;
-      background: none;
-      border: none;
-      font-weight: 600;
-      color: var(--text-muted);
-      cursor: pointer;
-      border-radius: 6px;
-      white-space: nowrap;
-    }
-
-    .tab-btn.active {
-      color: var(--primary);
-      background: rgba(186, 104, 200, 0.15);
-    }
-
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
-
-    /* FORMULARIOS */
-    .form-group { margin-bottom: 1rem; }
-    .form-group label {
-      display: block;
-      margin-bottom: 0.35rem;
-      font-size: 0.85rem;
-      font-weight: 600;
-    }
-    .form-control {
-      width: 100%;
-      padding: 0.6rem 0.8rem;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--bg);
-      color: var(--text);
-    }
-    .form-row {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-
-    /* TABLAS DE REGISTROS */
-    .table-custom {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 1rem;
-      font-size: 0.85rem;
-    }
-
-    .table-custom th, .table-custom td {
-      border: 1px solid var(--border);
-      padding: 0.6rem;
-      text-align: left;
-    }
-
-    .table-custom th {
-      background: rgba(186, 104, 200, 0.15);
-      color: var(--primary);
-    }
-
-    /* CARTILLA SANITARIA */
-    #card-preview {
-      width: 600px;
-      height: 380px;
-      background: linear-gradient(135deg, #3B185F 0%, #5B2C82 45%, #BA68C8 45%, #F48FB1 100%);
-      border-radius: 18px;
-      padding: 1.5rem;
-      color: white;
-      display: flex;
-      box-shadow: 0 12px 30px rgba(59, 24, 95, 0.25);
-      margin: 1rem auto;
-      overflow: hidden;
-    }
-
-    .card-left {
-      width: 40%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0.85rem;
-    }
-
-    .card-avatar {
-      width: 130px;
-      height: 130px;
-      border-radius: 50%;
-      border: 4px solid var(--accent);
-      object-fit: cover;
-      background: #F3E5F5;
-    }
-
-    .card-name-pill {
-      background: var(--primary);
-      color: #FFF2B2;
-      border: 2px solid var(--accent);
-      padding: 0.4rem 1.2rem;
-      border-radius: 20px;
-      font-weight: bold;
-      font-size: 1.1rem;
-      text-align: center;
-    }
-
-    .card-right {
-      width: 60%;
-      background: rgba(255, 255, 255, 0.96);
-      border-radius: 14px;
-      padding: 1.1rem;
-      color: #2A0845;
-      font-size: 0.8rem;
-      display: flex;
-      flex-direction: column;
-      gap: 0.45rem;
-      border: 2px solid var(--accent);
-    }
-
-    .badge-field {
-      background: #FDF4F8;
-      border-left: 3px solid var(--secondary);
-      padding: 0.35rem 0.65rem;
-      border-radius: 4px;
-      display: flex;
-      justify-content: space-between;
-    }
-
-    /* INFORME EJECUTIVO (PRINT / PDF) */
-    #executive-report {
-      background: white;
-      color: #2A0845;
-      padding: 2.5rem;
-      border-radius: 12px;
-      max-width: 800px;
-      margin: 0 auto;
-      border: 1px solid var(--border);
-    }
-
-    .report-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      border-bottom: 2px solid var(--primary);
-      padding-bottom: 1rem;
-      margin-bottom: 1.5rem;
-    }
-
-    /* IMPRESIÓN */
+    /* INFORME IMPRIMIBLE (REGLAS PRINT) */
     @media print {
       body * { visibility: hidden; }
-      #printable-executive, #printable-executive * { visibility: visible; }
-      #printable-executive { position: absolute; top: 0; left: 0; width: 100%; }
+      #printable-report, #printable-report * { visibility: visible; }
+      #printable-report {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: white !important;
+        color: black !important;
+      }
       .brand-logo-svg { animation: none !important; }
     }
   </style>
 </head>
 <body>
 
-  <!-- BARRA LATERAL -->
+  <!-- =========================================================
+       MENÚ DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
+       ========================================================= -->
   <aside id="sidebar">
-    <div class="brand-header">
-      <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <circle cx="50" cy="50" r="46" stroke="#3B185F" stroke-width="4" fill="#FFF9C4"/>
-        <path d="M26 44H74V76C74 77.1 73.1 78 72 78H28C26.9 78 26 77.1 26 76V44Z" fill="#F8BBD0" stroke="#3B185F" stroke-width="3"/>
-        <path d="M22 44L50 26L78 44" stroke="#3B185F" stroke-width="4" stroke-linecap="round"/>
-        <ellipse cx="50" cy="38" rx="5" ry="4" fill="#3B185F"/>
-        <circle cx="43" cy="33" r="2" fill="#3B185F"/>
-        <circle cx="57" cy="33" r="2" fill="#3B185F"/>
-        <circle cx="47" cy="30" r="1.5" fill="#3B185F"/>
-        <circle cx="53" cy="30" r="1.5" fill="#3B185F"/>
-        <rect x="42" y="58" width="16" height="20" rx="3" fill="#81D4FA" stroke="#3B185F" stroke-width="2"/>
+    <div class="sidebar-header">
+      <!-- SVG Logotipo KontrolVet -->
+      <svg class="brand-logo-svg" viewBox="0 0 100 100" fill="none">
+        <circle cx="50" cy="50" r="46" stroke="#2B0938" stroke-width="4" fill="#FFF9C4"/>
+        <path d="M26 44H74V76C74 77.1 73.1 78 72 78H28C26.9 78 26 77.1 26 76V44Z" fill="#F8BBD0" stroke="#2B0938" stroke-width="3"/>
+        <path d="M22 44L50 26L78 44" stroke="#2B0938" stroke-width="4" stroke-linecap="round"/>
+        <!-- Huella superior -->
+        <ellipse cx="50" cy="38" rx="5" ry="4" fill="#D81B60"/>
+        <circle cx="43" cy="33" r="2" fill="#D81B60"/>
+        <circle cx="57" cy="33" r="2" fill="#D81B60"/>
+        <circle cx="47" cy="30" r="1.5" fill="#D81B60"/>
+        <circle cx="53" cy="30" r="1.5" fill="#D81B60"/>
+        <!-- Puerta azul pastel -->
+        <rect x="42" y="58" width="16" height="20" rx="3" fill="#81D4FA" stroke="#2B0938" stroke-width="2"/>
       </svg>
       <div class="brand-title">KONTROL<span>VET</span></div>
     </div>
 
-    <button class="nav-btn active" onclick="switchView('pets')">🐾 Mascotas</button>
-    <button class="nav-btn" onclick="openNewPetModal()">➕ Registrar Nuevo</button>
-    <button class="nav-btn" onclick="switchView('expenses')">💰 Resumen de Gastos</button>
-    <button class="nav-btn" onclick="switchView('settings')">⚙️ Ajustes</button>
+    <div class="menu-group-title">Gestión Principal</div>
+    <button class="menu-item active" onclick="showSection('view-home')">🐾 Mascotas Registradas</button>
+    <button class="menu-item" onclick="showSection('view-new-pet')">➕ Registrar Nuevo</button>
+
+    <div class="menu-group-title">Seguimiento Clínico</div>
+    <button class="menu-item" onclick="showSection('view-vaccines')">💉 Vacunas</button>
+    <button class="menu-item" onclick="showSection('view-deworming')">🛡️ Control Desparasitación</button>
+    <button class="menu-item" onclick="showSection('view-history')">📋 Historial (Patología y Visitas)</button>
+    <button class="menu-item" onclick="showSection('view-treatments')">💊 Tratamientos</button>
+    <button class="menu-item" onclick="showSection('view-surgeries')">🩹 Cirugías</button>
+    <button class="menu-item" onclick="showSection('view-weight')">⚖️ Control Peso</button>
+
+    <div class="menu-group-title">Documentos y Finanzas</div>
+    <button class="menu-item" onclick="showSection('view-card')">💳 Carné Mascota (Cartilla)</button>
+    <button class="menu-item" onclick="showSection('view-expenses')">💰 Gastos</button>
+    <button class="menu-item" onclick="showSection('view-reports')">📄 Informes Ejecutivos</button>
+
+    <div class="menu-group-title">Sistema</div>
+    <button class="menu-item" onclick="showSection('view-settings')">⚙️ Ajustes</button>
   </aside>
 
-  <!-- CONTENIDO PRINCIPAL -->
-  <main id="main-content">
-    <div class="top-actions">
-      <h1 id="view-title">Mis Mascotas</h1>
-      <div style="display: flex; gap: 0.5rem;">
-        <button class="btn btn-secondary" onclick="toggleTheme()">☀️ / 🌙 Modo</button>
-        <button class="btn btn-primary" onclick="openNewPetModal()">+ Registrar Mascota</button>
+  <!-- =========================================================
+       CONTENIDO PRINCIPAL Y BARRA SUPERIOR
+       ========================================================= -->
+  <div id="main-wrapper">
+    <header class="top-navbar">
+      <button class="btn-toggle-menu" onclick="toggleSidebar()" title="Mostrar/Ocultar Menú">☰</button>
+      
+      <!-- Selector de la mascota activa sobre la cual trabajar -->
+      <div class="current-pet-selector">
+        <label for="select-active-pet" style="font-size:0.85rem; font-weight:700;">Mascota activa:</label>
+        <select id="select-active-pet" onchange="changeActivePet(this.value)">
+          <!-- Poblado dinámicamente con JS -->
+        </select>
       </div>
-    </div>
 
-    <!-- VISTA: CUADRÍCULA DE MASCOTAS -->
-    <section id="view-pets">
-      <div class="pets-grid" id="pets-container"></div>
-    </section>
-
-    <!-- VISTA: RESUMEN DE GASTOS -->
-    <section id="view-expenses" style="display: none;">
-      <div style="background: var(--surface); padding: 1.8rem; border-radius: 14px; border: 1px solid var(--border);">
-        <h2 style="color: var(--primary); margin-bottom: 1.5rem;">Resumen Consolidado de Gastos</h2>
-        <div id="expenses-summary"></div>
+      <div>
+        <button class="btn btn-outline" onclick="toggleTheme()">☀️ / 🌙</button>
       </div>
-    </section>
+    </header>
 
-    <!-- VISTA: AJUSTES -->
-    <section id="view-settings" style="display: none;">
-      <div style="background: var(--surface); padding: 1.8rem; border-radius: 14px; border: 1px solid var(--border);">
-        <h2 style="color: var(--primary); margin-bottom: 0.5rem;">Configuración y Datos</h2>
-        <p style="margin-bottom: 1.2rem; color: var(--text-muted);">Copia de seguridad y restauración del sistema.</p>
-        <button class="btn btn-primary" onclick="exportBackup()">📥 Descargar Copia de Seguridad (JSON)</button>
-        <input type="file" id="import-file" style="display: none;" onchange="importBackup(event)" accept=".json">
-        <button class="btn btn-secondary" onclick="document.getElementById('import-file').click()">📤 Restaurar Copia</button>
-      </div>
-    </section>
-  </main>
+    <main class="content-area">
 
-  <!-- MODAL: REGISTRAR NUEVA MASCOTA -->
-  <div class="modal" id="modal-pet">
-    <div class="modal-content">
-      <h2 style="margin-bottom: 1.5rem; color: var(--primary);">Registrar Mascota</h2>
-      <form id="pet-form" onsubmit="savePet(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Nombre:</label>
-            <input type="text" class="form-control" id="p-name" required>
-          </div>
-          <div class="form-group">
-            <label>Fecha de Nacimiento:</label>
-            <input type="date" class="form-control" id="p-birth" required>
-          </div>
+      <!-- ================= 1. PANTALLA PRINCIPAL: MASCOTAS ================= -->
+      <section id="view-home">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h1 style="color: var(--primary);">Mis Mascotas</h1>
+          <button class="btn btn-primary" onclick="showSection('view-new-pet')">+ Registrar Mascota</button>
         </div>
-
-        <div class="form-row">
-          <div class="form-group">
-            <label>Especie:</label>
-            <input type="text" class="form-control" id="p-species" placeholder="Ej. Felina, Canina" required>
-          </div>
-          <div class="form-group">
-            <label>Género:</label>
-            <select class="form-control" id="p-gender">
-              <option value="Macho">Macho</option>
-              <option value="Hembra">Hembra</option>
-            </select>
-          </div>
+        <div class="pets-grid" id="pets-grid-container">
+          <!-- Renderizado dinámico -->
         </div>
+      </section>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Color:</label>
-            <input type="text" class="form-control" id="p-color">
-          </div>
-          <div class="form-group">
-            <label>Nº de Chip:</label>
-            <input type="text" class="form-control" id="p-chip">
-          </div>
+      <!-- ================= 2. REGISTRAR NUEVO ================= -->
+      <section id="view-new-pet" style="display: none;">
+        <div class="section-panel">
+          <h2>➕ Registrar Nueva Mascota</h2>
+          <form id="form-register-pet" onsubmit="handleRegisterPet(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nombre:</label>
+                <input type="text" class="form-control" id="reg-name" required>
+              </div>
+              <div class="form-group">
+                <label>Fecha de Nacimiento:</label>
+                <input type="date" class="form-control" id="reg-birth" required>
+              </div>
+              <div class="form-group">
+                <label>Especie:</label>
+                <input type="text" class="form-control" id="reg-species" placeholder="Ej. Felina, Canina" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Género:</label>
+                <select class="form-control" id="reg-gender">
+                  <option value="Macho">Macho</option>
+                  <option value="Hembra">Hembra</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label>Color:</label>
+                <input type="text" class="form-control" id="reg-color">
+              </div>
+              <div class="form-group">
+                <label>Raza:</label>
+                <input type="text" class="form-control" id="reg-race" placeholder="Ej. Común europeo, Siamés">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Esterilizado (Sí / No):</label>
+                <select class="form-control" id="reg-sterilized" onchange="toggleSterilizationField(this.value)">
+                  <option value="no">No</option>
+                  <option value="si">Sí</option>
+                </select>
+              </div>
+              <div class="form-group" id="group-sterilization-date" style="display: none;">
+                <label>Fecha de esterilización:</label>
+                <input type="date" class="form-control" id="reg-sterilization-date">
+              </div>
+              <div class="form-group">
+                <label>Peso Inicial (kg):</label>
+                <input type="number" step="0.01" class="form-control" id="reg-weight" placeholder="Ej. 4.25">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Nº de chip:</label>
+                <input type="text" class="form-control" id="reg-chip">
+              </div>
+              <div class="form-group">
+                <label>Centro veterinario:</label>
+                <input type="text" class="form-control" id="reg-clinic">
+              </div>
+              <div class="form-group">
+                <label>Subir foto (JPG/PNG):</label>
+                <input type="file" class="form-control" id="reg-photo" accept="image/png, image/jpeg" onchange="encodePhoto(event)">
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+              <button type="submit" class="btn btn-primary">Guardar Mascota</button>
+            </div>
+          </form>
         </div>
+      </section>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Esterilizado:</label>
-            <select class="form-control" id="p-sterilized" onchange="toggleSterilizedDate(this.value)">
-              <option value="no">No</option>
-              <option value="si">Sí</option>
-            </select>
-          </div>
-          <div class="form-group" id="group-sterilized-date" style="display: none;">
-            <label>Fecha Esterilización:</label>
-            <input type="date" class="form-control" id="p-sterilized-date">
-          </div>
+      <!-- ================= 3. VACUNAS ================= -->
+      <section id="view-vaccines" style="display: none;">
+        <div class="section-panel">
+          <h2>💉 Listado de Vacunas: <span class="active-pet-name"></span></h2>
+          <form onsubmit="handleAddVaccine(event)">
+            <h4 style="margin: 1rem 0 0.5rem 0; color: var(--secondary);">Añadir registro</h4>
+            <div class="form-row">
+              <input type="text" class="form-control" id="vac-name" placeholder="Vacuna" required>
+              <input type="date" class="form-control" id="vac-date" title="Fecha" required>
+              <input type="text" class="form-control" id="vac-dose" placeholder="Dosis">
+              <input type="text" class="form-control" id="vac-lot" placeholder="Lote">
+            </div>
+            <div class="form-row">
+              <input type="date" class="form-control" id="vac-exp" title="Caducidad">
+              <input type="number" step="0.01" class="form-control" id="vac-price" placeholder="Precio (€)">
+              <input type="date" class="form-control" id="vac-next" title="Próxima dosis">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Añadir Vacuna</button>
+          </form>
+          <div id="table-vaccines-container"></div>
         </div>
+      </section>
 
-        <div class="form-row">
-          <div class="form-group">
-            <label>Peso Inicial (kg):</label>
-            <input type="number" step="0.01" class="form-control" id="p-weight">
-          </div>
-          <div class="form-group">
-            <label>Centro Veterinario:</label>
-            <input type="text" class="form-control" id="p-clinic">
-          </div>
+      <!-- ================= 4. CONTROL DESPARASITACIÓN ================= -->
+      <section id="view-deworming" style="display: none;">
+        <div class="section-panel">
+          <h2>🛡️ Control Desparasitación: <span class="active-pet-name"></span></h2>
+          
+          <!-- Desparasitación Interna -->
+          <h3 style="color: var(--secondary); margin-top: 1.5rem;">Interna: Añadir registro</h3>
+          <form onsubmit="handleAddDeworming(event, 'internal')">
+            <div class="form-row">
+              <input type="date" class="form-control" id="dew-in-date" title="Fecha" required>
+              <input type="text" class="form-control" id="dew-in-med" placeholder="Medicación" required>
+              <input type="text" class="form-control" id="dew-in-lot" placeholder="Lote">
+            </div>
+            <div class="form-row">
+              <input type="date" class="form-control" id="dew-in-exp" title="Caducidad">
+              <input type="number" step="0.01" class="form-control" id="dew-in-price" placeholder="Precio (€)">
+              <input type="date" class="form-control" id="dew-in-next" title="Próxima desparasitación (con alarma recordatorio)">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Añadir Desparasitación Interna</button>
+          </form>
+          <div id="table-deworming-internal-container"></div>
+
+          <!-- Desparasitación Externa -->
+          <h3 style="color: var(--secondary); margin-top: 2rem;">Externa: Añadir registro</h3>
+          <form onsubmit="handleAddDeworming(event, 'external')">
+            <div class="form-row">
+              <input type="date" class="form-control" id="dew-ex-date" title="Fecha" required>
+              <input type="text" class="form-control" id="dew-ex-med" placeholder="Medicación" required>
+              <input type="text" class="form-control" id="dew-ex-lot" placeholder="Lote">
+            </div>
+            <div class="form-row">
+              <input type="date" class="form-control" id="dew-ex-exp" title="Caducidad">
+              <input type="number" step="0.01" class="form-control" id="dew-ex-price" placeholder="Precio (€)">
+              <input type="date" class="form-control" id="dew-ex-next" title="Próxima desparasitación (con alarma recordatorio)">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Añadir Desparasitación Externa</button>
+          </form>
+          <div id="table-deworming-external-container"></div>
         </div>
+      </section>
 
-        <div class="form-group">
-          <label>Fotografía (JPG/PNG):</label>
-          <input type="file" class="form-control" id="p-photo" accept="image/png, image/jpeg" onchange="previewPhoto(event)">
+      <!-- ================= 5. HISTORIAL (PATOLOGÍAS Y VISITAS) ================= -->
+      <section id="view-history" style="display: none;">
+        <div class="section-panel">
+          <h2>📋 Historial Patológico y Visitas: <span class="active-pet-name"></span></h2>
+          
+          <h3 style="color: var(--secondary); margin-top: 1rem;">Patología</h3>
+          <form onsubmit="handleAddPathology(event)">
+            <div class="form-row">
+              <input type="text" class="form-control" id="his-pat" placeholder="Patología" required>
+              <input type="date" class="form-control" id="his-start" title="Fecha inicio" required>
+              <input type="date" class="form-control" id="his-end" title="Fecha fin">
+            </div>
+            <div class="form-group">
+              <input type="text" class="form-control" id="his-treat" placeholder="Tratamiento">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Guardar Patología</button>
+          </form>
+          <div id="table-pathologies-container"></div>
+
+          <h3 style="color: var(--secondary); margin-top: 2rem;">Visitas veterinario</h3>
+          <form onsubmit="handleAddVisit(event)">
+            <div class="form-row">
+              <input type="date" class="form-control" id="vis-date" title="Fecha de la visita" required>
+              <input type="text" class="form-control" id="vis-reason" placeholder="Motivo o diagnóstico" required>
+              <input type="number" step="0.01" class="form-control" id="vis-price" placeholder="Precio (€)">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Guardar Visita</button>
+          </form>
+          <div id="table-visits-container"></div>
         </div>
+      </section>
 
-        <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-          <button type="button" class="btn" style="background:#ddd; color:#333;" onclick="closeModal('modal-pet')">Cancelar</button>
-          <button type="submit" class="btn btn-primary">Guardar Mascota</button>
+      <!-- ================= 6. TRATAMIENTOS ================= -->
+      <section id="view-treatments" style="display: none;">
+        <div class="section-panel">
+          <h2>💊 Tratamientos: <span class="active-pet-name"></span></h2>
+          <form onsubmit="handleAddTreatment(event)">
+            <div class="form-row">
+              <input type="text" class="form-control" id="treat-med" placeholder="Medicamento" required>
+              <input type="date" class="form-control" id="treat-date" title="Fecha" required>
+              <input type="text" class="form-control" id="treat-lot" placeholder="Lote">
+            </div>
+            <div class="form-row">
+              <input type="date" class="form-control" id="treat-exp" title="Caducidad">
+              <input type="number" step="0.01" class="form-control" id="treat-price" placeholder="Precio (€)">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Añadir Tratamiento</button>
+          </form>
+          <div id="table-treatments-container"></div>
         </div>
-      </form>
-    </div>
-  </div>
+      </section>
 
-  <!-- MODAL: GESTIÓN CLÍNICA Y EXPEDIENTE COMPLETO -->
-  <div class="modal" id="modal-clinical">
-    <div class="modal-content">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-        <div>
-          <h2 id="clinical-title" style="color: var(--primary);">Expediente</h2>
-          <p id="clinical-subtitle" style="font-size: 0.9rem; color: var(--text-muted);"></p>
+      <!-- ================= 7. CIRUGÍAS ================= -->
+      <section id="view-surgeries" style="display: none;">
+        <div class="section-panel">
+          <h2>🩹 Cirugías: <span class="active-pet-name"></span></h2>
+          <form onsubmit="handleAddSurgery(event)">
+            <div class="form-row">
+              <input type="date" class="form-control" id="surg-date" title="Fecha" required>
+              <input type="text" class="form-control" id="surg-name" placeholder="Cirugía" required>
+              <input type="number" step="0.01" class="form-control" id="surg-price" placeholder="Precio (€)">
+            </div>
+            <button type="submit" class="btn btn-primary">+ Añadir Cirugía</button>
+          </form>
+          <div id="table-surgeries-container"></div>
         </div>
-        <div style="display: flex; gap: 0.5rem;">
-          <button class="btn btn-secondary" onclick="openCardViewCurrent()">Generar Cartilla</button>
-          <button class="btn btn-primary" onclick="openExecutiveReportCurrent()">Informe Ejecutivo</button>
+      </section>
+
+      <!-- ================= 8. CONTROL PESO ================= -->
+      <section id="view-weight" style="display: none;">
+        <div class="section-panel">
+          <h2>⚖️ Control Peso: <span class="active-pet-name"></span></h2>
+          <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 1rem;">
+            El último valor introducido se asignará automáticamente como peso actual de la mascota en su perfil y en la cartilla.
+          </p>
+          <form onsubmit="handleAddWeight(event)">
+            <div class="form-row">
+              <input type="date" class="form-control" id="weight-date" title="Fecha" required>
+              <input type="number" step="0.01" class="form-control" id="weight-val" placeholder="Peso en kg (Ej: 3.85)" required>
+            </div>
+            <button type="submit" class="btn btn-primary">+ Registrar Peso</button>
+          </form>
+          <div id="table-weights-container"></div>
         </div>
-      </div>
+      </section>
 
-      <!-- Barra de Pestañas -->
-      <div class="tabs-bar">
-        <button class="tab-btn active" onclick="switchClinicalTab('tab-vaccines')">💉 Vacunas</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-deworming')">🛡️ Desparasitación</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-pathologies')">📋 Historial Patológico</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-treatments')">💊 Tratamientos</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-visits')">🩺 Visitas</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-surgeries')">🩹 Cirugías</button>
-        <button class="tab-btn" onclick="switchClinicalTab('tab-weight')">⚖️ Control Peso</button>
-      </div>
-
-      <!-- PESTAÑA: VACUNAS -->
-      <div id="tab-vaccines" class="tab-panel active">
-        <form onsubmit="addVaccine(event)">
-          <div class="form-row">
-            <input type="text" class="form-control" id="v-name" placeholder="Nombre Vacuna" required>
-            <input type="date" class="form-control" id="v-date" required>
-            <input type="text" class="form-control" id="v-dose" placeholder="Dosis">
-          </div>
-          <div class="form-row" style="margin-top: 0.5rem;">
-            <input type="text" class="form-control" id="v-lot" placeholder="Lote">
-            <input type="date" class="form-control" id="v-exp" title="Caducidad">
-            <input type="number" step="0.01" class="form-control" id="v-price" placeholder="Precio (€)">
-            <input type="date" class="form-control" id="v-next" title="Próxima Dosis">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Vacuna</button>
-        </form>
-        <div id="vaccines-table-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: DESPARASITACIÓN (INTERNA Y EXTERNA) -->
-      <div id="tab-deworming" class="tab-panel">
-        <h3 style="color: var(--primary); margin-bottom: 0.5rem;">Desparasitación Interna</h3>
-        <form onsubmit="addDeworming(event, 'internal')">
-          <div class="form-row">
-            <input type="date" class="form-control" id="di-date" required>
-            <input type="text" class="form-control" id="di-med" placeholder="Medicación" required>
-            <input type="text" class="form-control" id="di-lot" placeholder="Lote">
-          </div>
-          <div class="form-row" style="margin-top: 0.5rem;">
-            <input type="date" class="form-control" id="di-exp" title="Caducidad">
-            <input type="number" step="0.01" class="form-control" id="di-price" placeholder="Precio (€)">
-            <input type="date" class="form-control" id="di-next" title="Próxima fecha (alarma)">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Desparasitación Interna</button>
-        </form>
-        <div id="deworming-internal-zone"></div>
-
-        <h3 style="color: var(--primary); margin: 1.5rem 0 0.5rem 0;">Desparasitación Externa</h3>
-        <form onsubmit="addDeworming(event, 'external')">
-          <div class="form-row">
-            <input type="date" class="form-control" id="de-date" required>
-            <input type="text" class="form-control" id="de-med" placeholder="Medicación" required>
-            <input type="text" class="form-control" id="de-lot" placeholder="Lote">
-          </div>
-          <div class="form-row" style="margin-top: 0.5rem;">
-            <input type="date" class="form-control" id="de-exp" title="Caducidad">
-            <input type="number" step="0.01" class="form-control" id="de-price" placeholder="Precio (€)">
-            <input type="date" class="form-control" id="de-next" title="Próxima fecha (alarma)">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Desparasitación Externa</button>
-        </form>
-        <div id="deworming-external-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: HISTORIAL PATOLÓGICO -->
-      <div id="tab-pathologies" class="tab-panel">
-        <form onsubmit="addPathology(event)">
-          <div class="form-row">
-            <input type="text" class="form-control" id="pat-name" placeholder="Patología diagnosticada" required>
-            <input type="date" class="form-control" id="pat-start" title="Fecha Inicio" required>
-            <input type="date" class="form-control" id="pat-end" title="Fecha Fin">
-          </div>
-          <div class="form-group" style="margin-top: 0.5rem;">
-            <input type="text" class="form-control" id="pat-treatment" placeholder="Tratamiento prescrito">
-          </div>
-          <button type="submit" class="btn btn-primary">+ Añadir Patología</button>
-        </form>
-        <div id="pathologies-table-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: TRATAMIENTOS -->
-      <div id="tab-treatments" class="tab-panel">
-        <form onsubmit="addTreatment(event)">
-          <div class="form-row">
-            <input type="text" class="form-control" id="t-med" placeholder="Medicamento" required>
-            <input type="date" class="form-control" id="t-date" required>
-            <input type="text" class="form-control" id="t-lot" placeholder="Lote">
-          </div>
-          <div class="form-row" style="margin-top: 0.5rem;">
-            <input type="date" class="form-control" id="t-exp" title="Caducidad">
-            <input type="number" step="0.01" class="form-control" id="t-price" placeholder="Precio (€)">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Tratamiento</button>
-        </form>
-        <div id="treatments-table-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: VISITAS VETERINARIO -->
-      <div id="tab-visits" class="tab-panel">
-        <form onsubmit="addVisit(event)">
-          <div class="form-row">
-            <input type="date" class="form-control" id="vis-date" required>
-            <input type="text" class="form-control" id="vis-reason" placeholder="Motivo de la visita" required>
-            <input type="number" step="0.01" class="form-control" id="vis-price" placeholder="Precio (€)">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Visita</button>
-        </form>
-        <div id="visits-table-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: CIRUGÍAS -->
-      <div id="tab-surgeries" class="tab-panel">
-        <form onsubmit="addSurgery(event)">
-          <div class="form-row">
-            <input type="date" class="form-control" id="surg-date" required>
-            <input type="text" class="form-control" id="surg-name" placeholder="Procedimiento quirúrgico" required>
-            <input type="number" step="0.01" class="form-control" id="surg-price" placeholder="Precio (€)">
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Cirugía</button>
-        </form>
-        <div id="surgeries-table-zone"></div>
-      </div>
-
-      <!-- PESTAÑA: CONTROL PESO -->
-      <div id="tab-weight" class="tab-panel">
-        <form onsubmit="addWeight(event)">
-          <div class="form-row">
-            <input type="date" class="form-control" id="w-date" required>
-            <input type="number" step="0.01" class="form-control" id="w-val" placeholder="Peso (kg)" required>
-          </div>
-          <button type="submit" class="btn btn-primary" style="margin-top: 0.8rem;">+ Añadir Registro de Peso</button>
-        </form>
-        <div id="weights-table-zone"></div>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; margin-top: 1.5rem;">
-        <button class="btn" style="background:#ddd; color:#333;" onclick="closeModal('modal-clinical')">Cerrar Expediente</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- MODAL: CARNÉ / CARTILLA SANITARIA -->
-  <div class="modal" id="modal-card">
-    <div class="modal-content" style="max-width: 700px;">
-      <h2 style="margin-bottom: 1rem; color: var(--primary);">Carné Mascota</h2>
-      <div id="card-render-zone">
-        <div id="card-preview">
-          <div class="card-left">
-            <img id="card-view-img" class="card-avatar" src="" alt="Mascota">
-            <div id="card-view-name" class="card-name-pill">NOMBRE</div>
-          </div>
-          <div class="card-right">
-            <div class="badge-field"><strong>Especie:</strong> <span id="card-view-species">-</span></div>
-            <div class="badge-field"><strong>Color:</strong> <span id="card-view-color">-</span></div>
-            <div class="badge-field"><strong>F. Nacimiento:</strong> <span id="card-view-birth">-</span></div>
-            <div class="badge-field"><strong>Nº Chip:</strong> <span id="card-view-chip">-</span></div>
-            <div class="badge-field"><strong>Último Peso:</strong> <span id="card-view-weight">-</span></div>
-            <hr style="border: 0; border-top: 1px dashed var(--secondary); margin: 0.2rem 0;">
-            <div class="badge-field"><strong>Vacuna:</strong> <span id="card-view-vaccine">Ninguna</span></div>
-            <div class="badge-field"><strong>Desparasit. Interna:</strong> <span id="card-view-internal">Ninguna</span></div>
-            <div class="badge-field"><strong>Desparasit. Externa:</strong> <span id="card-view-external">Ninguna</span></div>
-            <div style="font-size: 0.72rem; color: var(--primary-light); text-align: right; margin-top: 0.2rem; font-weight: bold;">
-              Fecha de Validez: <span id="card-view-date"></span>
+      <!-- ================= 9. CARNÉ MASCOTA / GENERAR CARTILLA ================= -->
+      <section id="view-card" style="display: none;">
+        <div class="section-panel">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <h2>💳 Carné Mascota (Cartilla Sanitaria): <span class="active-pet-name"></span></h2>
+            <div style="display: flex; gap: 0.5rem;">
+              <button class="btn btn-secondary" onclick="exportCardJPG()">Exportar a JPG</button>
+              <button class="btn btn-primary" onclick="exportCardPDF()">Exportar a PDF</button>
             </div>
           </div>
+          <p style="font-size:0.85rem; color: var(--text-muted); margin-top:0.5rem;">
+            * Los datos se autocompletan con la información más reciente. La fecha de validez corresponde al momento de generación.
+          </p>
+
+          <div id="exportable-card-zone" class="cartilla-container">
+            
+            <!-- CARA FRONTAL: ESTILO GAFETE -->
+            <div class="cartilla-front">
+              <div class="cartilla-avatar-box">
+                <img id="card-img" class="cartilla-avatar" src="" alt="Mascota">
+                <div>
+                  <div id="card-name" class="cartilla-header-title">NOMBRE</div>
+                  <div style="font-size: 0.8rem; opacity: 0.9;">Cartilla Oficial KontrolVet</div>
+                </div>
+              </div>
+
+              <div class="cartilla-field-pill"><span>Sexo:</span> <strong id="card-sex">-</strong></div>
+              <div class="cartilla-field-pill"><span>Especie:</span> <strong id="card-species">-</strong></div>
+              <div class="cartilla-field-pill"><span>Color:</span> <strong id="card-color">-</strong></div>
+              <div class="cartilla-field-pill"><span>Raza:</span> <strong id="card-race">-</strong></div>
+              <div class="cartilla-field-pill"><span>Fecha de nacimiento:</span> <strong id="card-birth">-</strong></div>
+              <div class="cartilla-field-pill"><span>N° ID CHIP:</span> <strong id="card-chip">-</strong></div>
+              <div class="cartilla-field-pill"><span>Último Peso:</span> <strong id="card-weight">-</strong></div>
+
+              <!-- Cuadro Vacunas Recientes -->
+              <div class="cartilla-table-box">
+                <div class="cartilla-table-title">💉 VACUNAS RECIENTES</div>
+                <div id="card-vaccines-list">
+                  <!-- Inyectado dinámicamente -->
+                </div>
+              </div>
+
+              <!-- Cuadro Desparasitaciones -->
+              <div class="cartilla-table-box">
+                <div class="cartilla-table-title">🛡️ DESPARASITACIÓN RECIENTE</div>
+                <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
+                  <span>Interna: <b id="card-dew-int">-</b></span>
+                  <span>Fecha: <b id="card-dew-int-date">-</b></span>
+                </div>
+                <div style="display:flex; justify-content:space-between;">
+                  <span>Externa: <b id="card-dew-ext">-</b></span>
+                  <span>Fecha: <b id="card-dew-ext-date">-</b></span>
+                </div>
+              </div>
+
+              <div style="font-size:0.75rem; text-align:right; margin-top: auto; opacity: 0.95;">
+                Validez de la cartilla: <b id="card-validity-date"></b>
+              </div>
+            </div>
+
+            <!-- CARA POSTERIOR: FAMILIA Y PROPIETARIA -->
+            <div class="cartilla-back">
+              <div class="insignia-box">
+                <!-- SVG Huella Insignia estilo Gafete -->
+                <svg class="insignia-svg" viewBox="0 0 100 100">
+                  <path d="M50 0 C60 5 70 2 80 12 C90 22 87 32 92 42 C97 52 94 62 89 72 C84 82 74 85 64 90 C54 95 44 95 34 90 C24 85 14 82 9 72 C4 62 1 52 6 42 C11 32 8 22 18 12 C28 2 38 5 50 0 Z" fill="#7E57C2"/>
+                  <circle cx="50" cy="50" r="38" fill="#D81B60"/>
+                  <!-- Huella central blanca -->
+                  <ellipse cx="50" cy="62" rx="14" ry="11" fill="white"/>
+                  <circle cx="34" cy="42" r="6" fill="white"/>
+                  <circle cx="66" cy="42" r="6" fill="white"/>
+                  <circle cx="43" cy="32" r="5" fill="white"/>
+                  <circle cx="57" cy="32" r="5" fill="white"/>
+                </svg>
+              </div>
+
+              <div class="cartilla-back-title">DATOS DE LA FAMILIA / PROPIETARIA</div>
+
+              <div class="cartilla-propietario-row">
+                <span>FAMILIA:</span> <strong id="owner-family">Familia Registrada</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>Propietaria:</span> <strong id="owner-name">Propietaria Responsable</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>N.I.F.:</span> <strong id="owner-nif">-</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>Teléfono:</span> <strong id="owner-phone">-</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>Dirección:</span> <strong id="owner-address">-</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>Ciudad:</span> <strong id="owner-city">Tarragona</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>Correo:</span> <strong id="owner-email">-</strong>
+              </div>
+              <div class="cartilla-propietario-row">
+                <span>País:</span> <strong>España</strong>
+              </div>
+
+              <div style="font-size:0.75rem; text-align:center; margin-top:auto; color:var(--text-muted);">
+                KontrolVet • Sistema Integral de Identificación Veterinaria
+              </div>
+            </div>
+
+          </div>
         </div>
+      </section>
+
+      <!-- ================= 10. GASTOS ================= -->
+      <section id="view-expenses" style="display: none;">
+        <div class="section-panel">
+          <h2>💰 Resumen de Gastos: <span class="active-pet-name"></span></h2>
+          <div id="expenses-breakdown-zone">
+            <!-- Desglose inyectado con JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= 11. INFORMES ================= -->
+      <section id="view-reports" style="display: none;">
+        <div class="section-panel">
+          <h2>📄 Informes Ejecutivos: <span class="active-pet-name"></span></h2>
+          <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">
+            Genera un informe ejecutivo con el historial y todos los datos registrados para la mascota seleccionada.
+          </p>
+          <button class="btn btn-primary" onclick="generateExecutiveReport()">Generar y Visualizar Informe</button>
+        </div>
+      </section>
+
+      <!-- ================= 12. AJUSTES ================= -->
+      <section id="view-settings" style="display: none;">
+        <div class="section-panel">
+          <h2>⚙️ Ajustes del Sistema</h2>
+          
+          <div style="margin-bottom: 1.5rem;">
+            <h4 style="margin-bottom: 0.5rem;">Apariencia</h4>
+            <button class="btn btn-secondary" onclick="toggleTheme()">Cambiar Modo Claro / Oscuro</button>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h4 style="margin-bottom: 0.5rem;">Copia de Seguridad</h4>
+            <button class="btn btn-primary" onclick="exportBackupData()">📥 Descargar Copia de Seguridad (JSON)</button>
+            <input type="file" id="import-json-file" style="display: none;" onchange="importBackupData(event)" accept=".json">
+            <button class="btn btn-secondary" onclick="document.getElementById('import-json-file').click()">📤 Restaurar Copia de Seguridad</button>
+          </div>
+
+          <div style="margin-bottom: 1.5rem;">
+            <h4 style="margin-bottom: 0.5rem;">Sincronización entre dispositivos</h4>
+            <p style="font-size: 0.85rem; color: var(--text-muted);">
+              Sincroniza tus datos exportando tu copia JSON e importándola en tu tablet, móvil o portátil.
+            </p>
+          </div>
+
+          <div>
+            <h4 style="margin-bottom: 0.5rem;">Aplicación (PWA)</h4>
+            <button class="btn btn-outline" onclick="handleInstallApp()">Instalar / Desinstalar Aplicación</button>
+          </div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- =========================================================
+       MODAL DE INFORME EJECUTIVO IMPRIMIBLE
+       ========================================================= -->
+  <div class="modal-overlay" id="modal-report-overlay">
+    <div class="modal-card">
+      <div id="printable-report">
+        <!-- Encabezado oficial solicitado -->
+        <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--primary); padding-bottom: 0.8rem; margin-bottom: 1.2rem;">
+          <!-- Logotipo superior izquierda -->
+          <svg style="width: 50px; height: 50px;" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="46" stroke="#2B0938" stroke-width="4" fill="#FFF9C4"/>
+            <path d="M26 44H74V76C74 77.1 73.1 78 72 78H28C26.9 78 26 77.1 26 76V44Z" fill="#F8BBD0" stroke="#2B0938" stroke-width="3"/>
+            <path d="M22 44L50 26L78 44" stroke="#2B0938" stroke-width="4"/>
+            <ellipse cx="50" cy="38" rx="5" ry="4" fill="#D81B60"/>
+          </svg>
+          <!-- Nombre superior central -->
+          <div style="text-align: center;">
+            <h2 style="color: var(--primary); letter-spacing: 1px;">KONTROLVET</h2>
+            <p style="font-size: 0.8rem; font-weight: 700; color: var(--secondary);">INFORME CLÍNICO EJECUTIVO</p>
+          </div>
+          <!-- Registro superior derecha -->
+          <div style="text-align: right; font-size: 0.85rem;">
+            <strong>Nº de Registro:</strong><br>
+            <span id="rep-header-chip" style="color: var(--secondary); font-weight: 800;">-</span>
+          </div>
+        </div>
+
+        <div id="report-rendered-body"></div>
       </div>
+
       <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-        <button class="btn btn-secondary" onclick="exportCardJPG()">Exportar a JPG</button>
-        <button class="btn btn-primary" onclick="exportCardPDF()">Exportar a PDF</button>
-        <button class="btn" style="background:#ddd; color:#333;" onclick="closeModal('modal-card')">Cerrar</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar en PDF</button>
+        <button class="btn btn-outline" onclick="closeReportModal()">Cerrar</button>
       </div>
     </div>
   </div>
 
-  <!-- MODAL: INFORME EJECUTIVO -->
-  <div class="modal" id="modal-executive">
-    <div class="modal-content" style="max-width: 850px;">
-      <div id="printable-executive">
-        <div id="executive-report">
-          <div class="report-header">
-            <!-- Logo superior izquierda -->
-            <svg style="width: 50px; height: 50px;" viewBox="0 0 100 100" fill="none">
-              <circle cx="50" cy="50" r="46" stroke="#3B185F" stroke-width="4" fill="#FFF9C4"/>
-              <path d="M26 44H74V76C74 77.1 73.1 78 72 78H28C26.9 78 26 77.1 26 76V44Z" fill="#F8BBD0" stroke="#3B185F" stroke-width="3"/>
-              <path d="M22 44L50 26L78 44" stroke="#3B185F" stroke-width="4"/>
-              <ellipse cx="50" cy="38" rx="5" ry="4" fill="#3B185F"/>
-            </svg>
-            <!-- Título central -->
-            <div style="text-align: center;">
-              <h2 style="color: var(--primary); letter-spacing: 1px;">KONTROLVET</h2>
-              <p style="font-size: 0.8rem; color: var(--text-muted);">INFORME CLÍNICO EJECUTIVO</p>
-            </div>
-            <!-- Número de registro derecha -->
-            <div style="text-align: right; font-size: 0.85rem;">
-              <strong>Registro / Chip:</strong><br>
-              <span id="rep-chip" style="color: var(--primary);"></span>
-            </div>
-          </div>
-
-          <div id="executive-body" style="line-height: 1.8; font-size: 0.9rem;"></div>
-        </div>
-      </div>
-
-      <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1.5rem;">
-        <button class="btn btn-primary" onclick="window.print()">🖨️ Imprimir / Guardar PDF</button>
-        <button class="btn" style="background:#ddd; color:#333;" onclick="closeModal('modal-executive')">Cerrar</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- JAVASCRIPT: LÓGICA COMPLETA DE NEGOCIO -->
+  <!-- =========================================================
+       LÓGICA JAVASCRIPT COMPLETA
+       ========================================================= -->
   <script>
-    let pets = JSON.parse(localStorage.getItem('kontrolvet_data')) || [];
-    let currentPetIndex = null;
-    let currentPhotoBase64 = '';
+    // ESTADO GENERAL DE LA APLICACIÓN
+    let pets = JSON.parse(localStorage.getItem('kontrolvet_pets')) || [];
+    let activePetIndex = 0;
+    let tempEncodedPhoto = '';
 
     window.addEventListener('DOMContentLoaded', () => {
-      renderPetsGrid();
+      renderPetSelector();
+      renderHomePetsGrid();
+      refreshActiveSection();
     });
 
-    function persistData() {
-      localStorage.setItem('kontrolvet_data', JSON.stringify(pets));
+    function savePetsToStorage() {
+      localStorage.setItem('kontrolvet_pets', JSON.stringify(pets));
     }
 
-    // RENDERIZAR CUADRÍCULA
-    function renderPetsGrid() {
-      const container = document.getElementById('pets-container');
-      container.innerHTML = '';
+    // NAVEGACIÓN Y MENÚ LATERAL
+    function toggleSidebar() {
+      const sidebar = document.getElementById('sidebar');
+      const wrapper = document.getElementById('main-wrapper');
+      sidebar.classList.toggle('collapsed');
+      wrapper.classList.toggle('expanded');
+    }
 
+    function showSection(sectionId) {
+      const views = [
+        'view-home', 'view-new-pet', 'view-vaccines', 'view-deworming',
+        'view-history', 'view-treatments', 'view-surgeries', 'view-weight',
+        'view-card', 'view-expenses', 'view-reports', 'view-settings'
+      ];
+      views.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.style.display = id === sectionId ? 'block' : 'none';
+      });
+
+      // Actualizar botón activo del menú
+      document.querySelectorAll('.menu-item').forEach(btn => btn.classList.remove('active'));
+      const activeBtn = Array.from(document.querySelectorAll('.menu-item')).find(b => b.getAttribute('onclick')?.includes(sectionId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      refreshActiveSection();
+    }
+
+    function changeActivePet(index) {
+      activePetIndex = parseInt(index, 10);
+      refreshActiveSection();
+    }
+
+    function getActivePet() {
+      if (pets.length === 0) return null;
+      if (activePetIndex >= pets.length) activePetIndex = 0;
+      return pets[activePetIndex];
+    }
+
+    function renderPetSelector() {
+      const select = document.getElementById('select-active-pet');
+      select.innerHTML = '';
       if (pets.length === 0) {
-        container.innerHTML = '<p style="color: var(--text-muted); grid-column: 1/-1;">No hay mascotas registradas aún. Haz clic en "+ Registrar Mascota" para empezar.</p>';
+        select.innerHTML = '<option value="">(Sin mascotas)</option>';
+        return;
+      }
+      pets.forEach((p, idx) => {
+        const opt = document.createElement('option');
+        opt.value = idx;
+        opt.innerText = p.name;
+        if (idx === activePetIndex) opt.selected = true;
+        select.appendChild(opt);
+      });
+    }
+
+    function refreshActiveSection() {
+      const pet = getActivePet();
+      document.querySelectorAll('.active-pet-name').forEach(el => {
+        el.innerText = pet ? pet.name : '(Ninguna)';
+      });
+
+      if (!pet) return;
+
+      renderVaccinesTable();
+      renderDewormingTables();
+      renderHistoryTables();
+      renderTreatmentsTable();
+      renderSurgeriesTable();
+      renderWeightsTable();
+      populateCardData();
+      renderExpensesBreakdown();
+    }
+
+    // =========================================================
+    // REGISTRO DE NUEVA MASCOTA
+    // =========================================================
+    function toggleSterilizationField(val) {
+      document.getElementById('group-sterilization-date').style.display = (val === 'si') ? 'block' : 'none';
+    }
+
+    function encodePhoto(event) {
+      const file = event.target.files[0];
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = e => tempEncodedPhoto = e.target.result;
+        reader.readAsDataURL(file);
+      }
+    }
+
+    function handleRegisterPet(event) {
+      event.preventDefault();
+      const weightVal = document.getElementById('reg-weight').value;
+      const newPet = {
+        id: Date.now(),
+        name: document.getElementById('reg-name').value,
+        birth: document.getElementById('reg-birth').value,
+        species: document.getElementById('reg-species').value,
+        gender: document.getElementById('reg-gender').value,
+        color: document.getElementById('reg-color').value,
+        race: document.getElementById('reg-race').value || '-',
+        sterilized: document.getElementById('reg-sterilized').value,
+        sterilizationDate: document.getElementById('reg-sterilization-date').value || '',
+        chip: document.getElementById('reg-chip').value,
+        clinic: document.getElementById('reg-clinic').value,
+        photo: tempEncodedPhoto,
+        weights: weightVal ? [{ date: new Date().toISOString().split('T')[0], value: weightVal }] : [],
+        vaccines: [],
+        dewormingInternal: [],
+        dewormingExternal: [],
+        pathologies: [],
+        visits: [],
+        treatments: [],
+        surgeries: []
+      };
+
+      pets.push(newPet);
+      savePetsToStorage();
+      activePetIndex = pets.length - 1;
+
+      tempEncodedPhoto = '';
+      document.getElementById('form-register-pet').reset();
+      document.getElementById('group-sterilization-date').style.display = 'none';
+
+      renderPetSelector();
+      renderHomePetsGrid();
+      showSection('view-home');
+    }
+
+    function renderHomePetsGrid() {
+      const container = document.getElementById('pets-grid-container');
+      container.innerHTML = '';
+      if (pets.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); grid-column:1/-1;">No hay mascotas registradas aún. Haz clic en "Registrar Nuevo".</p>';
         return;
       }
 
-      pets.forEach((pet, index) => {
+      pets.forEach((pet, idx) => {
         const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
         const card = document.createElement('div');
         card.className = 'pet-card';
-        card.onclick = () => openClinicalModal(index);
+        card.onclick = () => {
+          activePetIndex = idx;
+          renderPetSelector();
+          showSection('view-card');
+        };
         card.innerHTML = `
           ${pet.photo 
-            ? `<img src="${pet.photo}" class="pet-card-img" alt="${pet.name}">` 
-            : `<div class="pet-card-img">Sin Fotografía</div>`}
-          <div class="pet-card-body">
-            <h3 class="pet-card-title">${pet.name}</h3>
-            <p style="font-size: 0.85rem; color: var(--text-muted);">${pet.species} • ${pet.gender}</p>
-            <p style="font-size: 0.85rem; margin-top: 0.4rem;"><strong>Peso:</strong> ${lastWeight} kg</p>
-            <p style="font-size: 0.85rem;"><strong>Chip:</strong> ${pet.chip || 'No asignado'}</p>
+            ? `<img src="${pet.photo}" class="pet-card-photo" alt="${pet.name}">` 
+            : `<div class="pet-card-photo">Sin Foto</div>`}
+          <div class="pet-card-content">
+            <h3 class="pet-card-name">${pet.name}</h3>
+            <p style="font-size:0.85rem; color:var(--text-muted);">${pet.species} • ${pet.gender}</p>
+            <p style="font-size:0.85rem; margin-top:0.4rem;"><strong>Último Peso:</strong> ${lastWeight} kg</p>
+            <p style="font-size:0.85rem;"><strong>Nº Chip:</strong> ${pet.chip || 'No asignado'}</p>
           </div>
         `;
         container.appendChild(card);
       });
     }
 
-    // NAVEGACIÓN GENERAL
-    function switchView(view) {
-      document.getElementById('view-pets').style.display = view === 'pets' ? 'block' : 'none';
-      document.getElementById('view-expenses').style.display = view === 'expenses' ? 'block' : 'none';
-      document.getElementById('view-settings').style.display = view === 'settings' ? 'block' : 'none';
+    // =========================================================
+    // SECCIÓN VACUNAS
+    // =========================================================
+    function handleAddVaccine(e) {
+      e.preventDefault();
+      const pet = getActivePet();
+      if (!pet) return;
 
-      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-      if (view === 'expenses') calculateExpenses();
+      pet.vaccines.push({
+        name: document.getElementById('vac-name').value,
+        date: document.getElementById('vac-date').value,
+        dose: document.getElementById('vac-dose').value || '-',
+        lot: document.getElementById('vac-lot').value || '-',
+        exp: document.getElementById('vac-exp').value || '-',
+        price: Number(document.getElementById('vac-price').value) || 0,
+        next: document.getElementById('vac-next').value || '-'
+      });
+
+      savePetsToStorage();
+      renderVaccinesTable();
+      e.target.reset();
     }
 
-    function openNewPetModal() {
-      document.getElementById('pet-form').reset();
-      currentPhotoBase64 = '';
-      document.getElementById('group-sterilized-date').style.display = 'none';
-      document.getElementById('modal-pet').classList.add('active');
-    }
-
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
-
-    function toggleSterilizedDate(val) {
-      document.getElementById('group-sterilized-date').style.display = val === 'si' ? 'block' : 'none';
-    }
-
-    function previewPhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => currentPhotoBase64 = e.target.result;
-        reader.readAsDataURL(file);
+    function renderVaccinesTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-vaccines-container');
+      if (!pet || pet.vaccines.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">No hay vacunas registradas.</p>';
+        return;
       }
-    }
-
-    // GUARDAR NUEVA MASCOTA
-    function savePet(event) {
-      event.preventDefault();
-      const initialWeight = document.getElementById('p-weight').value;
-      const newPet = {
-        id: Date.now(),
-        name: document.getElementById('p-name').value,
-        birth: document.getElementById('p-birth').value,
-        species: document.getElementById('p-species').value,
-        gender: document.getElementById('p-gender').value,
-        color: document.getElementById('p-color').value,
-        chip: document.getElementById('p-chip').value,
-        sterilized: document.getElementById('p-sterilized').value,
-        sterilizedDate: document.getElementById('p-sterilized-date').value,
-        clinic: document.getElementById('p-clinic').value,
-        photo: currentPhotoBase64,
-        weights: initialWeight ? [{ date: new Date().toISOString().split('T')[0], value: initialWeight }] : [],
-        vaccines: [],
-        dewormingInternal: [],
-        dewormingExternal: [],
-        pathologies: [],
-        treatments: [],
-        visits: [],
-        surgeries: []
-      };
-
-      pets.push(newPet);
-      persistData();
-      renderPetsGrid();
-      closeModal('modal-pet');
-    }
-
-    // GESTIÓN DEL EXPEDIENTE CLÍNICO
-    function openClinicalModal(index) {
-      currentPetIndex = index;
-      const pet = pets[index];
-      document.getElementById('clinical-title').innerText = `Expediente: ${pet.name}`;
-      document.getElementById('clinical-subtitle').innerText = `${pet.species} | Chip: ${pet.chip || 'Sin chip'}`;
-
-      refreshClinicalTables();
-      document.getElementById('modal-clinical').classList.add('active');
-    }
-
-    function switchClinicalTab(tabId) {
-      document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
-    }
-
-    function refreshClinicalTables() {
-      const pet = pets[currentPetIndex];
-
-      // Vacunas
-      document.getElementById('vaccines-table-zone').innerHTML = renderGenericTable(
-        ['Vacuna', 'Fecha', 'Dosis', 'Lote', 'Caducidad', 'Precio (€)', 'Próx. Dosis'],
-        pet.vaccines.map(v => [v.name, v.date, v.dose || '-', v.lot || '-', v.exp || '-', v.price || 0, v.next || '-'])
-      );
-
-      // Desparasitación Interna y Externa
-      document.getElementById('deworming-internal-zone').innerHTML = renderGenericTable(
-        ['Fecha', 'Medicación', 'Lote', 'Caducidad', 'Precio (€)', 'Próx. Dosis (Alarma)'],
-        pet.dewormingInternal.map(d => [d.date, d.med, d.lot || '-', d.exp || '-', d.price || 0, d.next ? `🔔 ${d.next}` : '-'])
-      );
-
-      document.getElementById('deworming-external-zone').innerHTML = renderGenericTable(
-        ['Fecha', 'Medicación', 'Lote', 'Caducidad', 'Precio (€)', 'Próx. Dosis (Alarma)'],
-        pet.dewormingExternal.map(d => [d.date, d.med, d.lot || '-', d.exp || '-', d.price || 0, d.next ? `🔔 ${d.next}` : '-'])
-      );
-
-      // Patologías
-      document.getElementById('pathologies-table-zone').innerHTML = renderGenericTable(
-        ['Patología', 'Inicio', 'Fin', 'Tratamiento'],
-        pet.pathologies.map(p => [p.name, p.start, p.end || 'Activa', p.treatment || '-'])
-      );
-
-      // Tratamientos
-      document.getElementById('treatments-table-zone').innerHTML = renderGenericTable(
-        ['Medicamento', 'Fecha', 'Lote', 'Caducidad', 'Precio (€)'],
-        pet.treatments.map(t => [t.med, t.date, t.lot || '-', t.exp || '-', t.price || 0])
-      );
-
-      // Visitas
-      document.getElementById('visits-table-zone').innerHTML = renderGenericTable(
-        ['Fecha', 'Motivo', 'Precio (€)'],
-        pet.visits.map(v => [v.date, v.reason, v.price || 0])
-      );
-
-      // Cirugías
-      document.getElementById('surgeries-table-zone').innerHTML = renderGenericTable(
-        ['Fecha', 'Cirugía', 'Precio (€)'],
-        pet.surgeries.map(s => [s.date, s.name, s.price || 0])
-      );
-
-      // Peso
-      document.getElementById('weights-table-zone').innerHTML = renderGenericTable(
-        ['Fecha', 'Peso (kg)'],
-        pet.weights.map(w => [w.date, `${w.value} kg`])
-      );
-    }
-
-    function renderGenericTable(headers, rows) {
-      if (!rows || rows.length === 0) return '<p style="color:var(--text-muted); margin-top:0.5rem; font-size:0.85rem;">No hay registros cargados aún.</p>';
-      return `
-        <table class="table-custom">
-          <thead><tr>${headers.map(h => `<th>${h}</th>`).join('')}</tr></thead>
-          <tbody>${rows.map(r => `<tr>${r.map(cell => `<td>${cell}</td>`).join('')}</tr>`).join('')}</tbody>
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead>
+            <tr><th>Vacuna</th><th>Fecha</th><th>Dosis</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima Dosis</th></tr>
+          </thead>
+          <tbody>
+            ${pet.vaccines.map(v => `
+              <tr>
+                <td><strong>${v.name}</strong></td><td>${v.date}</td><td>${v.dose}</td><td>${v.lot}</td><td>${v.exp}</td><td>${v.price.toFixed(2)} €</td><td>${v.next}</td>
+              </tr>
+            `).join('')}
+          </tbody>
         </table>
       `;
     }
 
-    // REGISTRO DE EVENTOS CLÍNICOS
-    function addVaccine(e) {
+    // =========================================================
+    // SECCIÓN DESPARASITACIÓN (INTERNA Y EXTERNA)
+    // =========================================================
+    function handleAddDeworming(e, type) {
       e.preventDefault();
-      pets[currentPetIndex].vaccines.push({
-        name: document.getElementById('v-name').value,
-        date: document.getElementById('v-date').value,
-        dose: document.getElementById('v-dose').value,
-        lot: document.getElementById('v-lot').value,
-        exp: document.getElementById('v-exp').value,
-        price: Number(document.getElementById('v-price').value) || 0,
-        next: document.getElementById('v-next').value
-      });
-      persistData();
-      refreshClinicalTables();
-      e.target.reset();
-    }
+      const pet = getActivePet();
+      if (!pet) return;
 
-    function addDeworming(e, type) {
-      e.preventDefault();
-      const prefix = type === 'internal' ? 'di' : 'de';
+      const prefix = type === 'internal' ? 'dew-in' : 'dew-ex';
       const record = {
         date: document.getElementById(`${prefix}-date`).value,
         med: document.getElementById(`${prefix}-med`).value,
-        lot: document.getElementById(`${prefix}-lot`).value,
-        exp: document.getElementById(`${prefix}-exp`).value,
+        lot: document.getElementById(`${prefix}-lot`).value || '-',
+        exp: document.getElementById(`${prefix}-exp`).value || '-',
         price: Number(document.getElementById(`${prefix}-price`).value) || 0,
-        next: document.getElementById(`${prefix}-next`).value
+        next: document.getElementById(`${prefix}-next`).value || '-'
       };
-      if (type === 'internal') pets[currentPetIndex].dewormingInternal.push(record);
-      else pets[currentPetIndex].dewormingExternal.push(record);
 
-      persistData();
-      refreshClinicalTables();
+      if (type === 'internal') pet.dewormingInternal.push(record);
+      else pet.dewormingExternal.push(record);
+
+      savePetsToStorage();
+      renderDewormingTables();
       e.target.reset();
     }
 
-    function addPathology(e) {
+    function renderDewormingTables() {
+      const pet = getActivePet();
+      const intContainer = document.getElementById('table-deworming-internal-container');
+      const extContainer = document.getElementById('table-deworming-external-container');
+
+      if (!pet) return;
+
+      intContainer.innerHTML = pet.dewormingInternal.length === 0 
+        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin registros internos.</p>'
+        : `<table class="custom-table">
+            <thead><tr><th>Fecha</th><th>Medicación</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima (Alarma)</th></tr></thead>
+            <tbody>${pet.dewormingInternal.map(d => `<tr><td>${d.date}</td><td>${d.med}</td><td>${d.lot}</td><td>${d.exp}</td><td>${d.price.toFixed(2)} €</td><td>🔔 ${d.next}</td></tr>`).join('')}</tbody>
+          </table>`;
+
+      extContainer.innerHTML = pet.dewormingExternal.length === 0 
+        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin registros externos.</p>'
+        : `<table class="custom-table">
+            <thead><tr><th>Fecha</th><th>Medicación</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima (Alarma)</th></tr></thead>
+            <tbody>${pet.dewormingExternal.map(d => `<tr><td>${d.date}</td><td>${d.med}</td><td>${d.lot}</td><td>${d.exp}</td><td>${d.price.toFixed(2)} €</td><td>🔔 ${d.next}</td></tr>`).join('')}</tbody>
+          </table>`;
+    }
+
+    // =========================================================
+    // SECCIÓN HISTORIAL (PATOLOGÍAS Y VISITAS)
+    // =========================================================
+    function handleAddPathology(e) {
       e.preventDefault();
-      pets[currentPetIndex].pathologies.push({
-        name: document.getElementById('pat-name').value,
-        start: document.getElementById('pat-start').value,
-        end: document.getElementById('pat-end').value,
-        treatment: document.getElementById('pat-treatment').value
+      const pet = getActivePet();
+      if (!pet) return;
+
+      pet.pathologies.push({
+        name: document.getElementById('his-pat').value,
+        start: document.getElementById('his-start').value,
+        end: document.getElementById('his-end').value || 'En curso',
+        treatment: document.getElementById('his-treat').value || '-'
       });
-      persistData();
-      refreshClinicalTables();
+      savePetsToStorage();
+      renderHistoryTables();
       e.target.reset();
     }
 
-    function addTreatment(e) {
+    function handleAddVisit(e) {
       e.preventDefault();
-      pets[currentPetIndex].treatments.push({
-        med: document.getElementById('t-med').value,
-        date: document.getElementById('t-date').value,
-        lot: document.getElementById('t-lot').value,
-        exp: document.getElementById('t-exp').value,
-        price: Number(document.getElementById('t-price').value) || 0
-      });
-      persistData();
-      refreshClinicalTables();
-      e.target.reset();
-    }
+      const pet = getActivePet();
+      if (!pet) return;
 
-    function addVisit(e) {
-      e.preventDefault();
-      pets[currentPetIndex].visits.push({
+      pet.visits.push({
         date: document.getElementById('vis-date').value,
         reason: document.getElementById('vis-reason').value,
         price: Number(document.getElementById('vis-price').value) || 0
       });
-      persistData();
-      refreshClinicalTables();
+      savePetsToStorage();
+      renderHistoryTables();
       e.target.reset();
     }
 
-    function addSurgery(e) {
+    function renderHistoryTables() {
+      const pet = getActivePet();
+      if (!pet) return;
+
+      const patContainer = document.getElementById('table-pathologies-container');
+      patContainer.innerHTML = pet.pathologies.length === 0
+        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin patologías registradas.</p>'
+        : `<table class="custom-table">
+            <thead><tr><th>Patología</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Tratamiento</th></tr></thead>
+            <tbody>${pet.pathologies.map(p => `<tr><td><strong>${p.name}</strong></td><td>${p.start}</td><td>${p.end}</td><td>${p.treatment}</td></tr>`).join('')}</tbody>
+          </table>`;
+
+      const visContainer = document.getElementById('table-visits-container');
+      visContainer.innerHTML = pet.visits.length === 0
+        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin visitas registradas.</p>'
+        : `<table class="custom-table">
+            <thead><tr><th>Fecha</th><th>Motivo / Diagnóstico</th><th>Precio (€)</th></tr></thead>
+            <tbody>${pet.visits.map(v => `<tr><td>${v.date}</td><td>${v.reason}</td><td>${v.price.toFixed(2)} €</td></tr>`).join('')}</tbody>
+          </table>`;
+    }
+
+    // =========================================================
+    // SECCIÓN TRATAMIENTOS
+    // =========================================================
+    function handleAddTreatment(e) {
       e.preventDefault();
-      pets[currentPetIndex].surgeries.push({
+      const pet = getActivePet();
+      if (!pet) return;
+
+      pet.treatments.push({
+        med: document.getElementById('treat-med').value,
+        date: document.getElementById('treat-date').value,
+        lot: document.getElementById('treat-lot').value || '-',
+        exp: document.getElementById('treat-exp').value || '-',
+        price: Number(document.getElementById('treat-price').value) || 0
+      });
+      savePetsToStorage();
+      renderTreatmentsTable();
+      e.target.reset();
+    }
+
+    function renderTreatmentsTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-treatments-container');
+      if (!pet || pet.treatments.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin tratamientos registrados.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead><tr><th>Medicamento</th><th>Fecha</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th></tr></thead>
+          <tbody>${pet.treatments.map(t => `<tr><td><strong>${t.med}</strong></td><td>${t.date}</td><td>${t.lot}</td><td>${t.exp}</td><td>${t.price.toFixed(2)} €</td></tr>`).join('')}</tbody>
+        </table>
+      `;
+    }
+
+    // =========================================================
+    // SECCIÓN CIRUGÍAS
+    // =========================================================
+    function handleAddSurgery(e) {
+      e.preventDefault();
+      const pet = getActivePet();
+      if (!pet) return;
+
+      pet.surgeries.push({
         date: document.getElementById('surg-date').value,
         name: document.getElementById('surg-name').value,
         price: Number(document.getElementById('surg-price').value) || 0
       });
-      persistData();
-      refreshClinicalTables();
+      savePetsToStorage();
+      renderSurgeriesTable();
       e.target.reset();
     }
 
-    function addWeight(e) {
+    function renderSurgeriesTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-surgeries-container');
+      if (!pet || pet.surgeries.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin cirugías registradas.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead><tr><th>Fecha</th><th>Cirugía</th><th>Precio (€)</th></tr></thead>
+          <tbody>${pet.surgeries.map(s => `<tr><td>${s.date}</td><td><strong>${s.name}</strong></td><td>${s.price.toFixed(2)} €</td></tr>`).join('')}</tbody>
+        </table>
+      `;
+    }
+
+    // =========================================================
+    // SECCIÓN CONTROL PESO
+    // =========================================================
+    function handleAddWeight(e) {
       e.preventDefault();
-      pets[currentPetIndex].weights.push({
-        date: document.getElementById('w-date').value,
-        value: document.getElementById('w-val').value
+      const pet = getActivePet();
+      if (!pet) return;
+
+      pet.weights.push({
+        date: document.getElementById('weight-date').value,
+        value: document.getElementById('weight-val').value
       });
-      persistData();
-      refreshClinicalTables();
-      renderPetsGrid();
+      savePetsToStorage();
+      renderWeightsTable();
+      renderHomePetsGrid();
+      populateCardData();
       e.target.reset();
     }
 
-    // CARNÉ MASCOTA Y EXPORTACIÓN
-    function openCardViewCurrent() {
-      const pet = pets[currentPetIndex];
-      document.getElementById('card-view-name').innerText = pet.name.toUpperCase();
-      document.getElementById('card-view-species').innerText = pet.species;
-      document.getElementById('card-view-color').innerText = pet.color || '-';
-      document.getElementById('card-view-birth').innerText = pet.birth;
-      document.getElementById('card-view-chip').innerText = pet.chip || 'Sin chip';
+    function renderWeightsTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-weights-container');
+      if (!pet || pet.weights.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin registros de peso.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead><tr><th>Fecha</th><th>Peso (kg)</th></tr></thead>
+          <tbody>${pet.weights.map(w => `<tr><td>${w.date}</td><td><strong>${w.value} kg</strong></td></tr>`).join('')}</tbody>
+        </table>
+      `;
+    }
+
+    // =========================================================
+    // CARNÉ MASCOTA (CARTILLA ESTILO GAFETE)
+    // =========================================================
+    function populateCardData() {
+      const pet = getActivePet();
+      if (!pet) return;
+
+      document.getElementById('card-name').innerText = pet.name.toUpperCase();
+      document.getElementById('card-sex').innerText = pet.gender;
+      document.getElementById('card-species').innerText = pet.species;
+      document.getElementById('card-color').innerText = pet.color || '-';
+      document.getElementById('card-race').innerText = pet.race || '-';
+      document.getElementById('card-birth').innerText = pet.birth;
+      document.getElementById('card-chip').innerText = pet.chip || 'Sin chip';
 
       const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
-      document.getElementById('card-view-weight').innerText = `${lastWeight} kg`;
+      document.getElementById('card-weight').innerText = `${lastWeight} kg`;
 
-      const lastVaccine = pet.vaccines && pet.vaccines.length ? pet.vaccines[pet.vaccines.length - 1].name : 'Ninguna';
-      document.getElementById('card-view-vaccine').innerText = lastVaccine;
+      document.getElementById('card-img').src = pet.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23fff"><circle cx="50" cy="50" r="48"/></svg>';
+      document.getElementById('card-validity-date').innerText = new Date().toLocaleDateString();
 
-      const lastInternal = pet.dewormingInternal && pet.dewormingInternal.length ? pet.dewormingInternal[pet.dewormingInternal.length - 1].med : 'Ninguna';
-      document.getElementById('card-view-internal').innerText = lastInternal;
+      // Rellenar las dos vacunas más recientes según el formato del PDF
+      const vacListContainer = document.getElementById('card-vaccines-list');
+      const lastTwoVaccines = (pet.vaccines || []).slice(-2);
+      if (lastTwoVaccines.length === 0) {
+        vacListContainer.innerHTML = '<p style="font-size:0.75rem; color:#777;">Sin vacunas registradas</p>';
+      } else {
+        vacListContainer.innerHTML = lastTwoVaccines.map(v => `
+          <div style="display:flex; justify-content:space-between; margin-bottom:0.15rem;">
+            <span><b>Vacuna:</b> ${v.name}</span>
+            <span><b>Fecha:</b> ${v.date}</span>
+            <span><b>Lote:</b> ${v.lot}</span>
+          </div>
+        `).join('');
+      }
 
-      const lastExternal = pet.dewormingExternal && pet.dewormingExternal.length ? pet.dewormingExternal[pet.dewormingExternal.length - 1].med : 'Ninguna';
-      document.getElementById('card-view-external').innerText = lastExternal;
+      // Desparasitaciones recientes
+      const lastInt = (pet.dewormingInternal || []).slice(-1)[0];
+      const lastExt = (pet.dewormingExternal || []).slice(-1)[0];
 
-      document.getElementById('card-view-img').src = pet.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23ccc"><circle cx="50" cy="50" r="50"/></svg>';
-      document.getElementById('card-view-date').innerText = new Date().toLocaleDateString();
-
-      document.getElementById('modal-card').classList.add('active');
+      document.getElementById('card-dew-int').innerText = lastInt ? lastInt.med : 'Ninguna';
+      document.getElementById('card-dew-int-date').innerText = lastInt ? lastInt.date : '-';
+      document.getElementById('card-dew-ext').innerText = lastExt ? lastExt.med : 'Ninguna';
+      document.getElementById('card-dew-ext-date').innerText = lastExt ? lastExt.date : '-';
     }
 
     function exportCardJPG() {
-      const card = document.getElementById('card-preview');
-      html2canvas(card).then(canvas => {
+      const node = document.getElementById('exportable-card-zone');
+      html2canvas(node, { scale: 2 }).then(canvas => {
         const link = document.createElement('a');
-        link.download = `Carnet_${document.getElementById('card-view-name').innerText}.jpg`;
+        const pet = getActivePet();
+        link.download = `Cartilla_${pet ? pet.name : 'Mascota'}.jpg`;
         link.href = canvas.toDataURL('image/jpeg');
         link.click();
       });
@@ -1072,113 +1497,131 @@
 
     function exportCardPDF() {
       const { jsPDF } = window.jspdf;
-      const card = document.getElementById('card-preview');
-      html2canvas(card, { scale: 2 }).then(canvas => {
+      const node = document.getElementById('exportable-card-zone');
+      html2canvas(node, { scale: 2 }).then(canvas => {
         const imgData = canvas.toDataURL('image/png');
-        const pdf = new jsPDF('landscape', 'px', [620, 400]);
-        pdf.addImage(imgData, 'PNG', 10, 10, 600, 380);
-        pdf.save(`Carnet_${document.getElementById('card-view-name').innerText}.pdf`);
+        const pdf = new jsPDF('landscape', 'px', [1020, 700]);
+        pdf.addImage(imgData, 'PNG', 10, 10, 1000, 680);
+        const pet = getActivePet();
+        pdf.save(`Cartilla_${pet ? pet.name : 'Mascota'}.pdf`);
       });
     }
 
-    // INFORME EJECUTIVO
-    function openExecutiveReportCurrent() {
-      const pet = pets[currentPetIndex];
-      document.getElementById('rep-chip').innerText = pet.chip || 'S/N';
+    // =========================================================
+    // SECCIÓN GASTOS (DESGLOSE COMPLETO)
+    // =========================================================
+    function renderExpensesBreakdown() {
+      const pet = getActivePet();
+      const container = document.getElementById('expenses-breakdown-zone');
+      if (!pet) return;
 
-      const totalVaccines = pet.vaccines.reduce((acc, v) => acc + Number(v.price || 0), 0);
-      const totalVisits = pet.visits.reduce((acc, v) => acc + Number(v.price || 0), 0);
-      const totalDeworm = [...pet.dewormingInternal, ...pet.dewormingExternal].reduce((acc, d) => acc + Number(d.price || 0), 0);
-      const totalMeds = pet.treatments.reduce((acc, t) => acc + Number(t.price || 0), 0);
-      const totalSurgeries = pet.surgeries.reduce((acc, s) => acc + Number(s.price || 0), 0);
+      const vTotal = (pet.vaccines || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const visTotal = (pet.visits || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const dTotal = [...(pet.dewormingInternal || []), ...(pet.dewormingExternal || [])].reduce((a, b) => a + Number(b.price || 0), 0);
+      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const sTotal = (pet.surgeries || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const totalGeneral = vTotal + visTotal + dTotal + medTotal + sTotal;
 
-      document.getElementById('executive-body').innerHTML = `
-        <h3 style="color:var(--primary); margin-bottom: 0.5rem;">Datos Identificativos</h3>
-        <p><strong>Nombre:</strong> ${pet.name} | <strong>Especie:</strong> ${pet.species} | <strong>Género:</strong> ${pet.gender}</p>
-        <p><strong>Fecha de Nacimiento:</strong> ${pet.birth} | <strong>Color:</strong> ${pet.color || '-'}</p>
-        <p><strong>Esterilizado:</strong> ${pet.sterilized === 'si' ? `Sí (${pet.sterilizedDate || 'Fecha no registrada'})` : 'No'}</p>
-        <p><strong>Centro Veterinario Asignado:</strong> ${pet.clinic || 'No especificado'}</p>
-        <hr style="margin: 1rem 0; border:0; border-top: 1px solid var(--border);">
-
-        <h3 style="color:var(--primary); margin-bottom: 0.5rem;">Resumen de Historial Clínico</h3>
-        <p><strong>Vacunas administradas:</strong> ${pet.vaccines.length}</p>
-        <p><strong>Controles de desparasitación:</strong> ${pet.dewormingInternal.length + pet.dewormingExternal.length}</p>
-        <p><strong>Patologías registradas:</strong> ${pet.pathologies.length}</p>
-        <p><strong>Intervenciones quirúrgicas:</strong> ${pet.surgeries.length}</p>
-        <hr style="margin: 1rem 0; border:0; border-top: 1px solid var(--border);">
-
-        <h3 style="color:var(--primary); margin-bottom: 0.5rem;">Desglose Económico Acumulado</h3>
-        <p>• Vacunaciones: ${totalVaccines.toFixed(2)} €</p>
-        <p>• Visitas veterinarias: ${totalVisits.toFixed(2)} €</p>
-        <p>• Desparasitaciones: ${totalDeworm.toFixed(2)} €</p>
-        <p>• Medicación / Tratamientos: ${totalMeds.toFixed(2)} €</p>
-        <p>• Cirugías: ${totalSurgeries.toFixed(2)} €</p>
-        <p style="font-size:1.05rem; font-weight:bold; color:var(--primary); margin-top:0.5rem;">
-          Gasto Total Acumulado: ${(totalVaccines + totalVisits + totalDeworm + totalMeds + totalSurgeries).toFixed(2)} €
-        </p>
-      `;
-
-      document.getElementById('modal-executive').classList.add('active');
-    }
-
-    // RESUMEN GLOBAL DE GASTOS
-    function calculateExpenses() {
-      let vTotal = 0, visTotal = 0, dTotal = 0, medTotal = 0, sTotal = 0;
-
-      pets.forEach(p => {
-        (p.vaccines || []).forEach(v => vTotal += Number(v.price || 0));
-        (p.visits || []).forEach(vis => visTotal += Number(vis.price || 0));
-        (p.dewormingInternal || []).forEach(d => dTotal += Number(d.price || 0));
-        (p.dewormingExternal || []).forEach(d => dTotal += Number(d.price || 0));
-        (p.treatments || []).forEach(t => medTotal += Number(t.price || 0));
-        (p.surgeries || []).forEach(s => sTotal += Number(s.price || 0));
-      });
-
-      const grandTotal = vTotal + visTotal + dTotal + medTotal + sTotal;
-
-      document.getElementById('expenses-summary').innerHTML = `
-        <div style="line-height: 2.2; font-size: 1rem;">
+      container.innerHTML = `
+        <div style="line-height:2.2; font-size:1rem;">
           <p>💉 <strong>Vacunas:</strong> ${vTotal.toFixed(2)} €</p>
           <p>🩺 <strong>Visitas veterinario:</strong> ${visTotal.toFixed(2)} €</p>
-          <p>🛡️ <strong>Desparasitación (Interna + Externa):</strong> ${dTotal.toFixed(2)} €</p>
+          <p>🛡️ <strong>Desparasitación:</strong> ${dTotal.toFixed(2)} €</p>
           <p>💊 <strong>Medicación:</strong> ${medTotal.toFixed(2)} €</p>
           <p>🩹 <strong>Cirugías:</strong> ${sTotal.toFixed(2)} €</p>
-          <hr style="margin: 1rem 0; border:0; border-top: 1px dashed var(--secondary);">
-          <p style="font-size: 1.25rem; font-weight: bold; color: var(--primary);">
-            TOTAL GENERAL: ${grandTotal.toFixed(2)} €
-          </p>
+          <hr style="border:0; border-top:2px dashed var(--secondary); margin:1rem 0;">
+          <h3 style="color:var(--secondary); font-size:1.3rem;">
+            Total Acumulado: ${totalGeneral.toFixed(2)} €
+          </h3>
         </div>
       `;
     }
 
-    // AJUSTES
+    // =========================================================
+    // INFORMES EJECUTIVOS
+    // =========================================================
+    function generateExecutiveReport() {
+      const pet = getActivePet();
+      if (!pet) return;
+
+      document.getElementById('rep-header-chip').innerText = pet.chip || 'S/N';
+      const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
+
+      const vTotal = (pet.vaccines || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const visTotal = (pet.visits || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const dTotal = [...(pet.dewormingInternal || []), ...(pet.dewormingExternal || [])].reduce((a, b) => a + Number(b.price || 0), 0);
+      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const sTotal = (pet.surgeries || []).reduce((a, b) => a + Number(b.price || 0), 0);
+
+      document.getElementById('report-rendered-body').innerHTML = `
+        <h3 style="color:var(--primary); margin: 1rem 0 0.5rem 0;">1. Ficha de Identificación</h3>
+        <p><strong>Nombre:</strong> ${pet.name} | <strong>Especie:</strong> ${pet.species} | <strong>Género:</strong> ${pet.gender}</p>
+        <p><strong>Color:</strong> ${pet.color || '-'} | <strong>Raza:</strong> ${pet.race || '-'} | <strong>Nacimiento:</strong> ${pet.birth}</p>
+        <p><strong>Esterilizado:</strong> ${pet.sterilized === 'si' ? `Sí (Fecha: ${pet.sterilizationDate || 'No indicada'})` : 'No'}</p>
+        <p><strong>Último Peso Registrado:</strong> ${lastWeight} kg | <strong>Centro Veterinario:</strong> ${pet.clinic || 'No asignado'}</p>
+        
+        <h3 style="color:var(--primary); margin: 1.2rem 0 0.5rem 0;">2. Resumen Clínico</h3>
+        <p>• Total Vacunas administradas: <strong>${pet.vaccines.length}</strong></p>
+        <p>• Desparasitaciones (Internas / Externas): <strong>${pet.dewormingInternal.length} / ${pet.dewormingExternal.length}</strong></p>
+        <p>• Patologías diagnosticadas: <strong>${pet.pathologies.length}</strong></p>
+        <p>• Visitas veterinarias: <strong>${pet.visits.length}</strong></p>
+        <p>• Intervenciones quirúrgicas: <strong>${pet.surgeries.length}</strong></p>
+
+        <h3 style="color:var(--primary); margin: 1.2rem 0 0.5rem 0;">3. Balance Económico</h3>
+        <p>• Vacunas: ${vTotal.toFixed(2)} €</p>
+        <p>• Visitas veterinario: ${visTotal.toFixed(2)} €</p>
+        <p>• Desparasitaciones: ${dTotal.toFixed(2)} €</p>
+        <p>• Medicación: ${medTotal.toFixed(2)} €</p>
+        <p>• Cirugías: ${sTotal.toFixed(2)} €</p>
+        <h4 style="color:var(--secondary); margin-top:0.5rem;">
+          Inversión Total en Salud: ${(vTotal + visTotal + dTotal + medTotal + sTotal).toFixed(2)} €
+        </h4>
+      `;
+
+      document.getElementById('modal-report-overlay').classList.add('active');
+    }
+
+    function closeReportModal() {
+      document.getElementById('modal-report-overlay').classList.remove('active');
+    }
+
+    // =========================================================
+    // AJUSTES, COPIAS DE SEGURIDAD Y PWA
+    // =========================================================
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
     }
 
-    function exportBackup() {
+    function exportBackupData() {
       const blob = new Blob([JSON.stringify(pets, null, 2)], { type: 'application/json' });
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `KontrolVet_CopiaSeguridad_${new Date().toISOString().split('T')[0]}.json`;
+      a.download = `KontrolVet_Backup_${new Date().toISOString().split('T')[0]}.json`;
       a.click();
     }
 
-    function importBackup(e) {
+    function importBackupData(e) {
       const reader = new FileReader();
       reader.onload = function(event) {
         try {
           pets = JSON.parse(event.target.result);
-          persistData();
-          renderPetsGrid();
-          alert('Copia de seguridad restaurada correctamente.');
+          savePetsToStorage();
+          activePetIndex = 0;
+          renderPetSelector();
+          renderHomePetsGrid();
+          refreshActiveSection();
+          alert('Copia de seguridad restaurada con éxito.');
         } catch(err) {
-          alert('Error al leer el archivo JSON.');
+          alert('El archivo seleccionado no tiene el formato JSON válido.');
         }
       };
       reader.readAsText(e.target.files[0]);
+    }
+
+    function handleInstallApp() {
+      alert('KontrolVet está optimizada para ejecutarse localmente. Para instalarla como acceso directo en tu escritorio o dispositivo móvil, pulsa en el menú de tres puntos de tu navegador y selecciona "Instalar KontrolVet" o "Añadir a la pantalla de inicio".');
     }
   </script>
 </body>
