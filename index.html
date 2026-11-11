@@ -6,36 +6,37 @@
   <meta name="theme-color" content="#2B0938">
   <title>KontrolVet - Gestión y Seguimiento Veterinario</title>
   
-  <!-- Iconos dinámicos que se asignarán con el logo oficial al cargar -->
+  <!-- Enlaces dinámicos para el icono de la aplicación (PWA) y pestaña del navegador -->
   <link id="favicon-link" rel="icon" type="image/png" href="">
   <link id="apple-touch-icon-link" rel="apple-touch-icon" href="">
   <link id="manifest-link" rel="manifest" href="">
 
-  <!-- Librerías externas para exportar la cartilla a PDF y JPG -->
+  <!-- Librerías externas para generar descargas en formato JPG y PDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
 
   <style>
     /* =========================================================
-       1. VARIABLES DE COLOR (PALETA OFICIAL DEL LOGO)
+       1. VARIABLES DE COLOR (PALETA OFICIAL DEL LOGOTIPO)
        ========================================================= */
     :root {
       --primary: #2B0938;          /* Morado oscuro de bordes y textos del logo */
       --primary-accent: #7E57C2;   /* Lila de detalles */
-      --secondary: #D81B60;        /* Fucsia/Magenta de acento */
+      --secondary: #D81B60;        /* Fucsia/Magenta principal */
       --pink-logo: #F4B8E4;        /* Rosa pastel del fondo del logo */
       --cream-logo: #FFF7D6;       /* Amarillo crema del círculo del logo */
       --blue-logo: #B8C4F8;        /* Azul lavanda del tejado y puerta del logo */
-      --bg: #FDF4FA;               /* Fondo principal suave */
-      --surface: #FFFFFF;          /* Blanco para tarjetas */
-      --text: #2B0938;             /* Texto principal */
-      --text-muted: #765885;       /* Texto secundario */
-      --border: #EBC6DF;           /* Bordes */
+      --bg: #FDF4FA;               /* Fondo general de la aplicación */
+      --surface: #FFFFFF;          /* Blanco para tarjetas y formularios */
+      --text: #2B0938;             /* Color de texto principal */
+      --text-muted: #765885;       /* Color de texto secundario */
+      --border: #EBC6DF;           /* Color de bordes suaves */
       --success: #2E7D32;
       --warning: #EF6C00;
       --danger: #C62828;
     }
 
+    /* Variables automáticas cuando se activa el Modo Oscuro */
     [data-theme="dark"] {
       --primary: #F4B8E4;
       --primary-accent: #B39DDB;
@@ -67,7 +68,7 @@
     }
 
     /* =========================================================
-       2. MENÚ LATERAL DESPLEGABLE (SIDEBAR)
+       2. MENÚ LATERAL DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
        ========================================================= */
     #sidebar {
       width: 290px;
@@ -98,6 +99,7 @@
       background: var(--pink-logo);
     }
 
+    /* Animación suave para el logotipo en pantalla */
     .brand-logo-svg {
       width: 54px;
       height: 54px;
@@ -163,24 +165,38 @@
       flex-direction: column;
       min-height: 100vh;
       transition: margin-left 0.3s ease;
+      width: 100%;
     }
 
     #main-wrapper.expanded {
       margin-left: 0;
     }
 
+    /* En pantallas de móvil, el menú empieza oculto para dejar espacio */
+    @media (max-width: 768px) {
+      #sidebar {
+        transform: translateX(-100%);
+      }
+      #sidebar.mobile-open {
+        transform: translateX(0);
+      }
+      #main-wrapper {
+        margin-left: 0;
+      }
+    }
+
     .top-navbar {
-      height: 66px;
+      min-height: 66px;
       background: var(--surface);
       border-bottom: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 0 1.5rem;
+      padding: 0.5rem 1.2rem;
       position: sticky;
       top: 0;
       z-index: 90;
-      gap: 1rem;
+      gap: 0.8rem;
       flex-wrap: wrap;
     }
 
@@ -197,7 +213,7 @@
     .current-pet-selector {
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
     }
 
     .current-pet-selector select {
@@ -222,11 +238,11 @@
     }
 
     .content-area {
-      padding: 2rem;
+      padding: 1.5rem;
       flex: 1;
     }
 
-    /* BOTONES */
+    /* ESTILOS DE BOTONES */
     .btn {
       padding: 0.6rem 1.15rem;
       border-radius: 8px;
@@ -310,7 +326,7 @@
       background: var(--surface);
       border-radius: 14px;
       border: 1px solid var(--border);
-      padding: 1.8rem;
+      padding: 1.5rem;
       margin-bottom: 2rem;
       box-shadow: 0 4px 14px rgba(43, 9, 56, 0.04);
     }
@@ -367,7 +383,7 @@
       margin-bottom: 0;
     }
 
-    /* TABLAS */
+    /* TABLAS RESPONSIVAS */
     .table-responsive {
       overflow-x: auto;
     }
@@ -393,7 +409,7 @@
     }
 
     /* =========================================================
-       4. ESTILO DEL CARNÉ MASCOTA (CARTILLA OFICIAL)
+       4. ESTILO DEL CARNÉ MASCOTA (CARTILLA SANITARIA)
        ========================================================= */
     .cartilla-container {
       display: flex;
@@ -406,6 +422,7 @@
     /* Cara Frontal */
     .cartilla-front {
       width: 490px;
+      max-width: 100%;
       min-height: 670px;
       background: linear-gradient(135deg, #7E57C2 0%, #D81B60 100%);
       border-radius: 20px;
@@ -495,6 +512,7 @@
     /* Cara Posterior */
     .cartilla-back {
       width: 490px;
+      max-width: 100%;
       min-height: 670px;
       background: linear-gradient(135deg, #FCE4EC 0%, #F4B8E4 100%);
       border-radius: 20px;
@@ -555,7 +573,7 @@
       border: 1px solid var(--border);
     }
 
-    /* REGLAS DE IMPRESIÓN (LOGO ESTÁTICO) */
+    /* REGLAS DE IMPRESIÓN (EL LOGOTIPO QUEDA ESTÁTICO) */
     @media print {
       body * { visibility: hidden; }
       #printable-report, #printable-report * { visibility: visible; }
@@ -577,24 +595,15 @@
        PLANTILLA OCULTA DEL LOGOTIPO OFICIAL (FIEL A LOGO.JPG)
        ========================================================= -->
   <svg id="master-logo-svg" style="display:none;" viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">
-    <!-- Fondo cuadrado rosa pastel de Logo.jpg -->
     <rect width="200" height="200" rx="28" fill="#F4B8E4"/>
-    <!-- Círculo grande crema con borde morado oscuro -->
     <circle cx="100" cy="103" r="78" fill="#FFF7D6" stroke="#2B0938" stroke-width="5.5"/>
-    <!-- Fachada inferior rosa de la clínica -->
     <rect x="54" y="96" width="92" height="66" fill="#F4B8E4" stroke="#2B0938" stroke-width="5.5" stroke-linejoin="round"/>
-    <!-- Puerta arqueada azul lavanda a la izquierda -->
     <path d="M 67 162 L 67 132 A 14 14 0 0 1 95 132 L 95 162 Z" fill="#B8C4F8" stroke="#2B0938" stroke-width="5"/>
-    <!-- Pomo de la puerta -->
     <circle cx="87" cy="147" r="3" fill="#2B0938"/>
-    <!-- Ventana cuadrada azul lavanda a la derecha -->
     <rect x="109" y="122" width="25" height="24" fill="#B8C4F8" stroke="#2B0938" stroke-width="5" stroke-linejoin="round"/>
-    <!-- Brillos diagonales del cristal de la ventana -->
     <line x1="115" y1="138" x2="122" y2="128" stroke="#2B0938" stroke-width="3.5" stroke-linecap="round"/>
     <line x1="123" y1="140" x2="128" y2="133" stroke="#2B0938" stroke-width="3.5" stroke-linecap="round"/>
-    <!-- Tejado trapezoidal azul lavanda -->
     <polygon points="44,82 58,54 142,54 156,82" fill="#B8C4F8" stroke="#2B0938" stroke-width="5.5" stroke-linejoin="round"/>
-    <!-- 7 Ondas del toldo (alternando rosa y azul lavanda) -->
     <path d="M 44 82 L 44 93 A 8 8 0 0 0 60 93 L 60 82 Z" fill="#F4B8E4" stroke="#2B0938" stroke-width="4.5"/>
     <path d="M 60 82 L 60 93 A 8 8 0 0 0 76 93 L 76 82 Z" fill="#B8C4F8" stroke="#2B0938" stroke-width="4.5"/>
     <path d="M 76 82 L 76 93 A 8 8 0 0 0 92 93 L 92 82 Z" fill="#F4B8E4" stroke="#2B0938" stroke-width="4.5"/>
@@ -602,14 +611,11 @@
     <path d="M 108 82 L 108 93 A 8 8 0 0 0 124 93 L 124 82 Z" fill="#F4B8E4" stroke="#2B0938" stroke-width="4.5"/>
     <path d="M 124 82 L 124 93 A 8 8 0 0 0 140 93 L 140 82 Z" fill="#B8C4F8" stroke="#2B0938" stroke-width="4.5"/>
     <path d="M 140 82 L 140 93 A 8 8 0 0 0 156 93 L 156 82 Z" fill="#F4B8E4" stroke="#2B0938" stroke-width="4.5"/>
-    <!-- Círculo superior del cartel con la huella -->
     <circle cx="100" cy="49" r="24" fill="#F4B8E4" stroke="#2B0938" stroke-width="5.5"/>
-    <!-- Almohadilla principal y 3 deditos con relleno claro y borde oscuro -->
     <path d="M 91 58 C 91 51, 109 51, 109 58 C 111 64, 104 66, 100 64 C 96 66, 89 64, 91 58 Z" fill="#FFF7D6" stroke="#2B0938" stroke-width="4"/>
     <ellipse cx="87" cy="45" rx="3.8" ry="5.5" transform="rotate(-20 87 45)" fill="#FFF7D6" stroke="#2B0938" stroke-width="4"/>
     <ellipse cx="100" cy="41" rx="3.8" ry="5.8" fill="#FFF7D6" stroke="#2B0938" stroke-width="4"/>
     <ellipse cx="113" cy="45" rx="3.8" ry="5.5" transform="rotate(20 113 45)" fill="#FFF7D6" stroke="#2B0938" stroke-width="4"/>
-    <!-- Línea base del suelo -->
     <line x1="34" y1="162" x2="166" y2="162" stroke="#2B0938" stroke-width="6" stroke-linecap="round"/>
   </svg>
 
@@ -808,7 +814,7 @@
             <!-- Sub-fila condicional si marca Corte en oreja = Sí -->
             <div class="form-row" id="group-ear-sides" style="display: none; background: rgba(216,27,96,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
               <div class="form-group" style="margin-bottom:0;">
-                <label>Lado del corte en oreja (puedes marcar Derecha / Izquierda):</label>
+                <label>Lado del corte en oreja (selecciona Derecha / Izquierda):</label>
                 <div class="checkbox-inline-group">
                   <label><input type="checkbox" id="reg-ear-right" value="Derecha"> Derecha</label>
                   <label><input type="checkbox" id="reg-ear-left" value="Izquierda"> Izquierda</label>
@@ -841,7 +847,7 @@
             <!-- Fila 5: Subir foto -->
             <div class="form-row">
               <div class="form-group">
-                <label>Subir foto (Formato JPG/PNG):</label>
+                <label>Subir foto (Formato JPG/PNG - Se optimiza automáticamente):</label>
                 <input type="file" class="form-control" id="reg-photo" accept="image/png, image/jpeg" onchange="encodePhoto(event)">
               </div>
             </div>
@@ -973,7 +979,7 @@
         </div>
       </section>
 
-      <!-- ================= 7. LABORATORIO (NUEVA PESTAÑA CON DOCUMENTOS) ================= -->
+      <!-- ================= 7. LABORATORIO (CON DOCUMENTOS) ================= -->
       <section id="view-laboratory" style="display: none;">
         <div class="section-panel">
           <h2>🔬 Laboratorio: <span class="active-pet-name"></span></h2>
@@ -1177,24 +1183,25 @@
           <h2>⚙️ Ajustes y Sincronización en Tiempo Real (GitHub)</h2>
           
           <div style="background: rgba(216,27,96,0.06); padding: 1.2rem; border-radius: 12px; border: 1px solid var(--border); margin-bottom: 1.5rem;">
-            <h3 style="color: var(--primary); margin-bottom: 0.6rem;">☁️ Sincronización entre dispositivos con Token de GitHub</h3>
+            <h3 style="color: var(--primary); margin-bottom: 0.6rem;">☁️ Sincronización Automática con Token de GitHub</h3>
             <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
-              Introduce tu <strong>Personal Access Token (PAT)</strong> de GitHub (con permiso <code>gist</code>). Al guardar o editar cualquier dato en la app, se actualizará automáticamente en la nube para todos tus dispositivos.
+              Introduce únicamente tu <strong>Personal Access Token (Classic)</strong> de GitHub (con permiso <code>gist</code>). La aplicación detectará o creará automáticamente tu archivo en la nube sin errores de recorte de datos.
             </p>
             <div class="form-row">
               <div class="form-group">
                 <label>Token de GitHub (ghp_...):</label>
-                <input type="password" class="form-control" id="gh-token" placeholder="Pega aquí tu token de GitHub">
+                <input type="password" class="form-control" id="gh-token" placeholder="Pega aquí tu token ghp_...">
               </div>
               <div class="form-group">
-                <label>ID de Base de Datos (Gist ID - se rellena solo al crear):</label>
-                <input type="text" class="form-control" id="gh-gist-id" placeholder="Dejar vacío la primera vez">
+                <label>ID de Base de Datos (Automático - No necesitas rellenarlo):</label>
+                <input type="text" class="form-control" id="gh-gist-id" placeholder="Se detectará automáticamente" readonly style="opacity: 0.75; cursor: not-allowed;">
               </div>
             </div>
             <div style="display:flex; gap:0.6rem; flex-wrap:wrap;">
               <button class="btn btn-primary" onclick="saveGitHubConfig()">💾 Guardar Token y Conectar</button>
               <button class="btn btn-secondary" onclick="pushToGitHub(true)">⬆️ Subir Datos a GitHub</button>
               <button class="btn btn-outline" onclick="pullFromGitHub(true)">⬇️ Descargar Datos de GitHub</button>
+              <button class="btn btn-danger btn-sm" onclick="resetGitHubConnection()" style="margin-left:auto;">🔌 Desvincular Token</button>
             </div>
           </div>
 
@@ -1252,17 +1259,22 @@
   </div>
 
   <!-- =========================================================
-       LÓGICA JAVASCRIPT PASO A PASO
+       LÓGICA JAVASCRIPT COMPLETA Y DOCUMENTADA PASO A PASO
        ========================================================= -->
   <script>
-    // 1. BASE DE DATOS LOCAL Y ESTADO DE EDICIÓN
+    // PARÁMETROS CONFIGURABLES DE LA APLICACIÓN
+    const PHOTO_MAX_SIZE = 500;     // Tamaño máximo en píxeles (ancho o alto) para comprimir fotos
+    const PHOTO_QUALITY = 0.75;     // Calidad JPEG de las fotos (0.75 = 75%, equilibrio ideal)
+    const SYNC_INTERVAL_MS = 30000; // Intervalo de sincronización automática (30.000 ms = 30 seg)
+
+    // 1. ESTADO DE LA BASE DE DATOS LOCAL
     let db = JSON.parse(localStorage.getItem('kontrolvet_full_db')) || {
       families: [],
       pets: [],
       updatedAt: null
     };
 
-    // Migración automática si había mascotas en el formato anterior
+    // Migración automática por si existían mascotas de la primera versión
     const oldPets = JSON.parse(localStorage.getItem('kontrolvet_pets'));
     if (oldPets && oldPets.length > 0 && db.pets.length === 0) {
       db.pets = oldPets;
@@ -1274,31 +1286,32 @@
     let editingState = { type: null, index: null };
     let deferredInstallPrompt = null;
 
-    // Configuración de GitHub
+    // Configuración de sincronización con GitHub
     let ghConfig = JSON.parse(localStorage.getItem('kontrolvet_gh_config')) || {
       token: '',
       gistId: ''
     };
 
-    // 2. INICIALIZACIÓN AL CARGAR LA PÁGINA
-    window.addEventListener('DOMContentLoaded', () => {
+    // 2. INICIALIZACIÓN AL ABRIR LA APLICACIÓN
+    window.addEventListener('DOMContentLoaded', async () => {
       injectLogoIntoAllSVGs();
       setupDynamicPWAWithOfficialLogo();
       loadGitHubConfigUI();
+      await optimizeExistingPhotosInDB();
       renderFamilySelectorInPetForm();
       renderPetSelector();
       renderHomePetsGrid();
       renderFamiliesTable();
       refreshActiveSection();
 
-      // Si hay token de GitHub configurado, sincroniza al abrir y cada 30 segundos
-      if (ghConfig.token && ghConfig.gistId) {
+      // Si hay Token configurado, descarga novedades al abrir y cada 30 segundos
+      if (ghConfig.token) {
         pullFromGitHub(false);
-        setInterval(() => pullFromGitHub(false), 30000);
+        setInterval(() => pullFromGitHub(false), SYNC_INTERVAL_MS);
       }
     });
 
-    // Copia el contenido del logo maestro en todos los contenedores SVG del documento
+    // Inserta el dibujo del logo oficial en todas las etiquetas <svg class="brand-logo-svg">
     function injectLogoIntoAllSVGs() {
       const masterContent = document.getElementById('master-logo-svg').innerHTML;
       document.querySelectorAll('.brand-logo-svg').forEach(svg => {
@@ -1306,7 +1319,7 @@
       });
     }
 
-    // Genera un icono PNG real desde el SVG del logo y crea el Web App Manifest para instalar en móviles/PC
+    // Genera un icono PNG desde el SVG del logo y configura el manifiesto de instalación PWA
     function setupDynamicPWAWithOfficialLogo() {
       const svgElement = document.getElementById('master-logo-svg');
       const svgString = new XMLSerializer().serializeToString(svgElement);
@@ -1349,19 +1362,30 @@
       deferredInstallPrompt = e;
     });
 
-    // GUARDADO GENERAL Y DISPARO DE SINCRONIZACIÓN
-    function saveDatabase() {
+    // Guardado en almacenamiento local y subida automática a GitHub
+    async function saveDatabase() {
       db.updatedAt = new Date().toISOString();
-      localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
+      await optimizeExistingPhotosInDB();
+      try {
+        localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
+      } catch (e) {
+        console.warn('Almacenamiento local ajustado:', e);
+      }
       if (ghConfig.token) {
         pushToGitHub(false);
       }
     }
 
-    // 3. NAVEGACIÓN Y SELECTOR DE MASCOTA
+    // 3. NAVEGACIÓN ENTRE SECCIONES Y MENÚ DESPLEGABLE
     function toggleSidebar() {
-      document.getElementById('sidebar').classList.toggle('collapsed');
-      document.getElementById('main-wrapper').classList.toggle('expanded');
+      const sidebar = document.getElementById('sidebar');
+      const wrapper = document.getElementById('main-wrapper');
+      if (window.innerWidth <= 768) {
+        sidebar.classList.toggle('mobile-open');
+      } else {
+        sidebar.classList.toggle('collapsed');
+        wrapper.classList.toggle('expanded');
+      }
     }
 
     function showSection(sectionId) {
@@ -1380,6 +1404,11 @@
       const activeBtn = Array.from(document.querySelectorAll('.menu-item')).find(b => b.getAttribute('onclick')?.includes(sectionId));
       if (activeBtn) activeBtn.classList.add('active');
 
+      // En pantallas móviles, cerrar el menú lateral automáticamente tras elegir una opción
+      if (window.innerWidth <= 768) {
+        document.getElementById('sidebar').classList.remove('mobile-open');
+      }
+
       refreshActiveSection();
     }
 
@@ -1387,7 +1416,6 @@
       if (db.pets.length === 0) return null;
       if (activePetIndex >= db.pets.length) activePetIndex = 0;
       const pet = db.pets[activePetIndex];
-      // Asegurar que todos los arrays existen
       pet.vaccines = pet.vaccines || [];
       pet.dewormingInternal = pet.dewormingInternal || [];
       pet.dewormingExternal = pet.dewormingExternal || [];
@@ -1441,18 +1469,116 @@
       renderExpensesBreakdown();
     }
 
-    // 4. GESTIÓN DE DOCUMENTOS ADJUNTOS (HISTORIAL, LABORATORIO, TRATAMIENTOS)
+    // =========================================================
+    // 4. COMPRESOR AUTOMÁTICO DE FOTOS Y ADJUNTOS (BLOQUE A)
+    // =========================================================
+
+    /**
+     * Comprime cualquier fotografía subida al formulario de mascota para que sea ligera
+     * y se sincronice al instante entre ordenador y teléfono móvil.
+     */
+    function encodePhoto(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const img = new Image();
+        img.onload = function() {
+          let width = img.width;
+          let height = img.height;
+
+          if (width > height) {
+            if (width > PHOTO_MAX_SIZE) {
+              height = Math.round(height * (PHOTO_MAX_SIZE / width));
+              width = PHOTO_MAX_SIZE;
+            }
+          } else {
+            if (height > PHOTO_MAX_SIZE) {
+              width = Math.round(width * (PHOTO_MAX_SIZE / height));
+              height = PHOTO_MAX_SIZE;
+            }
+          }
+
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+
+          tempPhotoBase64 = canvas.toDataURL('image/jpeg', PHOTO_QUALITY);
+        };
+        img.src = e.target.result;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    /**
+     * Revisa si en la base de datos hay fotos antiguas sin comprimir (>120 KB)
+     * y las reduce automáticamente para evitar que GitHub recorte el archivo JSON.
+     */
+    async function optimizeExistingPhotosInDB() {
+      if (!db || !db.pets) return;
+      let modified = false;
+
+      for (let pet of db.pets) {
+        if (pet.photo && pet.photo.length > 120000) {
+          pet.photo = await new Promise((resolve) => {
+            const img = new Image();
+            img.onload = () => {
+              const canvas = document.createElement('canvas');
+              let w = img.width, h = img.height;
+              if (w > h && w > PHOTO_MAX_SIZE) { h = Math.round(h * (PHOTO_MAX_SIZE / w)); w = PHOTO_MAX_SIZE; }
+              else if (h >= w && h > PHOTO_MAX_SIZE) { w = Math.round(w * (PHOTO_MAX_SIZE / h)); h = PHOTO_MAX_SIZE; }
+              canvas.width = w;
+              canvas.height = h;
+              canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+              resolve(canvas.toDataURL('image/jpeg', PHOTO_QUALITY));
+            };
+            img.onerror = () => resolve(pet.photo);
+            img.src = pet.photo;
+          });
+          modified = true;
+        }
+      }
+
+      if (modified) {
+        try {
+          localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
+        } catch (e) {}
+      }
+    }
+
+    // Codificación de documentos adjuntos para Historial, Laboratorio y Tratamientos
     function encodeAttachment(event, category) {
       const file = event.target.files[0];
       if (!file) return;
-      const reader = new FileReader();
-      reader.onload = e => {
-        tempAttachments[category] = {
-          name: file.name,
-          data: e.target.result
+
+      // Si el adjunto es una imagen, también la optimizamos para ahorrar espacio
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const max = 800;
+            let w = img.width, h = img.height;
+            if (w > h && w > max) { h = Math.round(h * (max / w)); w = max; }
+            else if (h >= w && h > max) { w = Math.round(w * (max / h)); h = max; }
+            canvas.width = w; canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            tempAttachments[category] = { name: file.name, data: canvas.toDataURL('image/jpeg', 0.8) };
+          };
+          img.src = e.target.result;
         };
-      };
-      reader.readAsDataURL(file);
+        reader.readAsDataURL(file);
+      } else {
+        const reader = new FileReader();
+        reader.onload = e => {
+          tempAttachments[category] = { name: file.name, data: e.target.result };
+        };
+        reader.readAsDataURL(file);
+      }
     }
 
     function renderDocLink(docObj) {
@@ -1553,7 +1679,7 @@
       });
     }
 
-    // 6. REGISTRO Y EDICIÓN DE MASCOTAS (CAMPOS NUEVOS Y LÓGICA CONDICIONAL)
+    // 6. REGISTRO Y EDICIÓN DE MASCOTAS
     function toggleSterilizationFields() {
       const isSterilized = document.getElementById('reg-sterilized').value === 'si';
       document.getElementById('group-sterilization-date').style.display = isSterilized ? 'block' : 'none';
@@ -1569,15 +1695,6 @@
     function toggleEarCutSides() {
       const hasEarCut = document.getElementById('reg-ear-cut').value === 'si';
       document.getElementById('group-ear-sides').style.display = hasEarCut ? 'grid' : 'none';
-    }
-
-    function encodePhoto(event) {
-      const file = event.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => tempPhotoBase64 = e.target.result;
-        reader.readAsDataURL(file);
-      }
     }
 
     function openNewPetForm() {
@@ -1622,7 +1739,6 @@
         surgeries: isEditing ? existingPet.surgeries : []
       };
 
-      // Si al crear o editar se cambió el peso en el formulario, actualizar o añadir al historial de peso
       if (isEditing && weightVal) {
         const lastW = petObj.weights.length ? petObj.weights[petObj.weights.length - 1].value : null;
         if (String(lastW) !== String(weightVal)) {
@@ -1989,7 +2105,7 @@
           </table>`;
     }
 
-    // 10. CRUD DE LABORATORIO (NUEVO APARTADO CON DOCUMENTOS)
+    // 10. CRUD DE LABORATORIO (CON DOCUMENTOS)
     function handleSaveLab(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2218,7 +2334,7 @@
       document.getElementById('btn-cancel-weight').style.display = 'inline-flex';
     }
 
-    // ELIMINACIÓN GENÉRICA CON CONFIRMACIÓN PREVIA Y CANCELAR EDICIÓN
+    // ELIMINACIÓN CON CONFIRMACIÓN Y CANCELACIÓN DE EDICIÓN
     function deleteRecord(arrayName, index) {
       if (!confirm('¿Estás segura de que deseas eliminar este registro? Esta acción no se puede deshacer.')) return;
       const pet = getActivePet();
@@ -2281,7 +2397,7 @@
       }
     }
 
-    // 13. AUTOCOMPLETADO DEL CARNÉ MASCOTA (CARTILLA)
+    // 13. AUTOCOMPLETADO Y EXPORTACIÓN DEL CARNÉ MASCOTA (CARTILLA)
     function populateCardData() {
       const pet = getActivePet();
       if (!pet) return;
@@ -2300,7 +2416,6 @@
       const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
       document.getElementById('card-weight').innerText = `${lastWeight} kg`;
 
-      // Resumen esterilización y corte de oreja
       let sterText = pet.sterilized === 'si' ? `Sí (${pet.sterilizationDate || 'Sin fecha'})` : 'No';
       if (pet.sterilized === 'si' && pet.earCut === 'si') {
         let sides = [];
@@ -2313,7 +2428,6 @@
       document.getElementById('card-img').src = pet.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23fff"><circle cx="50" cy="50" r="48"/></svg>';
       document.getElementById('card-validity-date').innerText = new Date().toLocaleDateString();
 
-      // Últimas 2 vacunas
       const vacListContainer = document.getElementById('card-vaccines-list');
       const lastTwoVaccines = (pet.vaccines || []).slice(-2);
       if (lastTwoVaccines.length === 0) {
@@ -2328,7 +2442,6 @@
         `).join('');
       }
 
-      // Desparasitaciones recientes
       const lastInt = (pet.dewormingInternal || []).slice(-1)[0];
       const lastExt = (pet.dewormingExternal || []).slice(-1)[0];
       document.getElementById('card-dew-int').innerText = lastInt ? lastInt.med : 'Ninguna';
@@ -2336,7 +2449,6 @@
       document.getElementById('card-dew-ext').innerText = lastExt ? lastExt.med : 'Ninguna';
       document.getElementById('card-dew-ext-date').innerText = lastExt ? lastExt.date : '-';
 
-      // Datos de Familia / Propietaria vinculada (o la primera registrada por defecto)
       const fam = db.families.find(f => f.id === pet.familyId) || db.families[0] || {};
       document.getElementById('card-owner-name').innerText = fam.owner || '-';
       document.getElementById('card-owner-nif').innerText = fam.nif || '-';
@@ -2440,8 +2552,18 @@
       document.getElementById('modal-report-overlay').classList.remove('active');
     }
 
-    // 15. SINCRONIZACIÓN EN TIEMPO REAL CON TOKEN DE GITHUB (GITHUB GISTS API)
+    // =========================================================
+    // 15. SINCRONIZACIÓN CON GITHUB SIN RECORTES (BLOQUE B)
+    // =========================================================
+
+    /**
+     * Carga la configuración de GitHub en pantalla y limpia IDs inválidos (como nombres de usuario).
+     */
     function loadGitHubConfigUI() {
+      if (ghConfig.gistId && !/^[a-f0-9]{20,}$/i.test(ghConfig.gistId)) {
+        ghConfig.gistId = '';
+        localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+      }
       document.getElementById('gh-token').value = ghConfig.token || '';
       document.getElementById('gh-gist-id').value = ghConfig.gistId || '';
       updateSyncBadge(ghConfig.token ? '☁️ GitHub Conectado' : '💾 Modo Local');
@@ -2452,32 +2574,91 @@
       if (badge) badge.innerText = text;
     }
 
-    async function saveGitHubConfig() {
-      ghConfig.token = document.getElementById('gh-token').value.trim();
-      ghConfig.gistId = document.getElementById('gh-gist-id').value.trim();
+    function resetGitHubConnection() {
+      if (!confirm('¿Deseas desvincular el Token de GitHub en este dispositivo? (Tus datos locales se conservarán).')) return;
+      ghConfig = { token: '', gistId: '' };
       localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+      loadGitHubConfigUI();
+      alert('Conexión con GitHub desvinculada.');
+    }
+
+    /**
+     * Busca automáticamente en tu cuenta de GitHub si ya existe el archivo "kontrolvet_db.json".
+     */
+    async function findExistingDatabaseGist(token) {
+      const response = await fetch('https://api.github.com/gists?per_page=100', {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github+json'
+        },
+        cache: 'no-store'
+      });
+
+      if (!response.ok) {
+        if (response.status === 401) throw new Error('Token inválido o caducado. Revisa tu Token ghp_...');
+        if (response.status === 403) throw new Error('Permiso denegado. Asegúrate de marcar la casilla "gist" al crear el Token en GitHub.');
+        throw new Error(`Error al consultar GitHub (Código ${response.status}).`);
+      }
+
+      const gists = await response.json();
+      const found = gists.find(g => g.files && g.files['kontrolvet_db.json']);
+      return found ? found.id : null;
+    }
+
+    /**
+     * Conecta con GitHub usando el Token, detecta el Gist ID automáticamente y sincroniza.
+     */
+    async function saveGitHubConfig() {
+      const tokenInput = document.getElementById('gh-token').value.trim();
+      ghConfig.token = tokenInput;
 
       if (!ghConfig.token) {
+        ghConfig.gistId = '';
+        localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
         updateSyncBadge('💾 Modo Local');
-        alert('Se ha desactivado la sincronización con GitHub (modo local activo).');
+        alert('Modo local activado (sin sincronización en nube).');
         return;
       }
 
-      if (!ghConfig.gistId) {
-        await pushToGitHub(true);
-      } else {
-        await pullFromGitHub(true);
+      updateSyncBadge('⏳ Buscando base de datos...');
+
+      try {
+        const existingId = await findExistingDatabaseGist(ghConfig.token);
+        if (existingId) {
+          ghConfig.gistId = existingId;
+          document.getElementById('gh-gist-id').value = existingId;
+          localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+          await pullFromGitHub(true);
+        } else {
+          ghConfig.gistId = '';
+          document.getElementById('gh-gist-id').value = '';
+          localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+          await pushToGitHub(true);
+        }
+      } catch (err) {
+        updateSyncBadge('⚠️ Error Sync');
+        alert(err.message);
       }
     }
 
+    /**
+     * Sube la base de datos optimizada a GitHub Gists.
+     */
     async function pushToGitHub(showAlert = false) {
       if (!ghConfig.token) return;
-      updateSyncBadge('⏳ Sincronizando...');
+      updateSyncBadge('⏳ Subiendo a la nube...');
 
       try {
+        await optimizeExistingPhotosInDB();
+
+        if (!ghConfig.gistId || !/^[a-f0-9]{20,}$/i.test(ghConfig.gistId)) {
+          const foundId = await findExistingDatabaseGist(ghConfig.token);
+          if (foundId) ghConfig.gistId = foundId;
+        }
+
         const headers = {
-          'Authorization': `token ${ghConfig.token}`,
-          'Accept': 'application/vnd.github.v3+json',
+          'Authorization': `Bearer ${ghConfig.token}`,
+          'Accept': 'application/vnd.github+json',
           'Content-Type': 'application/json'
         };
 
@@ -2491,77 +2672,119 @@
           }
         };
 
-        let response;
-        if (ghConfig.gistId) {
-          response = await fetch(`https://api.github.com/gists/${ghConfig.gistId}`, {
-            method: 'PATCH',
-            headers,
-            body: JSON.stringify(payload)
-          });
-        } else {
-          response = await fetch('https://api.github.com/gists', {
-            method: 'POST',
-            headers,
-            body: JSON.stringify(payload)
-          });
+        const url = ghConfig.gistId 
+          ? `https://api.github.com/gists/${ghConfig.gistId}` 
+          : 'https://api.github.com/gists';
+        const method = ghConfig.gistId ? 'PATCH' : 'POST';
+
+        const response = await fetch(url, {
+          method,
+          headers,
+          body: JSON.stringify(payload)
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al subir los datos a GitHub. Verifica que tu Token tenga permiso "gist".');
         }
 
-        if (!response.ok) throw new Error('Error al conectar con GitHub. Revisa tu Token.');
         const data = await response.json();
-
-        if (!ghConfig.gistId && data.id) {
+        if (data.id) {
           ghConfig.gistId = data.id;
           localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
           document.getElementById('gh-gist-id').value = data.id;
         }
 
         updateSyncBadge('✅ Sincronizado GitHub');
-        if (showAlert) alert('¡Datos sincronizados correctamente en GitHub!');
+        if (showAlert) alert('¡Datos comprimidos y subidos a GitHub correctamente!');
       } catch (err) {
         updateSyncBadge('⚠️ Error Sync');
         if (showAlert) alert(err.message);
       }
     }
 
+    /**
+     * Descarga la base de datos desde GitHub Gists.
+     * Incluye soporte para archivos grandes (fileObj.truncated / raw_url) evitando "Unterminated string in JSON".
+     */
     async function pullFromGitHub(showAlert = false) {
-      if (!ghConfig.token || !ghConfig.gistId) {
-        if (showAlert) alert('Configura primero tu Token de GitHub en la pestaña Ajustes.');
+      if (!ghConfig.token) {
+        if (showAlert) alert('Pega primero tu Token de GitHub en la sección de Ajustes.');
         return;
       }
+
       updateSyncBadge('⏳ Comprobando nube...');
 
       try {
+        if (!ghConfig.gistId || !/^[a-f0-9]{20,}$/i.test(ghConfig.gistId)) {
+          const foundId = await findExistingDatabaseGist(ghConfig.token);
+          if (!foundId) {
+            await pushToGitHub(showAlert);
+            return;
+          }
+          ghConfig.gistId = foundId;
+          const gistInput = document.getElementById('gh-gist-id');
+          if (gistInput) gistInput.value = foundId;
+          localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+        }
+
         const response = await fetch(`https://api.github.com/gists/${ghConfig.gistId}`, {
           headers: {
-            'Authorization': `token ${ghConfig.token}`,
-            'Accept': 'application/vnd.github.v3+json'
-          }
+            'Authorization': `Bearer ${ghConfig.token}`,
+            'Accept': 'application/vnd.github+json'
+          },
+          cache: 'no-store'
         });
 
-        if (!response.ok) throw new Error('No se pudo leer la base de datos de GitHub.');
+        if (!response.ok) {
+          ghConfig.gistId = '';
+          localStorage.setItem('kontrolvet_gh_config', JSON.stringify(ghConfig));
+          throw new Error('No se pudo leer la base de datos de GitHub. Pulsa "Guardar Token y Conectar" para reconectar.');
+        }
+
         const data = await response.json();
-        const fileContent = data.files["kontrolvet_db.json"]?.content;
+        const fileObj = data.files && data.files["kontrolvet_db.json"];
+
+        if (!fileObj) {
+          throw new Error('No se encontró el archivo kontrolvet_db.json en tu Gist.');
+        }
+
+        let fileContent = fileObj.content;
+
+        // Si el archivo supera 1 MB y GitHub lo marca como truncado, descargamos el archivo completo desde raw_url
+        if (fileObj.truncated && fileObj.raw_url) {
+          const rawResponse = await fetch(fileObj.raw_url, { cache: 'no-store' });
+          if (!rawResponse.ok) {
+            throw new Error('No se pudo descargar el archivo completo desde raw_url.');
+          }
+          fileContent = await rawResponse.text();
+        }
 
         if (fileContent) {
           const remoteDb = JSON.parse(fileContent);
           if (!db.updatedAt || (remoteDb.updatedAt && new Date(remoteDb.updatedAt) >= new Date(db.updatedAt)) || showAlert) {
             db = remoteDb;
-            localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
+            await optimizeExistingPhotosInDB();
+            try {
+              localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
+            } catch (quotaErr) {
+              console.warn('Almacenamiento local al límite, optimizando...');
+            }
             renderFamilySelectorInPetForm();
             renderPetSelector();
             renderHomePetsGrid();
             refreshActiveSection();
           }
         }
+
         updateSyncBadge('✅ Sincronizado GitHub');
-        if (showAlert) alert('Datos descargados y actualizados desde GitHub.');
+        if (showAlert) alert('¡Datos sincronizados correctamente desde GitHub!');
       } catch (err) {
         updateSyncBadge('⚠️ Error Sync');
-        if (showAlert) alert(err.message);
+        if (showAlert) alert('Detalle del aviso: ' + err.message);
       }
     }
 
-    // 16. AJUSTES, COPIAS LOCALES E INSTALACIÓN
+    // 16. AJUSTES, COPIAS LOCALES E INSTALACIÓN PWA
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
@@ -2578,7 +2801,7 @@
 
     function importBackupData(e) {
       const reader = new FileReader();
-      reader.onload = function(event) {
+      reader.onload = async function(event) {
         try {
           const imported = JSON.parse(event.target.result);
           if (Array.isArray(imported)) {
@@ -2586,7 +2809,7 @@
           } else {
             db = imported;
           }
-          saveDatabase();
+          await saveDatabase();
           activePetIndex = 0;
           renderFamilySelectorInPetForm();
           renderPetSelector();
@@ -2606,7 +2829,7 @@
         await deferredInstallPrompt.userChoice;
         deferredInstallPrompt = null;
       } else {
-        alert('El icono con el logo oficial de KontrolVet ya está cargado. Para instalar la aplicación en tu dispositivo:\n\n• En el móvil (Chrome/Safari): Pulsa el menú del navegador y elige "Añadir a pantalla de inicio" o "Instalar aplicación".\n• En el ordenador (Chrome/Edge): Pulsa el icono de instalación situado a la derecha de la barra de direcciones.');
+        alert('El icono con el logo oficial de KontrolVet ya está listo. Para instalar la aplicación:\n\n• En el móvil (Chrome/Safari): Pulsa el menú de opciones del navegador y selecciona "Añadir a pantalla de inicio" o "Instalar aplicación".\n• En el ordenador (Chrome/Edge): Pulsa el botón "Abrir en aplicación" o el icono de instalar en la barra de direcciones.');
       }
     }
   </script>
