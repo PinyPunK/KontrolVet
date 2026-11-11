@@ -70,7 +70,7 @@
        2. MENÚ LATERAL DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
        ========================================================= */
     #sidebar {
-      width: 290px;
+      width: 300px;
       background: var(--surface);
       border-right: 1px solid var(--border);
       display: flex;
@@ -83,6 +83,7 @@
       transition: transform 0.3s ease;
       overflow-y: auto;
       box-shadow: 2px 0 12px rgba(43, 9, 56, 0.06);
+      padding-bottom: 1.5rem;
     }
 
     #sidebar.collapsed {
@@ -134,12 +135,12 @@
     .menu-item {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
-      padding: 0.65rem 1.2rem;
+      gap: 0.7rem;
+      padding: 0.6rem 1.2rem;
       background: none;
       border: none;
       color: var(--text);
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
@@ -158,7 +159,7 @@
        ========================================================= */
     #main-wrapper {
       flex: 1;
-      margin-left: 290px;
+      margin-left: 300px;
       display: flex;
       flex-direction: column;
       min-height: 100vh;
@@ -259,7 +260,7 @@
     .btn-warning { background: var(--warning); color: white; }
     .btn-danger { background: var(--danger); color: white; }
     .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
-    .btn-sm { padding: 0.35rem 0.65rem; font-size: 0.78rem; border-radius: 6px; }
+    .btn-sm { padding: 0.32rem 0.62rem; font-size: 0.76rem; border-radius: 6px; }
 
     /* CUADRÍCULA DE MASCOTAS EN PESTAÑA "MASCOTAS" */
     .pets-grid {
@@ -369,6 +370,11 @@
       outline: none;
     }
 
+    textarea.form-control {
+      min-height: 85px;
+      resize: vertical;
+    }
+
     .form-control:focus {
       border-color: var(--secondary);
     }
@@ -400,6 +406,52 @@
       margin-bottom: 1rem;
     }
 
+    /* CAJAS DE AUTOCOMPLETADO PARA ANAMNESIS PRETÉRITA */
+    .auto-box-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .auto-info-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-left: 5px solid var(--secondary);
+      border-radius: 12px;
+      padding: 1.1rem;
+    }
+
+    .auto-info-card h4 {
+      color: var(--primary);
+      margin-bottom: 0.5rem;
+      font-size: 0.95rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* ETIQUETAS DE ESTADO DE EPISODIO (EPICRISIS) */
+    .episode-badge {
+      display: inline-block;
+      padding: 0.25rem 0.65rem;
+      border-radius: 12px;
+      font-size: 0.76rem;
+      font-weight: 800;
+    }
+
+    .episode-open {
+      background: #FFF3E0;
+      color: #E65100;
+      border: 1px solid #FFB74D;
+    }
+
+    .episode-closed {
+      background: #E8F5E9;
+      color: #1B5E20;
+      border: 1px solid #81C784;
+    }
+
     /* TABLAS RESPONSIVAS */
     .table-responsive {
       overflow-x: auto;
@@ -409,7 +461,7 @@
       width: 100%;
       border-collapse: collapse;
       margin-top: 1rem;
-      font-size: 0.84rem;
+      font-size: 0.83rem;
     }
 
     .custom-table th, .custom-table td {
@@ -436,7 +488,6 @@
       margin: 1.5rem 0;
     }
 
-    /* CARA DELANTERA (FRONTAL) */
     .cartilla-front {
       width: 500px;
       max-width: 100%;
@@ -729,7 +780,7 @@
   </svg>
 
   <!-- =========================================================
-       MENÚ DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
+       MENÚ DESPLEGABLE A LA IZQUIERDA (CON EL NUEVO ORDEN CLÍNICO)
        ========================================================= -->
   <aside id="sidebar">
     <div class="sidebar-header">
@@ -740,17 +791,20 @@
     <div class="menu-group-title">Gestión Principal</div>
     <button class="menu-item active" onclick="showSection('view-home')">🐾 MASCOTAS</button>
     <button class="menu-item" onclick="showSection('view-families')">👨‍👩‍👧‍👦 Familias / Propietarias</button>
-    <!-- Nueva pestaña solicitada: Clínicas veterinarias -->
     <button class="menu-item" onclick="showSection('view-clinics')">🏥 Clínicas veterinarias</button>
 
+    <!-- APARTADO SEGUIMIENTO CLÍNICO EN EL ORDEN EXACTO SOLICITADO -->
     <div class="menu-group-title">Seguimiento Clínico</div>
-    <button class="menu-item" onclick="showSection('view-vaccines')">💉 Vacunas</button>
-    <button class="menu-item" onclick="showSection('view-deworming')">🛡️ Control Desparasitación</button>
-    <button class="menu-item" onclick="showSection('view-history')">📋 Historial (Patología y Visitas)</button>
-    <button class="menu-item" onclick="showSection('view-laboratory')">🔬 Laboratorio</button>
-    <button class="menu-item" onclick="showSection('view-treatments')">💊 Tratamientos</button>
-    <button class="menu-item" onclick="showSection('view-surgeries')">🩹 Cirugías</button>
     <button class="menu-item" onclick="showSection('view-weight')">⚖️ Control Peso</button>
+    <button class="menu-item" onclick="showSection('view-deworming')">🛡️ Control Desparasitación</button>
+    <button class="menu-item" onclick="showSection('view-vaccines')">💉 Vacunas</button>
+    <button class="menu-item" onclick="showSection('view-laboratory')">🔬 Laboratorio</button>
+    <button class="menu-item" onclick="showSection('view-comp-tests')">🩻 Pruebas complementarias</button>
+    <button class="menu-item" onclick="showSection('view-surgeries')">🩹 Cirugías</button>
+    <button class="menu-item" onclick="showSection('view-anamnesis')">📋 Anamnesis pretérita</button>
+    <button class="menu-item" onclick="showSection('view-visits')">🩺 Registro de visitas</button>
+    <button class="menu-item" onclick="showSection('view-presumptive')">🔍 Diagnóstico Presuntivo</button>
+    <button class="menu-item" onclick="showSection('view-definitive')">✅ Diagnóstico definitivo</button>
 
     <div class="menu-group-title">Documentos y Finanzas</div>
     <button class="menu-item" onclick="showSection('view-card')">🪪 Ficha / Carné Mascota</button>
@@ -784,7 +838,7 @@
     <main class="content-area">
 
       <!-- =========================================================
-           1. PESTAÑA "MASCOTAS" (LISTADO + REGISTRAR NUEVA MASCOTA)
+           G1. PESTAÑA "MASCOTAS" (LISTADO + REGISTRAR NUEVA MASCOTA)
            ========================================================= -->
       <section id="view-home">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
@@ -792,7 +846,6 @@
           <button class="btn btn-primary" onclick="toggleNewPetDrawer()">➕ Registrar Nueva Mascota</button>
         </div>
 
-        <!-- Panel desplegable para Registrar / Editar Mascota -->
         <div id="pet-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
             <h2 id="pet-form-title" style="margin-bottom:0;">➕ Registrar Nueva Mascota</h2>
@@ -800,7 +853,6 @@
           </div>
 
           <form id="form-register-pet" onsubmit="handleSavePet(event)">
-            <!-- Fila 1: Nº Cartilla, Centro veterinario (con lista de clínicas registradas), Nombre, Fecha de nacimiento -->
             <div class="form-row">
               <div class="form-group">
                 <label>Nº Cartilla:</label>
@@ -821,7 +873,6 @@
               </div>
             </div>
 
-            <!-- Fila 2: Especie, Raza, Género, Pelo -->
             <div class="form-row">
               <div class="form-group">
                 <label>Especie:</label>
@@ -848,7 +899,6 @@
               </div>
             </div>
 
-            <!-- Fila 3: Color, Tamaño, Nº Chip, Familia asignada -->
             <div class="form-row">
               <div class="form-group">
                 <label>Color:</label>
@@ -874,7 +924,6 @@
               </div>
             </div>
 
-            <!-- Fila 4: Último Peso, Esterilización, Fecha Esterilización, Corte en oreja -->
             <div class="form-row">
               <div class="form-group">
                 <label>Último peso (kg):</label>
@@ -900,7 +949,6 @@
               </div>
             </div>
 
-            <!-- Sub-fila condicional si marca Corte en oreja = Sí -->
             <div class="form-row" id="group-ear-sides" style="display: none; background: rgba(216,27,96,0.06); padding: 0.75rem 1rem; border-radius: 8px;">
               <div class="form-group" style="margin-bottom:0;">
                 <label>Lado del corte en oreja (Derecha / Izquierda):</label>
@@ -911,7 +959,6 @@
               </div>
             </div>
 
-            <!-- BLOQUE DE LAS 5 OPCIONES DE SUBIDA DE IMÁGENES Y DOCUMENTOS -->
             <h4 style="color: var(--primary); margin: 1rem 0 0.5rem;">📂 Fotografías, Códigos y Documentos de la Mascota</h4>
             <div class="upload-box-grid">
               <div class="form-group">
@@ -943,11 +990,12 @@
           </form>
         </div>
 
-        <!-- Cuadrícula con las fichas de las mascotas registradas -->
         <div class="pets-grid" id="pets-grid-container"></div>
       </section>
 
-      <!-- ================= 2. FAMILIAS / PROPIETARIAS ================= -->
+      <!-- =========================================================
+           G2. FAMILIAS / PROPIETARIAS
+           ========================================================= -->
       <section id="view-families" style="display: none;">
         <div class="section-panel">
           <h2 id="family-form-title">👨‍👩‍👧‍👦 Registro de Familias / Propietarias</h2>
@@ -995,7 +1043,7 @@
       </section>
 
       <!-- =========================================================
-           3. NUEVA PESTAÑA: CLÍNICAS VETERINARIAS
+           G3. CLÍNICAS VETERINARIAS
            ========================================================= -->
       <section id="view-clinics" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
@@ -1003,7 +1051,6 @@
           <button class="btn btn-primary" onclick="toggleNewClinicDrawer()">➕ Registrar Nuevo</button>
         </div>
 
-        <!-- Formulario desplegable para Registrar Nuevo / Editar Clínica -->
         <div id="clinic-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
             <h2 id="clinic-form-title" style="margin-bottom:0;">➕ Registrar Nueva Clínica Veterinaria</h2>
@@ -1056,40 +1103,35 @@
           </form>
         </div>
 
-        <!-- Pantalla principal con el listado de clínicas veterinarias registradas -->
         <div class="section-panel">
           <h2>📋 Listado de Clínicas Veterinarias Registradas</h2>
           <div class="table-responsive" id="table-clinics-container"></div>
         </div>
       </section>
 
-      <!-- ================= 4. VACUNAS ================= -->
-      <section id="view-vaccines" style="display: none;">
+      <!-- =========================================================
+           SC 1. CONTROL PESO
+           ========================================================= -->
+      <section id="view-weight" style="display: none;">
         <div class="section-panel">
-          <h2>💉 Listado de Vacunas: <span class="active-pet-name"></span></h2>
-          <form id="form-vaccine" onsubmit="handleSaveVaccine(event)">
-            <h4 id="vaccine-form-subtitle" style="margin-bottom: 0.6rem; color: var(--secondary);">Añadir registro</h4>
+          <h2>⚖️ Control Peso: <span class="active-pet-name"></span></h2>
+          <form id="form-weight" onsubmit="handleSaveWeight(event)">
             <div class="form-row">
-              <div class="form-group"><label>Vacuna:</label><input type="text" class="form-control" id="vac-name" required></div>
-              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="vac-date" required></div>
-              <div class="form-group"><label>Dosis:</label><input type="text" class="form-control" id="vac-dose"></div>
-              <div class="form-group"><label>Lote:</label><input type="text" class="form-control" id="vac-lot"></div>
-            </div>
-            <div class="form-row">
-              <div class="form-group"><label>Caducidad:</label><input type="date" class="form-control" id="vac-exp"></div>
-              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="vac-price"></div>
-              <div class="form-group"><label>Próxima dosis:</label><input type="date" class="form-control" id="vac-next"></div>
+              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="weight-date" required></div>
+              <div class="form-group"><label>Peso (kg):</label><input type="number" step="0.01" class="form-control" id="weight-val" placeholder="Ej. 4.30" required></div>
             </div>
             <div style="display:flex; gap:0.5rem;">
-              <button type="submit" class="btn btn-primary" id="btn-submit-vaccine">+ Añadir Vacuna</button>
-              <button type="button" class="btn btn-outline" id="btn-cancel-vaccine" style="display:none;" onclick="cancelEdit('vaccine')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-weight">+ Registrar Peso</button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-weight" style="display:none;" onclick="cancelEdit('weight')">Cancelar</button>
             </div>
           </form>
-          <div class="table-responsive" id="table-vaccines-container"></div>
+          <div class="table-responsive" id="table-weights-container"></div>
         </div>
       </section>
 
-      <!-- ================= 5. CONTROL DESPARASITACIÓN ================= -->
+      <!-- =========================================================
+           SC 2. CONTROL DESPARASITACIÓN
+           ========================================================= -->
       <section id="view-deworming" style="display: none;">
         <div class="section-panel">
           <h2>🛡️ Control Desparasitación: <span class="active-pet-name"></span></h2>
@@ -1134,53 +1176,37 @@
         </div>
       </section>
 
-      <!-- ================= 6. HISTORIAL (PATOLOGÍAS Y VISITAS) ================= -->
-      <section id="view-history" style="display: none;">
+      <!-- =========================================================
+           SC 3. VACUNAS
+           ========================================================= -->
+      <section id="view-vaccines" style="display: none;">
         <div class="section-panel">
-          <h2>📋 Historial Clínico: <span class="active-pet-name"></span></h2>
-          
-          <h3 style="color: var(--secondary); margin: 1rem 0 0.5rem;">Patología</h3>
-          <form id="form-pathology" onsubmit="handleSavePathology(event)">
+          <h2>💉 Listado de Vacunas: <span class="active-pet-name"></span></h2>
+          <form id="form-vaccine" onsubmit="handleSaveVaccine(event)">
+            <h4 id="vaccine-form-subtitle" style="margin-bottom: 0.6rem; color: var(--secondary);">Añadir registro</h4>
             <div class="form-row">
-              <div class="form-group"><label>Patología:</label><input type="text" class="form-control" id="his-pat" required></div>
-              <div class="form-group"><label>Fecha inicio:</label><input type="date" class="form-control" id="his-start" required></div>
-              <div class="form-group"><label>Fecha fin:</label><input type="date" class="form-control" id="his-end"></div>
+              <div class="form-group"><label>Vacuna:</label><input type="text" class="form-control" id="vac-name" placeholder="Ej. Trivalente, Rabia, Leucemia" required></div>
+              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="vac-date" required></div>
+              <div class="form-group"><label>Dosis:</label><input type="text" class="form-control" id="vac-dose" placeholder="Ej. 1ª Dosis / Refuerzo anual"></div>
+              <div class="form-group"><label>Lote:</label><input type="text" class="form-control" id="vac-lot"></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>Tratamiento:</label><input type="text" class="form-control" id="his-treat"></div>
-              <div class="form-group">
-                <label>Subir documento adjunto (PDF/JPG/PNG):</label>
-                <input type="file" class="form-control" id="his-doc" accept=".pdf,image/*" onchange="encodeAttachment(event, 'pathology')">
-              </div>
+              <div class="form-group"><label>Caducidad:</label><input type="date" class="form-control" id="vac-exp"></div>
+              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="vac-price"></div>
+              <div class="form-group"><label>Próxima dosis:</label><input type="date" class="form-control" id="vac-next"></div>
             </div>
             <div style="display:flex; gap:0.5rem;">
-              <button type="submit" class="btn btn-primary" id="btn-submit-pathology">+ Guardar Patología</button>
-              <button type="button" class="btn btn-outline" id="btn-cancel-pathology" style="display:none;" onclick="cancelEdit('pathology')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-vaccine">+ Añadir Vacuna</button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-vaccine" style="display:none;" onclick="cancelEdit('vaccine')">Cancelar</button>
             </div>
           </form>
-          <div class="table-responsive" id="table-pathologies-container"></div>
-
-          <h3 style="color: var(--secondary); margin: 2rem 0 0.5rem;">Visitas veterinario</h3>
-          <form id="form-visit" onsubmit="handleSaveVisit(event)">
-            <div class="form-row">
-              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="vis-date" required></div>
-              <div class="form-group"><label>Visitas veterinario (Motivo):</label><input type="text" class="form-control" id="vis-reason" required></div>
-              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="vis-price"></div>
-              <div class="form-group">
-                <label>Subir documento (Informe/Factura):</label>
-                <input type="file" class="form-control" id="vis-doc" accept=".pdf,image/*" onchange="encodeAttachment(event, 'visit')">
-              </div>
-            </div>
-            <div style="display:flex; gap:0.5rem;">
-              <button type="submit" class="btn btn-primary" id="btn-submit-visit">+ Guardar Visita</button>
-              <button type="button" class="btn btn-outline" id="btn-cancel-visit" style="display:none;" onclick="cancelEdit('visit')">Cancelar</button>
-            </div>
-          </form>
-          <div class="table-responsive" id="table-visits-container"></div>
+          <div class="table-responsive" id="table-vaccines-container"></div>
         </div>
       </section>
 
-      <!-- ================= 7. LABORATORIO ================= -->
+      <!-- =========================================================
+           SC 4. LABORATORIO (MÚLTIPLES PDFs + ORDENADO POR FECHA)
+           ========================================================= -->
       <section id="view-laboratory" style="display: none;">
         <div class="section-panel">
           <h2>🔬 Laboratorio: <span class="active-pet-name"></span></h2>
@@ -1194,8 +1220,8 @@
               <div class="form-group"><label>Descripción:</label><input type="text" class="form-control" id="lab-desc" placeholder="Detalles de la muestra"></div>
               <div class="form-group"><label>Resultado:</label><input type="text" class="form-control" id="lab-res" placeholder="Valores o conclusión"></div>
               <div class="form-group">
-                <label>Subir documento (Resultados PDF/Imagen):</label>
-                <input type="file" class="form-control" id="lab-doc" accept=".pdf,image/*" onchange="encodeAttachment(event, 'laboratory')">
+                <label>Subir varios documentos PDF (selecciona uno o más):</label>
+                <input type="file" class="form-control" id="lab-docs" accept="application/pdf,image/*" multiple onchange="handleMultiplePdfUpload(event, 'laboratory')">
               </div>
             </div>
             <div style="display:flex; gap:0.5rem;">
@@ -1207,42 +1233,49 @@
         </div>
       </section>
 
-      <!-- ================= 8. TRATAMIENTOS ================= -->
-      <section id="view-treatments" style="display: none;">
+      <!-- =========================================================
+           SC 5. PRUEBAS COMPLEMENTARIAS (NUEVA + MÚLTIPLES PDFs POR FECHA)
+           ========================================================= -->
+      <section id="view-comp-tests" style="display: none;">
         <div class="section-panel">
-          <h2>💊 Tratamientos: <span class="active-pet-name"></span></h2>
-          <form id="form-treatment" onsubmit="handleSaveTreatment(event)">
+          <h2>🩻 Pruebas complementarias: <span class="active-pet-name"></span></h2>
+          <form id="form-comp-test" onsubmit="handleSaveCompTest(event)">
             <div class="form-row">
-              <div class="form-group"><label>Medicamento:</label><input type="text" class="form-control" id="treat-med" required></div>
-              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="treat-date" required></div>
-              <div class="form-group"><label>Lote:</label><input type="text" class="form-control" id="treat-lot"></div>
+              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="comp-date" required></div>
+              <div class="form-group"><label>Prueba complementaria:</label><input type="text" class="form-control" id="comp-name" placeholder="Ej. Ecografía abdominal, Radiografía, Citología" required></div>
+              <div class="form-group"><label>Descripción / Hallazgos:</label><input type="text" class="form-control" id="comp-desc" placeholder="Observaciones de la prueba"></div>
             </div>
             <div class="form-row">
-              <div class="form-group"><label>Caducidad:</label><input type="date" class="form-control" id="treat-exp"></div>
-              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="treat-price"></div>
+              <div class="form-group"><label>Resultado:</label><input type="text" class="form-control" id="comp-res" placeholder="Conclusión diagnóstica"></div>
               <div class="form-group">
-                <label>Subir documento (Receta/Pauta):</label>
-                <input type="file" class="form-control" id="treat-doc" accept=".pdf,image/*" onchange="encodeAttachment(event, 'treatment')">
+                <label>Subir varios documentos PDF (selecciona uno o más):</label>
+                <input type="file" class="form-control" id="comp-docs" accept="application/pdf,image/*" multiple onchange="handleMultiplePdfUpload(event, 'compTests')">
               </div>
             </div>
             <div style="display:flex; gap:0.5rem;">
-              <button type="submit" class="btn btn-primary" id="btn-submit-treatment">+ Añadir Tratamiento</button>
-              <button type="button" class="btn btn-outline" id="btn-cancel-treatment" style="display:none;" onclick="cancelEdit('treatment')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-comp">+ Añadir Prueba Complementaria</button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-comp" style="display:none;" onclick="cancelEdit('compTests')">Cancelar</button>
             </div>
           </form>
-          <div class="table-responsive" id="table-treatments-container"></div>
+          <div class="table-responsive" id="table-comp-tests-container"></div>
         </div>
       </section>
 
-      <!-- ================= 9. CIRUGÍAS ================= -->
+      <!-- =========================================================
+           SC 6. CIRUGÍAS (MÚLTIPLES PDFs + ORDENADO POR FECHA)
+           ========================================================= -->
       <section id="view-surgeries" style="display: none;">
         <div class="section-panel">
           <h2>🩹 Cirugías: <span class="active-pet-name"></span></h2>
           <form id="form-surgery" onsubmit="handleSaveSurgery(event)">
             <div class="form-row">
               <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="surg-date" required></div>
-              <div class="form-group"><label>Cirugía:</label><input type="text" class="form-control" id="surg-name" required></div>
-              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="surg-price"></div>
+              <div class="form-group"><label>Cirugía:</label><input type="text" class="form-control" id="surg-name" placeholder="Intervención realizada" required></div>
+              <div class="form-group"><label>Precio (€):</label><input type="number" step="0.01" class="form-control" id="surg-price" placeholder="0.00"></div>
+              <div class="form-group">
+                <label>Subir varios documentos PDF (Informes/Consentimientos):</label>
+                <input type="file" class="form-control" id="surg-docs" accept="application/pdf,image/*" multiple onchange="handleMultiplePdfUpload(event, 'surgeries')">
+              </div>
             </div>
             <div style="display:flex; gap:0.5rem;">
               <button type="submit" class="btn btn-primary" id="btn-submit-surgery">+ Añadir Cirugía</button>
@@ -1253,26 +1286,236 @@
         </div>
       </section>
 
-      <!-- ================= 10. CONTROL PESO ================= -->
-      <section id="view-weight" style="display: none;">
+      <!-- =========================================================
+           SC 7. ANAMNESIS PRETÉRITA (AUTOCOMPLETADO + ESTILO DE VIDA)
+           ========================================================= -->
+      <section id="view-anamnesis" style="display: none;">
         <div class="section-panel">
-          <h2>⚖️ Control Peso: <span class="active-pet-name"></span></h2>
-          <form id="form-weight" onsubmit="handleSaveWeight(event)">
-            <div class="form-row">
-              <div class="form-group"><label>Fecha:</label><input type="date" class="form-control" id="weight-date" required></div>
-              <div class="form-group"><label>Peso (kg):</label><input type="number" step="0.01" class="form-control" id="weight-val" required></div>
+          <h2>📋 Anamnesis pretérita: <span class="active-pet-name"></span></h2>
+          <p style="font-size: 0.86rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+            Los datos de peso, desparasitación y vacunas vigentes se autocompletan en tiempo real con los últimos registros introducidos en sus pestañas correspondientes.
+          </p>
+
+          <!-- Bloques autocompletados -->
+          <div class="auto-box-grid">
+            <div class="auto-info-card">
+              <h4>⚖️ Control de peso (Último registro)</h4>
+              <div id="anam-auto-weight" style="font-size: 0.9rem; line-height: 1.6;">-</div>
             </div>
-            <div style="display:flex; gap:0.5rem;">
-              <button type="submit" class="btn btn-primary" id="btn-submit-weight">+ Registrar Peso</button>
-              <button type="button" class="btn btn-outline" id="btn-cancel-weight" style="display:none;" onclick="cancelEdit('weight')">Cancelar</button>
+
+            <div class="auto-info-card">
+              <h4>🛡️ Desparasitación (Últimos registros)</h4>
+              <div id="anam-auto-deworming" style="font-size: 0.88rem; line-height: 1.6;">-</div>
             </div>
+
+            <div class="auto-info-card">
+              <h4>💉 Vacunas vigentes (Última dosis de cada vacuna)</h4>
+              <div id="anam-auto-vaccines" style="font-size: 0.86rem; line-height: 1.6;">-</div>
+            </div>
+          </div>
+
+          <!-- Estilo de vida editable -->
+          <form onsubmit="handleSaveLifestyle(event)">
+            <div class="form-group">
+              <label style="font-size: 0.95rem; color: var(--primary);">🏡 Estilo de vida (Hábitos, entorno, convivencia con otros animales, actividad, etc.):</label>
+              <textarea class="form-control" id="anam-lifestyle" rows="5" placeholder="Escribe aquí las características del estilo de vida de la mascota..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">💾 Guardar Estilo de Vida en Anamnesis</button>
           </form>
-          <div class="table-responsive" id="table-weights-container"></div>
         </div>
       </section>
 
       <!-- =========================================================
-           11. FICHA / CARNÉ DE LA MASCOTA
+           SC 8. REGISTRO DE VISITAS (ENFERMEDADES O REVISIONES)
+           ========================================================= -->
+      <section id="view-visits" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+          <h1 style="color: var(--primary);">🩺 Registro de visitas: <span class="active-pet-name"></span></h1>
+          <button class="btn btn-primary" onclick="toggleVisitDrawer()">➕ Registrar nueva visita</button>
+        </div>
+
+        <div id="visit-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h2 id="visit-form-title" style="margin-bottom:0;">➕ Registrar nueva visita</h2>
+            <button type="button" class="btn btn-outline btn-sm" onclick="cancelEdit('visit')">✖ Cerrar</button>
+          </div>
+
+          <form id="form-visit" onsubmit="handleSaveVisit(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Fecha:</label>
+                <input type="date" class="form-control" id="vis-date" required>
+              </div>
+              <div class="form-group">
+                <label>Síntomas actuales:</label>
+                <input type="text" class="form-control" id="vis-symptoms" placeholder="Motivo de consulta o síntomas observados" required>
+              </div>
+              <div class="form-group">
+                <label>Duración:</label>
+                <input type="text" class="form-control" id="vis-duration" placeholder="Ej. 3 días, desde ayer...">
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Cambios en comportamiento:</label>
+                <input type="text" class="form-control" id="vis-behavior" placeholder="Ej. Apatía, nerviosismo, se esconde...">
+              </div>
+              <div class="form-group">
+                <label>Alimentación:</label>
+                <input type="text" class="form-control" id="vis-food" placeholder="Ej. Anorexia parcial, come pienso habitual...">
+              </div>
+              <div class="form-group">
+                <label>Precio de la visita (€) (Opcional para Gastos):</label>
+                <input type="number" step="0.01" class="form-control" id="vis-price" placeholder="0.00">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label>Otros comentarios:</label>
+              <textarea class="form-control" id="vis-comments" rows="3" placeholder="Anotaciones adicionales de la exploración o revisión..."></textarea>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" id="btn-cancel-visit" onclick="cancelEdit('visit')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-visit">💾 Guardar Visita</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="section-panel">
+          <h2>📋 Listado de visitas al veterinario (Por fecha)</h2>
+          <div class="table-responsive" id="table-visits-container"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           SC 9. DIAGNÓSTICO PRESUNTIVO (POR ORDEN DE FECHA)
+           ========================================================= -->
+      <section id="view-presumptive" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+          <h1 style="color: var(--primary);">🔍 Diagnóstico Presuntivo: <span class="active-pet-name"></span></h1>
+          <button class="btn btn-primary" onclick="togglePresumptiveDrawer()">➕ Registrar nuevo</button>
+        </div>
+
+        <div id="presumptive-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h2 id="presumptive-form-title" style="margin-bottom:0;">➕ Registrar nuevo Diagnóstico Presuntivo</h2>
+            <button type="button" class="btn btn-outline btn-sm" onclick="cancelEdit('presumptive')">✖ Cerrar</button>
+          </div>
+
+          <form id="form-presumptive" onsubmit="handleSavePresumptive(event)">
+            <div class="form-row">
+              <div class="form-group" style="max-width: 260px;">
+                <label>Fecha:</label>
+                <input type="date" class="form-control" id="pres-date" required>
+              </div>
+            </div>
+            <div class="form-group">
+              <label>Comentarios / Sospecha clínica:</label>
+              <textarea class="form-control" id="pres-comments" rows="4" placeholder="Escribe aquí las hipótesis diagnósticas y comentarios..." required></textarea>
+            </div>
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" onclick="cancelEdit('presumptive')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-presumptive">💾 Guardar Diagnóstico Presuntivo</button>
+            </div>
+          </form>
+        </div>
+
+        <div class="section-panel">
+          <h2>📋 Listado de Diagnósticos Presuntivos (Ordenado por fecha)</h2>
+          <div class="table-responsive" id="table-presumptive-container"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           SC 10. DIAGNÓSTICO DEFINITIVO (CON TRATAMIENTO, EVOLUCIÓN Y EPICRISIS)
+           ========================================================= -->
+      <section id="view-definitive" style="display: none;">
+        <div class="section-panel">
+          <h2 id="definitive-form-title">✅ Diagnóstico definitivo: <span class="active-pet-name"></span></h2>
+          <form id="form-definitive" onsubmit="handleSaveDefinitive(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Fecha:</label>
+                <input type="date" class="form-control" id="def-date" required>
+              </div>
+              <div class="form-group" style="grid-column: span 2;">
+                <label>Diagnóstico definitivo:</label>
+                <input type="text" class="form-control" id="def-diagnosis" placeholder="Nombre de la patología o diagnóstico confirmado" required>
+              </div>
+            </div>
+
+            <!-- Bloque estructurado de Tratamiento -->
+            <h4 style="color: var(--secondary); margin: 1rem 0 0.5rem;">💊 Tratamiento Pautado</h4>
+            <div style="background: rgba(126, 87, 194, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem;">
+              <div class="form-row">
+                <div class="form-group">
+                  <label>Medicamentos:</label>
+                  <input type="text" class="form-control" id="def-meds" placeholder="Ej. Amoxicilina, Meloxicam..." required>
+                </div>
+                <div class="form-group">
+                  <label>Dosis:</label>
+                  <input type="text" class="form-control" id="def-dose" placeholder="Ej. 0.5 ml / 1 comprimido">
+                </div>
+                <div class="form-group">
+                  <label>Frecuencia:</label>
+                  <input type="text" class="form-control" id="def-freq" placeholder="Ej. Cada 12 horas">
+                </div>
+                <div class="form-group">
+                  <label>Duración:</label>
+                  <input type="text" class="form-control" id="def-duration" placeholder="Ej. 7 días">
+                </div>
+              </div>
+              <div class="form-row" style="margin-bottom:0;">
+                <div class="form-group" style="grid-column: span 2;">
+                  <label>Recomendaciones:</label>
+                  <input type="text" class="form-control" id="def-recs" placeholder="Cuidados en casa, dieta blanda, control ambiental...">
+                </div>
+                <div class="form-group">
+                  <label>Coste Medicación (€) (Opcional para Gastos):</label>
+                  <input type="number" step="0.01" class="form-control" id="def-price" placeholder="0.00">
+                </div>
+              </div>
+            </div>
+
+            <!-- Evolución Clínica -->
+            <div class="form-group">
+              <label>📈 Evolución clínica (Durante y después del tratamiento):</label>
+              <textarea class="form-control" id="def-evolution" rows="3" placeholder="Anota cómo responde la mascota durante el tratamiento y su estado posterior..."></textarea>
+            </div>
+
+            <!-- Epicrisis y Estado del Episodio -->
+            <h4 style="color: var(--primary); margin: 1rem 0 0.5rem;">📑 Epicrisis (Se incorpora automáticamente a la Historia Clínica)</h4>
+            <div style="background: rgba(216, 27, 96, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem;">
+              <div class="form-group">
+                <label>Resumen del episodio, resultados del tratamiento y observaciones finales:</label>
+                <textarea class="form-control" id="def-epicrisis" rows="3" placeholder="Síntesis clínica del caso, resolución y conclusiones finales..."></textarea>
+              </div>
+              <div class="form-row" style="margin-bottom:0;">
+                <div class="form-group" style="max-width: 300px; margin-bottom:0;">
+                  <label>Estado del Episodio:</label>
+                  <select class="form-control" id="def-status" style="font-weight: 800;">
+                    <option value="Episodio abierto">🟠 Episodio abierto</option>
+                    <option value="Episodio cerrado">🟢 Episodio cerrado</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div style="display:flex; gap:0.5rem;">
+              <button type="submit" class="btn btn-primary" id="btn-submit-definitive">+ Guardar Diagnóstico Definitivo</button>
+              <button type="button" class="btn btn-outline" id="btn-cancel-definitive" style="display:none;" onclick="cancelEdit('definitive')">Cancelar Edición</button>
+            </div>
+          </form>
+
+          <h3 style="color: var(--primary); margin-top: 2rem;">📋 Historial de Diagnósticos Definitivos y Epicrisis</h3>
+          <div class="table-responsive" id="table-definitive-container"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================
+           D1. FICHA / CARNÉ DE LA MASCOTA
            ========================================================= -->
       <section id="view-card" style="display: none;">
         <div class="section-panel">
@@ -1300,7 +1543,6 @@
                   </div>
                 </div>
 
-                <!-- Esquina Superior Derecha: Logo oficial encima del Nº de Cartilla -->
                 <div class="cartilla-logo-cardnum-box">
                   <svg class="brand-logo-svg cartilla-top-logo" viewBox="0 0 200 200"></svg>
                   <div class="cartilla-num-badge">
@@ -1309,7 +1551,6 @@
                 </div>
               </div>
 
-              <!-- Cuadrícula perfectamente alineada con todos los datos de la mascota -->
               <div class="cartilla-grid-pills">
                 <div class="cartilla-field-pill"><span>Especie:</span> <strong id="card-species">-</strong></div>
                 <div class="cartilla-field-pill"><span>Raza:</span> <strong id="card-race">-</strong></div>
@@ -1323,13 +1564,11 @@
                 <div class="cartilla-field-pill full-width"><span>Esterilización / Corte oreja:</span> <strong id="card-sterilized-info">-</strong></div>
               </div>
 
-              <!-- Vacunas Recientes -->
               <div class="cartilla-table-box">
                 <div class="cartilla-table-title">💉 VACUNAS RECIENTES</div>
                 <div id="card-vaccines-list"></div>
               </div>
 
-              <!-- Desparasitación -->
               <div class="cartilla-table-box">
                 <div class="cartilla-table-title">🛡️ DESPARASITACIÓN</div>
                 <div style="display:flex; justify-content:space-between; margin-bottom:0.2rem;">
@@ -1342,12 +1581,9 @@
                 </div>
               </div>
 
-              <!-- Datos de la Clínica Veterinaria debajo de Desparasitación -->
               <div class="cartilla-table-box" style="border-left: 4px solid #2B0938;">
                 <div class="cartilla-table-title">🏥 DATOS DE LA CLÍNICA VETERINARIA</div>
-                <div id="card-clinic-details" style="line-height: 1.45; color:#2B0938;">
-                  <!-- Poblado dinámicamente con el centro, dirección, teléfono y veterinario Pere/Francesc -->
-                </div>
+                <div id="card-clinic-details" style="line-height: 1.45; color:#2B0938;"></div>
               </div>
 
               <div style="font-size:0.72rem; text-align:right; margin-top: auto;">
@@ -1369,7 +1605,6 @@
                 <div class="cartilla-propietario-row"><span>País:</span> <strong id="card-owner-country">-</strong></div>
               </div>
 
-              <!-- Código de Barras debajo de los datos del propietario -->
               <div class="cartilla-barcode-box">
                 <div style="font-size: 0.72rem; font-weight: 800; color: #765885; text-transform: uppercase;">
                   Código de Barras Identificativo
@@ -1390,7 +1625,9 @@
         </div>
       </section>
 
-      <!-- ================= 12. GASTOS ================= -->
+      <!-- =========================================================
+           D2. GASTOS
+           ========================================================= -->
       <section id="view-expenses" style="display: none;">
         <div class="section-panel">
           <h2>💰 Gastos Acumulados: <span class="active-pet-name"></span></h2>
@@ -1398,18 +1635,22 @@
         </div>
       </section>
 
-      <!-- ================= 13. INFORMES EJECUTIVOS ================= -->
+      <!-- =========================================================
+           D3. INFORMES EJECUTIVOS (CON HISTORIA CLÍNICA Y EPICRISIS)
+           ========================================================= -->
       <section id="view-reports" style="display: none;">
         <div class="section-panel">
-          <h2>📄 Informes Ejecutivos: <span class="active-pet-name"></span></h2>
+          <h2>📄 Informes Ejecutivos e Historia Clínica: <span class="active-pet-name"></span></h2>
           <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">
-            Genera el informe completo con el logotipo estático a la izquierda, nombre de la aplicación en el centro y número de registro a la derecha.
+            Genera el informe completo incluyendo la Anamnesis pretérita, Diagnósticos definitivos y las Epicrisis registradas en la Historia Clínica.
           </p>
           <button class="btn btn-primary" onclick="generateExecutiveReport()">Generar Informe Ejecutivo</button>
         </div>
       </section>
 
-      <!-- ================= 14. AJUSTES Y SINCRONIZACIÓN CON GITHUB ================= -->
+      <!-- =========================================================
+           S1. AJUSTES Y SINCRONIZACIÓN CON GITHUB
+           ========================================================= -->
       <section id="view-settings" style="display: none;">
         <div class="section-panel">
           <h2>⚙️ Ajustes y Sincronización en Tiempo Real (GitHub)</h2>
@@ -1469,7 +1710,7 @@
           <svg class="brand-logo-svg" style="width: 58px; height: 58px; animation: none;" viewBox="0 0 200 200"></svg>
           <div style="text-align: center;">
             <h2 style="color: #2B0938; letter-spacing: 1px;">KONTROLVET</h2>
-            <p style="font-size: 0.82rem; font-weight: 700; color: #D81B60;">INFORME CLÍNICO EJECUTIVO</p>
+            <p style="font-size: 0.82rem; font-weight: 700; color: #D81B60;">INFORME CLÍNICO EJECUTIVO E HISTORIA CLÍNICA</p>
           </div>
           <div style="text-align: right; font-size: 0.85rem;">
             <strong>Nº Registro / Cartilla:</strong><br>
@@ -1496,7 +1737,7 @@
     const PHOTO_QUALITY = 0.75;     // Calidad JPEG de las fotos (0.75 = 75%)
     const SYNC_INTERVAL_MS = 30000; // Intervalo de sincronización automática (30.000 ms = 30 seg)
 
-    // 1. ESTADO DE LA BASE DE DATOS LOCAL (CON LISTA DE CLÍNICAS VETERINARIAS)
+    // 1. ESTADO DE LA BASE DE DATOS LOCAL
     let db = JSON.parse(localStorage.getItem('kontrolvet_full_db')) || {
       families: [],
       clinics: [],
@@ -1504,7 +1745,6 @@
       updatedAt: null
     };
 
-    // Aseguramos que la colección de clínicas exista aunque la base de datos venga de una versión anterior
     db.families = db.families || [];
     db.clinics = db.clinics || [];
     db.pets = db.pets || [];
@@ -1524,7 +1764,13 @@
       idCardPdf: null
     };
 
-    let tempAttachments = { pathology: null, visit: null, laboratory: null, treatment: null };
+    // Almacén temporal para múltiples documentos PDF en Laboratorio, Pruebas complementarias y Cirugías
+    let tempMultiDocs = {
+      laboratory: [],
+      compTests: [],
+      surgeries: []
+    };
+
     let editingState = { type: null, index: null };
     let deferredInstallPrompt = null;
 
@@ -1629,10 +1875,11 @@
 
     function showSection(sectionId) {
       const views = [
-        'view-home', 'view-families', 'view-clinics', 'view-vaccines',
-        'view-deworming', 'view-history', 'view-laboratory', 'view-treatments',
-        'view-surgeries', 'view-weight', 'view-card', 'view-expenses',
-        'view-reports', 'view-settings'
+        'view-home', 'view-families', 'view-clinics',
+        'view-weight', 'view-deworming', 'view-vaccines',
+        'view-laboratory', 'view-comp-tests', 'view-surgeries',
+        'view-anamnesis', 'view-visits', 'view-presumptive', 'view-definitive',
+        'view-card', 'view-expenses', 'view-reports', 'view-settings'
       ];
       views.forEach(id => {
         const el = document.getElementById(id);
@@ -1650,19 +1897,25 @@
       refreshActiveSection();
     }
 
+    /**
+     * Garantiza que la mascota activa tenga inicializadas todas las colecciones clínicas nuevas.
+     */
     function getActivePet() {
       if (db.pets.length === 0) return null;
       if (activePetIndex >= db.pets.length) activePetIndex = 0;
       const pet = db.pets[activePetIndex];
-      pet.vaccines = pet.vaccines || [];
+      pet.weights = pet.weights || [];
       pet.dewormingInternal = pet.dewormingInternal || [];
       pet.dewormingExternal = pet.dewormingExternal || [];
-      pet.pathologies = pet.pathologies || [];
-      pet.visits = pet.visits || [];
+      pet.vaccines = pet.vaccines || [];
       pet.laboratory = pet.laboratory || [];
-      pet.treatments = pet.treatments || [];
+      pet.compTests = pet.compTests || [];
       pet.surgeries = pet.surgeries || [];
-      pet.weights = pet.weights || [];
+      pet.lifestyle = pet.lifestyle || '';
+      pet.visits = pet.visits || [];
+      pet.presumptiveDiag = pet.presumptiveDiag || [];
+      pet.definitiveDiag = pet.definitiveDiag || [];
+      pet.treatments = pet.treatments || [];
       return pet;
     }
 
@@ -1697,19 +1950,32 @@
       renderClinicsTable();
       if (!pet) return;
 
-      renderVaccinesTable();
-      renderDewormingTables();
-      renderHistoryTables();
-      renderLaboratoryTable();
-      renderTreatmentsTable();
-      renderSurgeriesTable();
       renderWeightsTable();
+      renderDewormingTables();
+      renderVaccinesTable();
+      renderLaboratoryTable();
+      renderCompTestsTable();
+      renderSurgeriesTable();
+      renderAnamnesisView();
+      renderVisitsTable();
+      renderPresumptiveTable();
+      renderDefinitiveTable();
       populateCardData();
       renderExpensesBreakdown();
     }
 
+    /**
+     * Función auxiliar clave: Ordena cualquier lista de registros por fecha (de más reciente a más antigua)
+     * conservando el índice real (originalIndex) para que los botones Editar y Eliminar funcionen siempre con precisión.
+     */
+    function getSortedByDateDesc(arr) {
+      return (arr || [])
+        .map((item, originalIndex) => ({ item, originalIndex }))
+        .sort((a, b) => (b.item.date || '').localeCompare(a.item.date || ''));
+    }
+
     // =========================================================
-    // 4. GESTIÓN DE IMÁGENES Y DOCUMENTOS DE LA MASCOTA
+    // 4. GESTIÓN DE IMÁGENES Y SUBIDA DE MÚLTIPLES PDFs
     // =========================================================
     function handlePetImageUpload(event, key, maxSize = 500, isCode = false) {
       const file = event.target.files[0];
@@ -1766,6 +2032,53 @@
       reader.readAsDataURL(file);
     }
 
+    /**
+     * Lee varios archivos PDF o imágenes seleccionados a la vez (atributo multiple)
+     * para Laboratorio, Pruebas complementarias y Cirugías.
+     */
+    async function handleMultiplePdfUpload(event, category) {
+      const files = Array.from(event.target.files || []);
+      if (files.length === 0) return;
+
+      const encodedList = await Promise.all(files.map(file => {
+        return new Promise((resolve) => {
+          const reader = new FileReader();
+          reader.onload = e => resolve({
+            name: file.name,
+            data: e.target.result,
+            uploadedAt: new Date().toISOString().split('T')[0]
+          });
+          reader.readAsDataURL(file);
+        });
+      }));
+
+      tempMultiDocs[category] = encodedList;
+    }
+
+    /**
+     * Muestra en las tablas la lista de todos los documentos PDF subidos a un registro.
+     */
+    function renderMultiDocsLinks(record) {
+      let docsArray = [];
+      if (record.docs && Array.isArray(record.docs)) {
+        docsArray = record.docs;
+      } else if (record.doc && record.doc.data) {
+        docsArray = [record.doc];
+      }
+
+      if (docsArray.length === 0) {
+        return '<span style="color:var(--text-muted);">-</span>';
+      }
+
+      return `<div style="display:flex; flex-direction:column; gap:0.3rem;">` +
+        docsArray.map((d, idx) => `
+          <a href="${d.data}" download="${d.name || ('Documento_' + (idx + 1) + '.pdf')}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none; justify-content:flex-start;">
+            📄 ${d.name || ('PDF ' + (idx + 1))}
+          </a>
+        `).join('') +
+      `</div>`;
+    }
+
     async function optimizeExistingPhotosInDB() {
       if (!db || !db.pets) return;
       let modified = false;
@@ -1798,42 +2111,7 @@
       }
     }
 
-    function encodeAttachment(event, category) {
-      const file = event.target.files[0];
-      if (!file) return;
-
-      if (file.type.startsWith('image/')) {
-        const reader = new FileReader();
-        reader.onload = e => {
-          const img = new Image();
-          img.onload = () => {
-            const canvas = document.createElement('canvas');
-            const max = 800;
-            let w = img.width, h = img.height;
-            if (w > h && w > max) { h = Math.round(h * (max / w)); w = max; }
-            else if (h >= w && h > max) { w = Math.round(w * (max / h)); h = max; }
-            canvas.width = w; canvas.height = h;
-            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
-            tempAttachments[category] = { name: file.name, data: canvas.toDataURL('image/jpeg', 0.8) };
-          };
-          img.src = e.target.result;
-        };
-        reader.readAsDataURL(file);
-      } else {
-        const reader = new FileReader();
-        reader.onload = e => {
-          tempAttachments[category] = { name: file.name, data: e.target.result };
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-
-    function renderDocLink(docObj) {
-      if (!docObj || !docObj.data) return '<span style="color:var(--text-muted);">-</span>';
-      return `<a href="${docObj.data}" download="${docObj.name}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">📎 ${docObj.name}</a>`;
-    }
-
-    // 5. SECCIÓN FAMILIAS / PROPIETARIAS
+    // 5. SECCIÓN FAMILIAS Y CLÍNICAS VETERINARIAS
     function handleSaveFamily(e) {
       e.preventDefault();
       const familyObj = {
@@ -1926,13 +2204,6 @@
       });
     }
 
-    // =========================================================
-    // 5B. NUEVA SECCIÓN: CLÍNICAS VETERINARIAS (CRUD COMPLETO)
-    // =========================================================
-
-    /**
-     * Abre o cierra el formulario desplegable para registrar una nueva clínica veterinaria.
-     */
     function toggleNewClinicDrawer() {
       const drawer = document.getElementById('clinic-form-drawer');
       if (drawer.style.display === 'none') {
@@ -1944,9 +2215,6 @@
       }
     }
 
-    /**
-     * Guarda una clínica nueva o actualiza una existente en db.clinics.
-     */
     function handleSaveClinic(e) {
       e.preventDefault();
       const isEditing = (editingState.type === 'clinic');
@@ -1974,9 +2242,6 @@
       populateCardData();
     }
 
-    /**
-     * Renderiza el listado principal de clínicas veterinarias registradas.
-     */
     function renderClinicsTable() {
       const container = document.getElementById('table-clinics-container');
       if (!container) return;
@@ -2009,8 +2274,8 @@
                 <td>${c.email || '-'}</td>
                 <td><span style="background:var(--cream-logo); color:#2B0938; padding:0.2rem 0.55rem; border-radius:8px; font-weight:800; border:1px solid #2B0938;">👨‍⚕️ ${c.vet}</span></td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editClinic(${i})" title="Editar">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteClinic(${i})" title="Eliminar">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editClinic(${i})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteClinic(${i})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2019,9 +2284,6 @@
       `;
     }
 
-    /**
-     * Carga los datos de una clínica en el formulario para editarla.
-     */
     function editClinic(index) {
       const c = db.clinics[index];
       editingState = { type: 'clinic', index };
@@ -2040,9 +2302,6 @@
       drawer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    /**
-     * Elimina una clínica previa confirmación del usuario.
-     */
     function deleteClinic(index) {
       const c = db.clinics[index];
       if (!confirm(`¿Estás segura de que deseas eliminar la clínica "${c.name}"?`)) return;
@@ -2053,9 +2312,6 @@
       populateCardData();
     }
 
-    /**
-     * Actualiza las sugerencias del campo "Centro veterinario" en el formulario de Mascotas.
-     */
     function renderClinicSelectorInPetForm() {
       const datalist = document.getElementById('clinics-datalist');
       if (!datalist) return;
@@ -2068,9 +2324,7 @@
       });
     }
 
-    // =========================================================
     // 6. PESTAÑA "MASCOTAS": ALTA, EDICIÓN Y GENERAR FICHA
-    // =========================================================
     function toggleSterilizationFields() {
       const isSterilized = document.getElementById('reg-sterilized').value === 'si';
       document.getElementById('group-sterilization-date').style.display = isSterilized ? 'block' : 'none';
@@ -2130,14 +2384,17 @@
         trackingPdf: tempPetFiles.trackingPdf || (isEditing ? existingPet.trackingPdf : null),
         idCardPdf: tempPetFiles.idCardPdf || (isEditing ? existingPet.idCardPdf : null),
         weights: isEditing ? existingPet.weights : (weightVal ? [{ date: new Date().toISOString().split('T')[0], value: weightVal }] : []),
-        vaccines: isEditing ? existingPet.vaccines : [],
         dewormingInternal: isEditing ? existingPet.dewormingInternal : [],
         dewormingExternal: isEditing ? existingPet.dewormingExternal : [],
-        pathologies: isEditing ? existingPet.pathologies : [],
-        visits: isEditing ? existingPet.visits : [],
+        vaccines: isEditing ? existingPet.vaccines : [],
         laboratory: isEditing ? (existingPet.laboratory || []) : [],
-        treatments: isEditing ? existingPet.treatments : [],
-        surgeries: isEditing ? existingPet.surgeries : []
+        compTests: isEditing ? (existingPet.compTests || []) : [],
+        surgeries: isEditing ? (existingPet.surgeries || []) : [],
+        lifestyle: isEditing ? (existingPet.lifestyle || '') : '',
+        visits: isEditing ? (existingPet.visits || []) : [],
+        presumptiveDiag: isEditing ? (existingPet.presumptiveDiag || []) : [],
+        definitiveDiag: isEditing ? (existingPet.definitiveDiag || []) : [],
+        treatments: isEditing ? (existingPet.treatments || []) : []
       };
 
       if (isEditing && weightVal) {
@@ -2181,8 +2438,8 @@
       document.getElementById('reg-chip').value = pet.chip || '';
       document.getElementById('reg-family-id').value = pet.familyId || '';
 
-      const lastW = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '';
-      document.getElementById('reg-weight').value = lastW;
+      const sortedW = getSortedByDateDesc(pet.weights);
+      document.getElementById('reg-weight').value = sortedW.length ? sortedW[0].item.value : '';
 
       document.getElementById('reg-sterilized').value = pet.sterilized || 'no';
       document.getElementById('reg-sterilization-date').value = pet.sterilizationDate || '';
@@ -2218,7 +2475,8 @@
       }
 
       db.pets.forEach((pet, idx) => {
-        const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
+        const sortedW = getSortedByDateDesc(pet.weights);
+        const lastWeight = sortedW.length ? sortedW[0].item.value : '-';
         const card = document.createElement('div');
         card.className = 'pet-card';
 
@@ -2270,53 +2528,48 @@
       showSection('view-card');
     }
 
-    // 7. CRUD DE VACUNAS
-    function handleSaveVaccine(e) {
+    // =========================================================
+    // 7. SEGUIMIENTO CLÍNICO: PESO, DESPARASITACIÓN Y VACUNAS
+    // =========================================================
+
+    // 7.1 CONTROL DE PESO
+    function handleSaveWeight(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
-
       const record = {
-        name: document.getElementById('vac-name').value,
-        date: document.getElementById('vac-date').value,
-        dose: document.getElementById('vac-dose').value || '-',
-        lot: document.getElementById('vac-lot').value || '-',
-        exp: document.getElementById('vac-exp').value || '-',
-        price: Number(document.getElementById('vac-price').value) || 0,
-        next: document.getElementById('vac-next').value || '-'
+        date: document.getElementById('weight-date').value,
+        value: document.getElementById('weight-val').value
       };
+      if (editingState.type === 'weight') pet.weights[editingState.index] = record;
+      else pet.weights.push(record);
 
-      if (editingState.type === 'vaccine') {
-        pet.vaccines[editingState.index] = record;
-      } else {
-        pet.vaccines.push(record);
-      }
-
-      cancelEdit('vaccine');
+      cancelEdit('weight');
       saveDatabase();
-      renderVaccinesTable();
+      renderWeightsTable();
+      renderHomePetsGrid();
+      renderAnamnesisView();
       populateCardData();
     }
 
-    function renderVaccinesTable() {
+    function renderWeightsTable() {
       const pet = getActivePet();
-      const container = document.getElementById('table-vaccines-container');
-      if (!pet || pet.vaccines.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">No hay vacunas registradas.</p>';
+      const container = document.getElementById('table-weights-container');
+      if (!pet || pet.weights.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin registros de peso.</p>';
         return;
       }
+      const sorted = getSortedByDateDesc(pet.weights);
       container.innerHTML = `
         <table class="custom-table">
-          <thead>
-            <tr><th>Vacuna</th><th>Fecha</th><th>Dosis</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima Dosis</th><th>Acciones</th></tr>
-          </thead>
+          <thead><tr><th>Fecha</th><th>Peso (kg)</th><th>Acciones</th></tr></thead>
           <tbody>
-            ${pet.vaccines.map((v, i) => `
+            ${sorted.map(({ item: w, originalIndex }) => `
               <tr>
-                <td><strong>${v.name}</strong></td><td>${v.date}</td><td>${v.dose}</td><td>${v.lot}</td><td>${v.exp}</td><td>${Number(v.price).toFixed(2)} €</td><td>${v.next}</td>
+                <td>${w.date}</td><td><strong>${w.value} kg</strong></td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editVaccine(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('vaccines', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editWeight(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('weights', ${originalIndex})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2325,21 +2578,16 @@
       `;
     }
 
-    function editVaccine(i) {
-      const v = getActivePet().vaccines[i];
-      editingState = { type: 'vaccine', index: i };
-      document.getElementById('vac-name').value = v.name;
-      document.getElementById('vac-date').value = v.date;
-      document.getElementById('vac-dose').value = v.dose !== '-' ? v.dose : '';
-      document.getElementById('vac-lot').value = v.lot !== '-' ? v.lot : '';
-      document.getElementById('vac-exp').value = v.exp !== '-' ? v.exp : '';
-      document.getElementById('vac-price').value = v.price;
-      document.getElementById('vac-next').value = v.next !== '-' ? v.next : '';
-      document.getElementById('btn-submit-vaccine').innerText = '💾 Actualizar Vacuna';
-      document.getElementById('btn-cancel-vaccine').style.display = 'inline-flex';
+    function editWeight(i) {
+      const w = getActivePet().weights[i];
+      editingState = { type: 'weight', index: i };
+      document.getElementById('weight-date').value = w.date;
+      document.getElementById('weight-val').value = w.value;
+      document.getElementById('btn-submit-weight').innerText = '💾 Actualizar Peso';
+      document.getElementById('btn-cancel-weight').style.display = 'inline-flex';
     }
 
-    // 8. CRUD DE DESPARASITACIÓN
+    // 7.2 CONTROL DESPARASITACIÓN
     function handleSaveDeworming(e, subType) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2367,6 +2615,7 @@
       cancelEdit(editKey);
       saveDatabase();
       renderDewormingTables();
+      renderAnamnesisView();
       populateCardData();
     }
 
@@ -2375,17 +2624,18 @@
       if (!pet) return;
 
       const renderTable = (arr, arrayKey, editFnName) => {
-        if (arr.length === 0) return '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin registros.</p>';
+        if (!arr || arr.length === 0) return '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin registros.</p>';
+        const sorted = getSortedByDateDesc(arr);
         return `
           <table class="custom-table">
             <thead><tr><th>Fecha</th><th>Medicación</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima (Alarma)</th><th>Acciones</th></tr></thead>
             <tbody>
-              ${arr.map((d, i) => `
+              ${sorted.map(({ item: d, originalIndex }) => `
                 <tr>
                   <td>${d.date}</td><td><strong>${d.med}</strong></td><td>${d.lot}</td><td>${d.exp}</td><td>${Number(d.price).toFixed(2)} €</td><td>🔔 ${d.next}</td>
                   <td>
-                    <button class="btn btn-warning btn-sm" onclick="${editFnName}(${i})">✏️</button>
-                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('${arrayKey}', ${i})">🗑️</button>
+                    <button class="btn btn-warning btn-sm" onclick="${editFnName}(${originalIndex})">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('${arrayKey}', ${originalIndex})">🗑️</button>
                   </td>
                 </tr>
               `).join('')}
@@ -2423,112 +2673,89 @@
       document.getElementById('btn-cancel-dew-external').style.display = 'inline-flex';
     }
 
-    // 9. CRUD DE HISTORIAL
-    function handleSavePathology(e) {
+    // 7.3 VACUNAS
+    function handleSaveVaccine(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
-      const isEditing = (editingState.type === 'pathology');
 
       const record = {
-        name: document.getElementById('his-pat').value,
-        start: document.getElementById('his-start').value,
-        end: document.getElementById('his-end').value || 'En curso',
-        treatment: document.getElementById('his-treat').value || '-',
-        doc: tempAttachments.pathology || (isEditing ? pet.pathologies[editingState.index].doc : null)
+        name: document.getElementById('vac-name').value.trim(),
+        date: document.getElementById('vac-date').value,
+        dose: document.getElementById('vac-dose').value || '-',
+        lot: document.getElementById('vac-lot').value || '-',
+        exp: document.getElementById('vac-exp').value || '-',
+        price: Number(document.getElementById('vac-price').value) || 0,
+        next: document.getElementById('vac-next').value || '-'
       };
 
-      if (isEditing) pet.pathologies[editingState.index] = record;
-      else pet.pathologies.push(record);
+      if (editingState.type === 'vaccine') {
+        pet.vaccines[editingState.index] = record;
+      } else {
+        pet.vaccines.push(record);
+      }
 
-      tempAttachments.pathology = null;
-      cancelEdit('pathology');
+      cancelEdit('vaccine');
       saveDatabase();
-      renderHistoryTables();
+      renderVaccinesTable();
+      renderAnamnesisView();
+      populateCardData();
     }
 
-    function editPathology(i) {
-      const p = getActivePet().pathologies[i];
-      editingState = { type: 'pathology', index: i };
-      document.getElementById('his-pat').value = p.name;
-      document.getElementById('his-start').value = p.start;
-      document.getElementById('his-end').value = p.end !== 'En curso' ? p.end : '';
-      document.getElementById('his-treat').value = p.treatment !== '-' ? p.treatment : '';
-      document.getElementById('btn-submit-pathology').innerText = '💾 Actualizar Patología';
-      document.getElementById('btn-cancel-pathology').style.display = 'inline-flex';
-    }
-
-    function handleSaveVisit(e) {
-      e.preventDefault();
+    function renderVaccinesTable() {
       const pet = getActivePet();
-      if (!pet) return;
-      const isEditing = (editingState.type === 'visit');
-
-      const record = {
-        date: document.getElementById('vis-date').value,
-        reason: document.getElementById('vis-reason').value,
-        price: Number(document.getElementById('vis-price').value) || 0,
-        doc: tempAttachments.visit || (isEditing ? pet.visits[editingState.index].doc : null)
-      };
-
-      if (isEditing) pet.visits[editingState.index] = record;
-      else pet.visits.push(record);
-
-      tempAttachments.visit = null;
-      cancelEdit('visit');
-      saveDatabase();
-      renderHistoryTables();
-    }
-
-    function editVisit(i) {
-      const v = getActivePet().visits[i];
-      editingState = { type: 'visit', index: i };
-      document.getElementById('vis-date').value = v.date;
-      document.getElementById('vis-reason').value = v.reason;
-      document.getElementById('vis-price').value = v.price;
-      document.getElementById('btn-submit-visit').innerText = '💾 Actualizar Visita';
-      document.getElementById('btn-cancel-visit').style.display = 'inline-flex';
-    }
-
-    function renderHistoryTables() {
-      const pet = getActivePet();
-      if (!pet) return;
-
-      document.getElementById('table-pathologies-container').innerHTML = pet.pathologies.length === 0
-        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin patologías registradas.</p>'
-        : `<table class="custom-table">
-            <thead><tr><th>Patología</th><th>Fecha Inicio</th><th>Fecha Fin</th><th>Tratamiento</th><th>Documento</th><th>Acciones</th></tr></thead>
-            <tbody>${pet.pathologies.map((p, i) => `
+      const container = document.getElementById('table-vaccines-container');
+      if (!pet || pet.vaccines.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">No hay vacunas registradas.</p>';
+        return;
+      }
+      const sorted = getSortedByDateDesc(pet.vaccines);
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead>
+            <tr><th>Fecha</th><th>Vacuna</th><th>Dosis</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Próxima Dosis</th><th>Acciones</th></tr>
+          </thead>
+          <tbody>
+            ${sorted.map(({ item: v, originalIndex }) => `
               <tr>
-                <td><strong>${p.name}</strong></td><td>${p.start}</td><td>${p.end}</td><td>${p.treatment}</td><td>${renderDocLink(p.doc)}</td>
+                <td>${v.date}</td><td><strong>${v.name}</strong></td><td>${v.dose}</td><td>${v.lot}</td><td>${v.exp}</td><td>${Number(v.price).toFixed(2)} €</td><td>${v.next}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editPathology(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('pathologies', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editVaccine(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('vaccines', ${originalIndex})">🗑️</button>
                 </td>
-              </tr>`).join('')}</tbody>
-          </table>`;
-
-      document.getElementById('table-visits-container').innerHTML = pet.visits.length === 0
-        ? '<p style="color:var(--text-muted); margin-top:0.5rem;">Sin visitas registradas.</p>'
-        : `<table class="custom-table">
-            <thead><tr><th>Fecha</th><th>Visitas veterinario</th><th>Precio (€)</th><th>Documento</th><th>Acciones</th></tr></thead>
-            <tbody>${pet.visits.map((v, i) => `
-              <tr>
-                <td>${v.date}</td><td><strong>${v.reason}</strong></td><td>${Number(v.price).toFixed(2)} €</td><td>${renderDocLink(v.doc)}</td>
-                <td>
-                  <button class="btn btn-warning btn-sm" onclick="editVisit(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('visits', ${i})">🗑️</button>
-                </td>
-              </tr>`).join('')}</tbody>
-          </table>`;
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
     }
 
-    // 10. CRUD DE LABORATORIO
+    function editVaccine(i) {
+      const v = getActivePet().vaccines[i];
+      editingState = { type: 'vaccine', index: i };
+      document.getElementById('vac-name').value = v.name;
+      document.getElementById('vac-date').value = v.date;
+      document.getElementById('vac-dose').value = v.dose !== '-' ? v.dose : '';
+      document.getElementById('vac-lot').value = v.lot !== '-' ? v.lot : '';
+      document.getElementById('vac-exp').value = v.exp !== '-' ? v.exp : '';
+      document.getElementById('vac-price').value = v.price;
+      document.getElementById('vac-next').value = v.next !== '-' ? v.next : '';
+      document.getElementById('btn-submit-vaccine').innerText = '💾 Actualizar Vacuna';
+      document.getElementById('btn-cancel-vaccine').style.display = 'inline-flex';
+    }
+
+    // =========================================================
+    // 8. LABORATORIO, PRUEBAS COMPLEMENTARIAS Y CIRUGÍAS (MÚLTIPLES PDFs POR FECHA)
+    // =========================================================
+
+    // 8.1 LABORATORIO
     function handleSaveLab(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
       const isEditing = (editingState.type === 'laboratory');
+      const existing = isEditing ? pet.laboratory[editingState.index] : null;
+      const prevDocs = existing ? (existing.docs || (existing.doc ? [existing.doc] : [])) : [];
 
       const record = {
         date: document.getElementById('lab-date').value,
@@ -2536,13 +2763,13 @@
         reqNum: document.getElementById('lab-req').value || '-',
         desc: document.getElementById('lab-desc').value || '-',
         result: document.getElementById('lab-res').value || '-',
-        doc: tempAttachments.laboratory || (isEditing ? pet.laboratory[editingState.index].doc : null)
+        docs: tempMultiDocs.laboratory.length > 0 ? [...prevDocs, ...tempMultiDocs.laboratory] : prevDocs
       };
 
       if (isEditing) pet.laboratory[editingState.index] = record;
       else pet.laboratory.push(record);
 
-      tempAttachments.laboratory = null;
+      tempMultiDocs.laboratory = [];
       cancelEdit('laboratory');
       saveDatabase();
       renderLaboratoryTable();
@@ -2555,16 +2782,18 @@
         container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin pruebas de laboratorio registradas.</p>';
         return;
       }
+      const sorted = getSortedByDateDesc(pet.laboratory);
       container.innerHTML = `
         <table class="custom-table">
-          <thead><tr><th>Fecha</th><th>Prueba</th><th>Nº Petición</th><th>Descripción</th><th>Resultado</th><th>Documento</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Fecha</th><th>Prueba</th><th>Nº Petición</th><th>Descripción</th><th>Resultado</th><th>Documentos PDF (Orden de fecha)</th><th>Acciones</th></tr></thead>
           <tbody>
-            ${pet.laboratory.map((l, i) => `
+            ${sorted.map(({ item: l, originalIndex }) => `
               <tr>
-                <td>${l.date}</td><td><strong>${l.test}</strong></td><td>${l.reqNum}</td><td>${l.desc}</td><td>${l.result}</td><td>${renderDocLink(l.doc)}</td>
+                <td><strong>${l.date}</strong></td><td><strong>${l.test}</strong></td><td>${l.reqNum}</td><td>${l.desc}</td><td>${l.result}</td>
+                <td>${renderMultiDocsLinks(l)}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editLaboratory(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('laboratory', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editLaboratory(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('laboratory', ${originalIndex})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2581,52 +2810,55 @@
       document.getElementById('lab-req').value = l.reqNum !== '-' ? l.reqNum : '';
       document.getElementById('lab-desc').value = l.desc !== '-' ? l.desc : '';
       document.getElementById('lab-res').value = l.result !== '-' ? l.result : '';
-      document.getElementById('btn-submit-lab').innerText = '💾 Actualizar Prueba';
+      document.getElementById('btn-submit-lab').innerText = '💾 Actualizar Laboratorio';
       document.getElementById('btn-cancel-lab').style.display = 'inline-flex';
     }
 
-    // 11. CRUD DE TRATAMIENTOS
-    function handleSaveTreatment(e) {
+    // 8.2 PRUEBAS COMPLEMENTARIAS
+    function handleSaveCompTest(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
-      const isEditing = (editingState.type === 'treatment');
+      const isEditing = (editingState.type === 'compTests');
+      const existing = isEditing ? pet.compTests[editingState.index] : null;
+      const prevDocs = existing ? (existing.docs || []) : [];
 
       const record = {
-        med: document.getElementById('treat-med').value,
-        date: document.getElementById('treat-date').value,
-        lot: document.getElementById('treat-lot').value || '-',
-        exp: document.getElementById('treat-exp').value || '-',
-        price: Number(document.getElementById('treat-price').value) || 0,
-        doc: tempAttachments.treatment || (isEditing ? pet.treatments[editingState.index].doc : null)
+        date: document.getElementById('comp-date').value,
+        name: document.getElementById('comp-name').value,
+        desc: document.getElementById('comp-desc').value || '-',
+        result: document.getElementById('comp-res').value || '-',
+        docs: tempMultiDocs.compTests.length > 0 ? [...prevDocs, ...tempMultiDocs.compTests] : prevDocs
       };
 
-      if (isEditing) pet.treatments[editingState.index] = record;
-      else pet.treatments.push(record);
+      if (isEditing) pet.compTests[editingState.index] = record;
+      else pet.compTests.push(record);
 
-      tempAttachments.treatment = null;
-      cancelEdit('treatment');
+      tempMultiDocs.compTests = [];
+      cancelEdit('compTests');
       saveDatabase();
-      renderTreatmentsTable();
+      renderCompTestsTable();
     }
 
-    function renderTreatmentsTable() {
+    function renderCompTestsTable() {
       const pet = getActivePet();
-      const container = document.getElementById('table-treatments-container');
-      if (!pet || pet.treatments.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin tratamientos registrados.</p>';
+      const container = document.getElementById('table-comp-tests-container');
+      if (!pet || pet.compTests.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin pruebas complementarias registradas.</p>';
         return;
       }
+      const sorted = getSortedByDateDesc(pet.compTests);
       container.innerHTML = `
         <table class="custom-table">
-          <thead><tr><th>Medicamento</th><th>Fecha</th><th>Lote</th><th>Caducidad</th><th>Precio (€)</th><th>Documento</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Fecha</th><th>Prueba complementaria</th><th>Descripción / Hallazgos</th><th>Resultado</th><th>Documentos PDF (Orden de fecha)</th><th>Acciones</th></tr></thead>
           <tbody>
-            ${pet.treatments.map((t, i) => `
+            ${sorted.map(({ item: c, originalIndex }) => `
               <tr>
-                <td><strong>${t.med}</strong></td><td>${t.date}</td><td>${t.lot}</td><td>${t.exp}</td><td>${Number(t.price).toFixed(2)} €</td><td>${renderDocLink(t.doc)}</td>
+                <td><strong>${c.date}</strong></td><td><strong>${c.name}</strong></td><td>${c.desc}</td><td>${c.result}</td>
+                <td>${renderMultiDocsLinks(c)}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editTreatment(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('treatments', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editCompTest(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('compTests', ${originalIndex})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2635,31 +2867,37 @@
       `;
     }
 
-    function editTreatment(i) {
-      const t = getActivePet().treatments[i];
-      editingState = { type: 'treatment', index: i };
-      document.getElementById('treat-med').value = t.med;
-      document.getElementById('treat-date').value = t.date;
-      document.getElementById('treat-lot').value = t.lot !== '-' ? t.lot : '';
-      document.getElementById('treat-exp').value = t.exp !== '-' ? t.exp : '';
-      document.getElementById('treat-price').value = t.price;
-      document.getElementById('btn-submit-treatment').innerText = '💾 Actualizar Tratamiento';
-      document.getElementById('btn-cancel-treatment').style.display = 'inline-flex';
+    function editCompTest(i) {
+      const c = getActivePet().compTests[i];
+      editingState = { type: 'compTests', index: i };
+      document.getElementById('comp-date').value = c.date;
+      document.getElementById('comp-name').value = c.name;
+      document.getElementById('comp-desc').value = c.desc !== '-' ? c.desc : '';
+      document.getElementById('comp-res').value = c.result !== '-' ? c.result : '';
+      document.getElementById('btn-submit-comp').innerText = '💾 Actualizar Prueba';
+      document.getElementById('btn-cancel-comp').style.display = 'inline-flex';
     }
 
-    // 12. CRUD DE CIRUGÍAS Y CONTROL DE PESO
+    // 8.3 CIRUGÍAS (CON MÚLTIPLES PDFs POR FECHA)
     function handleSaveSurgery(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
+      const isEditing = (editingState.type === 'surgery');
+      const existing = isEditing ? pet.surgeries[editingState.index] : null;
+      const prevDocs = existing ? (existing.docs || []) : [];
+
       const record = {
         date: document.getElementById('surg-date').value,
         name: document.getElementById('surg-name').value,
-        price: Number(document.getElementById('surg-price').value) || 0
+        price: Number(document.getElementById('surg-price').value) || 0,
+        docs: tempMultiDocs.surgeries.length > 0 ? [...prevDocs, ...tempMultiDocs.surgeries] : prevDocs
       };
-      if (editingState.type === 'surgery') pet.surgeries[editingState.index] = record;
+
+      if (isEditing) pet.surgeries[editingState.index] = record;
       else pet.surgeries.push(record);
 
+      tempMultiDocs.surgeries = [];
       cancelEdit('surgery');
       saveDatabase();
       renderSurgeriesTable();
@@ -2672,16 +2910,18 @@
         container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin cirugías registradas.</p>';
         return;
       }
+      const sorted = getSortedByDateDesc(pet.surgeries);
       container.innerHTML = `
         <table class="custom-table">
-          <thead><tr><th>Fecha</th><th>Cirugía</th><th>Precio (€)</th><th>Acciones</th></tr></thead>
+          <thead><tr><th>Fecha</th><th>Cirugía</th><th>Precio (€)</th><th>Documentos PDF (Orden de fecha)</th><th>Acciones</th></tr></thead>
           <tbody>
-            ${pet.surgeries.map((s, i) => `
+            ${sorted.map(({ item: s, originalIndex }) => `
               <tr>
-                <td>${s.date}</td><td><strong>${s.name}</strong></td><td>${Number(s.price).toFixed(2)} €</td>
+                <td><strong>${s.date}</strong></td><td><strong>${s.name}</strong></td><td>${Number(s.price).toFixed(2)} €</td>
+                <td>${renderMultiDocsLinks(s)}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editSurgery(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('surgeries', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editSurgery(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('surgeries', ${originalIndex})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2700,41 +2940,141 @@
       document.getElementById('btn-cancel-surgery').style.display = 'inline-flex';
     }
 
-    function handleSaveWeight(e) {
+    // =========================================================
+    // 9. ANAMNESIS PRETÉRITA (AUTOCOMPLETADO EN TIEMPO REAL)
+    // =========================================================
+    function renderAnamnesisView() {
+      const pet = getActivePet();
+      if (!pet) return;
+
+      // 1. Autocompletado de Control de Peso (último peso registrado)
+      const sortedWeights = getSortedByDateDesc(pet.weights);
+      const weightBox = document.getElementById('anam-auto-weight');
+      if (sortedWeights.length > 0) {
+        const latestW = sortedWeights[0].item;
+        weightBox.innerHTML = `<strong>${latestW.value} kg</strong> <span style="color:var(--text-muted);">(Registrado el ${latestW.date})</span>`;
+      } else {
+        weightBox.innerHTML = '<span style="color:var(--text-muted);">Sin registros en la pestaña Control Peso.</span>';
+      }
+
+      // 2. Autocompletado de Desparasitación (último registro interna y externa)
+      const sortedInt = getSortedByDateDesc(pet.dewormingInternal);
+      const sortedExt = getSortedByDateDesc(pet.dewormingExternal);
+      const dewBox = document.getElementById('anam-auto-deworming');
+      const intText = sortedInt.length > 0
+        ? `<strong>Interna:</strong> ${sortedInt[0].item.med} (${sortedInt[0].item.date}) - Próx: ${sortedInt[0].item.next || '-'}`
+        : `<strong>Interna:</strong> Sin registros`;
+      const extText = sortedExt.length > 0
+        ? `<strong>Externa:</strong> ${sortedExt[0].item.med} (${sortedExt[0].item.date}) - Próx: ${sortedExt[0].item.next || '-'}`
+        : `<strong>Externa:</strong> Sin registros`;
+      dewBox.innerHTML = `${intText}<br>${extText}`;
+
+      // 3. Autocompletado de Vacunas vigentes (última dosis de cada vacuna administrada)
+      const vacBox = document.getElementById('anam-auto-vaccines');
+      const sortedVacs = getSortedByDateDesc(pet.vaccines);
+      if (sortedVacs.length === 0) {
+        vacBox.innerHTML = '<span style="color:var(--text-muted);">Sin vacunas registradas.</span>';
+      } else {
+        // Agrupar por nombre de vacuna quedándonos con la fecha más reciente de cada una
+        const latestByVaccineName = new Map();
+        sortedVacs.forEach(({ item: v }) => {
+          const key = (v.name || '').trim().toUpperCase();
+          if (key && !latestByVaccineName.has(key)) {
+            latestByVaccineName.set(key, v);
+          }
+        });
+        vacBox.innerHTML = Array.from(latestByVaccineName.values()).map(v => `
+          <div>• <strong>${v.name}:</strong> Dosis ${v.dose} (${v.date}) | Lote: ${v.lot}</div>
+        `).join('');
+      }
+
+      // 4. Estilo de vida guardado
+      document.getElementById('anam-lifestyle').value = pet.lifestyle || '';
+    }
+
+    function handleSaveLifestyle(e) {
       e.preventDefault();
       const pet = getActivePet();
       if (!pet) return;
-      const record = {
-        date: document.getElementById('weight-date').value,
-        value: document.getElementById('weight-val').value
-      };
-      if (editingState.type === 'weight') pet.weights[editingState.index] = record;
-      else pet.weights.push(record);
-
-      cancelEdit('weight');
+      pet.lifestyle = document.getElementById('anam-lifestyle').value;
       saveDatabase();
-      renderWeightsTable();
-      renderHomePetsGrid();
-      populateCardData();
+      alert('Estilo de vida guardado correctamente en la Anamnesis pretérita.');
     }
 
-    function renderWeightsTable() {
+    // =========================================================
+    // 10. REGISTRO DE VISITAS, DIAGNÓSTICO PRESUNTIVO Y DEFINITIVO
+    // =========================================================
+
+    // 10.1 REGISTRO DE VISITAS
+    function toggleVisitDrawer() {
+      const drawer = document.getElementById('visit-form-drawer');
+      if (drawer.style.display === 'none') {
+        cancelEdit('visit');
+        drawer.style.display = 'block';
+        drawer.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        drawer.style.display = 'none';
+      }
+    }
+
+    function handleSaveVisit(e) {
+      e.preventDefault();
       const pet = getActivePet();
-      const container = document.getElementById('table-weights-container');
-      if (!pet || pet.weights.length === 0) {
-        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">Sin registros de peso.</p>';
+      if (!pet) return;
+      const isEditing = (editingState.type === 'visit');
+
+      const record = {
+        date: document.getElementById('vis-date').value,
+        symptoms: document.getElementById('vis-symptoms').value,
+        duration: document.getElementById('vis-duration').value || '-',
+        behavior: document.getElementById('vis-behavior').value || '-',
+        food: document.getElementById('vis-food').value || '-',
+        comments: document.getElementById('vis-comments').value || '-',
+        price: Number(document.getElementById('vis-price').value) || 0
+      };
+
+      if (isEditing) pet.visits[editingState.index] = record;
+      else pet.visits.push(record);
+
+      cancelEdit('visit');
+      saveDatabase();
+      renderVisitsTable();
+      renderExpensesBreakdown();
+    }
+
+    function renderVisitsTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-visits-container');
+      if (!pet || pet.visits.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:0.5rem;">No hay visitas registradas aún. Pulsa en "➕ Registrar nueva visita".</p>';
         return;
       }
+      const sorted = getSortedByDateDesc(pet.visits);
       container.innerHTML = `
         <table class="custom-table">
-          <thead><tr><th>Fecha</th><th>Peso (kg)</th><th>Acciones</th></tr></thead>
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Síntomas actuales</th>
+              <th>Duración</th>
+              <th>Cambios comportamiento</th>
+              <th>Alimentación</th>
+              <th>Otros comentarios</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
           <tbody>
-            ${pet.weights.map((w, i) => `
+            ${sorted.map(({ item: v, originalIndex }) => `
               <tr>
-                <td>${w.date}</td><td><strong>${w.value} kg</strong></td>
+                <td><strong>${v.date}</strong></td>
+                <td><strong>${v.symptoms || v.reason || '-'}</strong></td>
+                <td>${v.duration || '-'}</td>
+                <td>${v.behavior || '-'}</td>
+                <td>${v.food || '-'}</td>
+                <td>${v.comments || '-'}</td>
                 <td>
-                  <button class="btn btn-warning btn-sm" onclick="editWeight(${i})">✏️</button>
-                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('weights', ${i})">🗑️</button>
+                  <button class="btn btn-warning btn-sm" onclick="editVisit(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('visits', ${originalIndex})">🗑️</button>
                 </td>
               </tr>
             `).join('')}
@@ -2743,15 +3083,201 @@
       `;
     }
 
-    function editWeight(i) {
-      const w = getActivePet().weights[i];
-      editingState = { type: 'weight', index: i };
-      document.getElementById('weight-date').value = w.date;
-      document.getElementById('weight-val').value = w.value;
-      document.getElementById('btn-submit-weight').innerText = '💾 Actualizar Peso';
-      document.getElementById('btn-cancel-weight').style.display = 'inline-flex';
+    function editVisit(i) {
+      const v = getActivePet().visits[i];
+      editingState = { type: 'visit', index: i };
+      document.getElementById('visit-form-title').innerText = '✏️ Editar Visita';
+      document.getElementById('vis-date').value = v.date || '';
+      document.getElementById('vis-symptoms').value = v.symptoms || v.reason || '';
+      document.getElementById('vis-duration').value = v.duration !== '-' ? (v.duration || '') : '';
+      document.getElementById('vis-behavior').value = v.behavior !== '-' ? (v.behavior || '') : '';
+      document.getElementById('vis-food').value = v.food !== '-' ? (v.food || '') : '';
+      document.getElementById('vis-comments').value = v.comments !== '-' ? (v.comments || '') : '';
+      document.getElementById('vis-price').value = v.price || '';
+      document.getElementById('btn-submit-visit').innerText = '💾 Actualizar Visita';
+
+      const drawer = document.getElementById('visit-form-drawer');
+      drawer.style.display = 'block';
+      drawer.scrollIntoView({ behavior: 'smooth' });
     }
 
+    // 10.2 DIAGNÓSTICO PRESUNTIVO
+    function togglePresumptiveDrawer() {
+      const drawer = document.getElementById('presumptive-form-drawer');
+      if (drawer.style.display === 'none') {
+        cancelEdit('presumptive');
+        drawer.style.display = 'block';
+        drawer.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        drawer.style.display = 'none';
+      }
+    }
+
+    function handleSavePresumptive(e) {
+      e.preventDefault();
+      const pet = getActivePet();
+      if (!pet) return;
+      const record = {
+        date: document.getElementById('pres-date').value,
+        comments: document.getElementById('pres-comments').value
+      };
+
+      if (editingState.type === 'presumptive') {
+        pet.presumptiveDiag[editingState.index] = record;
+      } else {
+        pet.presumptiveDiag.push(record);
+      }
+
+      cancelEdit('presumptive');
+      saveDatabase();
+      renderPresumptiveTable();
+    }
+
+    function renderPresumptiveTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-presumptive-container');
+      if (!pet || pet.presumptiveDiag.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:0.5rem;">No hay diagnósticos presuntivos registrados. Pulsa en "➕ Registrar nuevo".</p>';
+        return;
+      }
+      const sorted = getSortedByDateDesc(pet.presumptiveDiag);
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead><tr><th style="width:130px;">Fecha</th><th>Comentarios / Diagnóstico Presuntivo</th><th style="width:110px;">Acciones</th></tr></thead>
+          <tbody>
+            ${sorted.map(({ item: p, originalIndex }) => `
+              <tr>
+                <td><strong>${p.date}</strong></td>
+                <td style="white-space:pre-wrap;">${p.comments}</td>
+                <td>
+                  <button class="btn btn-warning btn-sm" onclick="editPresumptive(${originalIndex})">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteRecord('presumptiveDiag', ${originalIndex})">🗑️</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function editPresumptive(i) {
+      const p = getActivePet().presumptiveDiag[i];
+      editingState = { type: 'presumptive', index: i };
+      document.getElementById('presumptive-form-title').innerText = '✏️ Editar Diagnóstico Presuntivo';
+      document.getElementById('pres-date').value = p.date;
+      document.getElementById('pres-comments').value = p.comments;
+      document.getElementById('btn-submit-presumptive').innerText = '💾 Actualizar';
+
+      const drawer = document.getElementById('presumptive-form-drawer');
+      drawer.style.display = 'block';
+      drawer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // 10.3 DIAGNÓSTICO DEFINITIVO (CON TRATAMIENTO, EVOLUCIÓN Y EPICRISIS ABIERTA/CERRADA)
+    function handleSaveDefinitive(e) {
+      e.preventDefault();
+      const pet = getActivePet();
+      if (!pet) return;
+
+      const record = {
+        date: document.getElementById('def-date').value,
+        diagnosis: document.getElementById('def-diagnosis').value,
+        meds: document.getElementById('def-meds').value || '-',
+        dose: document.getElementById('def-dose').value || '-',
+        freq: document.getElementById('def-freq').value || '-',
+        duration: document.getElementById('def-duration').value || '-',
+        recs: document.getElementById('def-recs').value || '-',
+        price: Number(document.getElementById('def-price').value) || 0,
+        evolution: document.getElementById('def-evolution').value || '-',
+        epicrisis: document.getElementById('def-epicrisis').value || '-',
+        status: document.getElementById('def-status').value
+      };
+
+      if (editingState.type === 'definitive') {
+        pet.definitiveDiag[editingState.index] = record;
+      } else {
+        pet.definitiveDiag.push(record);
+      }
+
+      cancelEdit('definitive');
+      saveDatabase();
+      renderDefinitiveTable();
+      renderExpensesBreakdown();
+    }
+
+    function renderDefinitiveTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-definitive-container');
+      if (!pet || pet.definitiveDiag.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:1rem;">No hay diagnósticos definitivos registrados aún.</p>';
+        return;
+      }
+      const sorted = getSortedByDateDesc(pet.definitiveDiag);
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>Diagnóstico</th>
+              <th>Tratamiento (Medicamentos, Dosis, Frec., Duración, Recom.)</th>
+              <th>Evolución clínica</th>
+              <th>Epicrisis (Historia Clínica)</th>
+              <th>Estado</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map(({ item: d, originalIndex }) => {
+              const isClosed = d.status === 'Episodio cerrado';
+              return `
+                <tr>
+                  <td><strong>${d.date}</strong></td>
+                  <td><strong style="color:var(--secondary);">${d.diagnosis}</strong></td>
+                  <td style="font-size:0.8rem; line-height:1.45;">
+                    <strong>Med:</strong> ${d.meds}<br>
+                    <strong>Dosis:</strong> ${d.dose} | <strong>Frec:</strong> ${d.freq} | <strong>Dur:</strong> ${d.duration}<br>
+                    <strong>Recom:</strong> ${d.recs}
+                  </td>
+                  <td style="white-space:pre-wrap;">${d.evolution}</td>
+                  <td style="white-space:pre-wrap;">${d.epicrisis}</td>
+                  <td>
+                    <span class="episode-badge ${isClosed ? 'episode-closed' : 'episode-open'}">
+                      ${isClosed ? '🟢 Episodio cerrado' : '🟠 Episodio abierto'}
+                    </span>
+                  </td>
+                  <td>
+                    <button class="btn btn-warning btn-sm" onclick="editDefinitive(${originalIndex})">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('definitiveDiag', ${originalIndex})">🗑️</button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function editDefinitive(i) {
+      const d = getActivePet().definitiveDiag[i];
+      editingState = { type: 'definitive', index: i };
+      document.getElementById('def-date').value = d.date;
+      document.getElementById('def-diagnosis').value = d.diagnosis;
+      document.getElementById('def-meds').value = d.meds !== '-' ? d.meds : '';
+      document.getElementById('def-dose').value = d.dose !== '-' ? d.dose : '';
+      document.getElementById('def-freq').value = d.freq !== '-' ? d.freq : '';
+      document.getElementById('def-duration').value = d.duration !== '-' ? d.duration : '';
+      document.getElementById('def-recs').value = d.recs !== '-' ? d.recs : '';
+      document.getElementById('def-price').value = d.price || '';
+      document.getElementById('def-evolution').value = d.evolution !== '-' ? d.evolution : '';
+      document.getElementById('def-epicrisis').value = d.epicrisis !== '-' ? d.epicrisis : '';
+      document.getElementById('def-status').value = d.status || 'Episodio abierto';
+
+      document.getElementById('btn-submit-definitive').innerText = '💾 Actualizar Diagnóstico Definitivo';
+      document.getElementById('btn-cancel-definitive').style.display = 'inline-flex';
+      document.getElementById('form-definitive').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ELIMINACIÓN Y CANCELACIÓN DE EDICIÓN
     function deleteRecord(arrayName, index) {
       if (!confirm('¿Estás segura de que deseas eliminar este registro? Esta acción no se puede deshacer.')) return;
       const pet = getActivePet();
@@ -2780,10 +3306,10 @@
         document.getElementById('btn-submit-pet').innerText = '💾 Guardar Mascota';
         document.getElementById('pet-form-drawer').style.display = 'none';
         toggleSterilizationFields();
-      } else if (type === 'vaccine') {
-        document.getElementById('form-vaccine').reset();
-        document.getElementById('btn-submit-vaccine').innerText = '+ Añadir Vacuna';
-        document.getElementById('btn-cancel-vaccine').style.display = 'none';
+      } else if (type === 'weight') {
+        document.getElementById('form-weight').reset();
+        document.getElementById('btn-submit-weight').innerText = '+ Registrar Peso';
+        document.getElementById('btn-cancel-weight').style.display = 'none';
       } else if (type === 'dewInternal') {
         document.getElementById('form-dew-internal').reset();
         document.getElementById('btn-submit-dew-internal').innerText = '+ Añadir Desparasitación Interna';
@@ -2792,35 +3318,44 @@
         document.getElementById('form-dew-external').reset();
         document.getElementById('btn-submit-dew-external').innerText = '+ Añadir Desparasitación Externa';
         document.getElementById('btn-cancel-dew-external').style.display = 'none';
-      } else if (type === 'pathology') {
-        document.getElementById('form-pathology').reset();
-        document.getElementById('btn-submit-pathology').innerText = '+ Guardar Patología';
-        document.getElementById('btn-cancel-pathology').style.display = 'none';
-      } else if (type === 'visit') {
-        document.getElementById('form-visit').reset();
-        document.getElementById('btn-submit-visit').innerText = '+ Guardar Visita';
-        document.getElementById('btn-cancel-visit').style.display = 'none';
+      } else if (type === 'vaccine') {
+        document.getElementById('form-vaccine').reset();
+        document.getElementById('btn-submit-vaccine').innerText = '+ Añadir Vacuna';
+        document.getElementById('btn-cancel-vaccine').style.display = 'none';
       } else if (type === 'laboratory') {
         document.getElementById('form-laboratory').reset();
+        tempMultiDocs.laboratory = [];
         document.getElementById('btn-submit-lab').innerText = '+ Añadir Registro de Laboratorio';
         document.getElementById('btn-cancel-lab').style.display = 'none';
-      } else if (type === 'treatment') {
-        document.getElementById('form-treatment').reset();
-        document.getElementById('btn-submit-treatment').innerText = '+ Añadir Tratamiento';
-        document.getElementById('btn-cancel-treatment').style.display = 'none';
+      } else if (type === 'compTests') {
+        document.getElementById('form-comp-test').reset();
+        tempMultiDocs.compTests = [];
+        document.getElementById('btn-submit-comp').innerText = '+ Añadir Prueba Complementaria';
+        document.getElementById('btn-cancel-comp').style.display = 'none';
       } else if (type === 'surgery') {
         document.getElementById('form-surgery').reset();
+        tempMultiDocs.surgeries = [];
         document.getElementById('btn-submit-surgery').innerText = '+ Añadir Cirugía';
         document.getElementById('btn-cancel-surgery').style.display = 'none';
-      } else if (type === 'weight') {
-        document.getElementById('form-weight').reset();
-        document.getElementById('btn-submit-weight').innerText = '+ Registrar Peso';
-        document.getElementById('btn-cancel-weight').style.display = 'none';
+      } else if (type === 'visit') {
+        document.getElementById('form-visit').reset();
+        document.getElementById('visit-form-title').innerText = '➕ Registrar nueva visita';
+        document.getElementById('btn-submit-visit').innerText = '💾 Guardar Visita';
+        document.getElementById('visit-form-drawer').style.display = 'none';
+      } else if (type === 'presumptive') {
+        document.getElementById('form-presumptive').reset();
+        document.getElementById('presumptive-form-title').innerText = '➕ Registrar nuevo Diagnóstico Presuntivo';
+        document.getElementById('btn-submit-presumptive').innerText = '💾 Guardar Diagnóstico Presuntivo';
+        document.getElementById('presumptive-form-drawer').style.display = 'none';
+      } else if (type === 'definitive') {
+        document.getElementById('form-definitive').reset();
+        document.getElementById('btn-submit-definitive').innerText = '+ Guardar Diagnóstico Definitivo';
+        document.getElementById('btn-cancel-definitive').style.display = 'none';
       }
     }
 
     // =========================================================
-    // 13. AUTOCOMPLETADO DE LA FICHA / CARNÉ DE LA MASCOTA
+    // 11. AUTOCOMPLETADO DE LA FICHA / CARNÉ DE LA MASCOTA
     // =========================================================
     function populateCardData() {
       const pet = getActivePet();
@@ -2846,7 +3381,8 @@
       document.getElementById('card-birth').innerText = pet.birth;
       document.getElementById('card-chip').innerText = pet.chip || 'Sin chip';
 
-      const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
+      const sortedW = getSortedByDateDesc(pet.weights);
+      const lastWeight = sortedW.length ? sortedW[0].item.value : '-';
       document.getElementById('card-weight').innerText = `${lastWeight} kg`;
 
       let sterText = pet.sterilized === 'si' ? `Sí (${pet.sterilizationDate || 'Sin fecha'})` : 'No';
@@ -2861,13 +3397,12 @@
       document.getElementById('card-img').src = pet.photo || 'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" fill="%23fff"><circle cx="50" cy="50" r="48"/></svg>';
       document.getElementById('card-validity-date').innerText = new Date().toLocaleDateString();
 
-      // Vacunas
       const vacListContainer = document.getElementById('card-vaccines-list');
-      const lastTwoVaccines = (pet.vaccines || []).slice(-2);
-      if (lastTwoVaccines.length === 0) {
+      const sortedVacs = getSortedByDateDesc(pet.vaccines).slice(0, 2);
+      if (sortedVacs.length === 0) {
         vacListContainer.innerHTML = '<p style="font-size:0.73rem; color:#777;">Sin vacunas registradas</p>';
       } else {
-        vacListContainer.innerHTML = lastTwoVaccines.map(v => `
+        vacListContainer.innerHTML = sortedVacs.map(({ item: v }) => `
           <div style="display:flex; justify-content:space-between; margin-bottom:0.15rem;">
             <span><b>Vacuna:</b> ${v.name}</span>
             <span><b>Fecha:</b> ${v.date}</span>
@@ -2876,15 +3411,13 @@
         `).join('');
       }
 
-      // Desparasitaciones
-      const lastInt = (pet.dewormingInternal || []).slice(-1)[0];
-      const lastExt = (pet.dewormingExternal || []).slice(-1)[0];
+      const lastInt = getSortedByDateDesc(pet.dewormingInternal)[0]?.item;
+      const lastExt = getSortedByDateDesc(pet.dewormingExternal)[0]?.item;
       document.getElementById('card-dew-int').innerText = lastInt ? lastInt.med : 'Ninguna';
       document.getElementById('card-dew-int-date').innerText = lastInt ? lastInt.date : '-';
       document.getElementById('card-dew-ext').innerText = lastExt ? lastExt.med : 'Ninguna';
       document.getElementById('card-dew-ext-date').innerText = lastExt ? lastExt.date : '-';
 
-      // Datos completos de la Clínica Veterinaria debajo de Desparasitación
       const matchedClinic = (db.clinics || []).find(
         c => c.name.toLowerCase() === (pet.clinic || '').trim().toLowerCase()
       ) || db.clinics[0];
@@ -2910,7 +3443,6 @@
         `;
       }
 
-      // Parte trasera: Datos de la Propietaria / Familia
       const fam = db.families.find(f => f.id === pet.familyId) || db.families[0] || {};
       document.getElementById('card-owner-name').innerText = fam.owner || '-';
       document.getElementById('card-owner-nif').innerText = fam.nif || '-';
@@ -2920,7 +3452,6 @@
       document.getElementById('card-owner-email').innerText = fam.email || '-';
       document.getElementById('card-owner-country').innerText = fam.country || 'España';
 
-      // Código de barras debajo de los datos del propietario
       const barcodeImg = document.getElementById('card-barcode-img');
       const barcodeEmpty = document.getElementById('card-barcode-empty');
       if (pet.barcode) {
@@ -2957,7 +3488,9 @@
       });
     }
 
-    // 14. GASTOS E INFORMES EJECUTIVOS
+    // =========================================================
+    // 12. GASTOS E INFORMES EJECUTIVOS (CON HISTORIA CLÍNICA Y EPICRISIS)
+    // =========================================================
     function renderExpensesBreakdown() {
       const pet = getActivePet();
       const container = document.getElementById('expenses-breakdown-zone');
@@ -2966,7 +3499,8 @@
       const vTotal = (pet.vaccines || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const visTotal = (pet.visits || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const dTotal = [...(pet.dewormingInternal || []), ...(pet.dewormingExternal || [])].reduce((a, b) => a + Number(b.price || 0), 0);
-      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0) +
+                       (pet.definitiveDiag || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const sTotal = (pet.surgeries || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const totalGeneral = vTotal + visTotal + dTotal + medTotal + sTotal;
 
@@ -2975,7 +3509,7 @@
           <p>💉 <strong>Vacunas:</strong> ${vTotal.toFixed(2)} €</p>
           <p>🩺 <strong>Visitas veterinario:</strong> ${visTotal.toFixed(2)} €</p>
           <p>🛡️ <strong>Desparasitación:</strong> ${dTotal.toFixed(2)} €</p>
-          <p>💊 <strong>Medicación:</strong> ${medTotal.toFixed(2)} €</p>
+          <p>💊 <strong>Medicación / Tratamientos:</strong> ${medTotal.toFixed(2)} €</p>
           <p>🩹 <strong>Cirugías:</strong> ${sTotal.toFixed(2)} €</p>
           <hr style="border:0; border-top:2px dashed var(--secondary); margin:1rem 0;">
           <h3 style="color:var(--secondary); font-size:1.3rem;">Total Acumulado: ${totalGeneral.toFixed(2)} €</h3>
@@ -2988,7 +3522,8 @@
       if (!pet) return;
 
       document.getElementById('rep-header-reg').innerText = `${pet.cardNumber || 'S/N'} (Chip: ${pet.chip || 'S/N'})`;
-      const lastWeight = pet.weights && pet.weights.length ? pet.weights[pet.weights.length - 1].value : '-';
+      const sortedW = getSortedByDateDesc(pet.weights);
+      const lastWeight = sortedW.length ? sortedW[0].item.value : '-';
 
       let earSides = [];
       if (pet.earRight) earSides.push('Derecha');
@@ -2997,23 +3532,41 @@
       const vTotal = (pet.vaccines || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const visTotal = (pet.visits || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const dTotal = [...(pet.dewormingInternal || []), ...(pet.dewormingExternal || [])].reduce((a, b) => a + Number(b.price || 0), 0);
-      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0);
+      const medTotal = (pet.treatments || []).reduce((a, b) => a + Number(b.price || 0), 0) +
+                       (pet.definitiveDiag || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const sTotal = (pet.surgeries || []).reduce((a, b) => a + Number(b.price || 0), 0);
 
+      // Construcción de la sección de Epicrisis e Historia Clínica
+      const sortedDefinitive = getSortedByDateDesc(pet.definitiveDiag);
+      const epicrisisHtml = sortedDefinitive.length === 0
+        ? '<p>Sin episodios registrados en Diagnóstico definitivo.</p>'
+        : sortedDefinitive.map(({ item: d }) => `
+            <div style="border-left: 3px solid #D81B60; padding-left: 0.75rem; margin-bottom: 0.8rem;">
+              <p><strong>[${d.date}] Diagnóstico: ${d.diagnosis}</strong> — <em>(${d.status})</em></p>
+              <p><strong>Tratamiento:</strong> ${d.meds} (${d.dose}, ${d.freq}, ${d.duration}). Recomendaciones: ${d.recs}</p>
+              <p><strong>Evolución:</strong> ${d.evolution}</p>
+              <p><strong>Epicrisis:</strong> ${d.epicrisis}</p>
+            </div>
+          `).join('');
+
       document.getElementById('report-rendered-body').innerHTML = `
-        <h3 style="color:#2B0938; margin: 0.8rem 0 0.4rem;">1. Datos de la Mascota</h3>
+        <h3 style="color:#2B0938; margin: 0.8rem 0 0.4rem;">1. Ficha e Identificación</h3>
         <p><strong>Nombre:</strong> ${pet.name} | <strong>Especie:</strong> ${pet.species} | <strong>Raza:</strong> ${pet.race || '-'} | <strong>Género:</strong> ${pet.gender}</p>
         <p><strong>Pelo:</strong> ${pet.hair || '-'} | <strong>Color:</strong> ${pet.color || '-'} | <strong>Tamaño:</strong> ${pet.size || '-'}</p>
         <p><strong>Nacimiento:</strong> ${pet.birth} | <strong>Último Peso:</strong> ${lastWeight} kg</p>
         <p><strong>Esterilización:</strong> ${pet.sterilized === 'si' ? `Sí (${pet.sterilizationDate || '-'})` : 'No'} | <strong>Corte en oreja:</strong> ${pet.earCut === 'si' ? `Sí (${earSides.join(', ')})` : 'No'}</p>
         <p><strong>Nº Chip:</strong> ${pet.chip || '-'} | <strong>Nº Cartilla:</strong> ${pet.cardNumber || '-'} | <strong>Centro Veterinario:</strong> ${pet.clinic || '-'}</p>
 
-        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">2. Resumen de Actividad Clínica</h3>
+        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">2. Anamnesis Pretérita yActividad Clínica</h3>
+        <p><strong>Estilo de vida:</strong> ${pet.lifestyle || 'No especificado'}</p>
         <p>• Vacunas: <strong>${pet.vaccines.length}</strong> | Desparasitaciones (Int/Ext): <strong>${pet.dewormingInternal.length}/${pet.dewormingExternal.length}</strong></p>
-        <p>• Patologías: <strong>${pet.pathologies.length}</strong> | Visitas: <strong>${pet.visits.length}</strong> | Pruebas Laboratorio: <strong>${pet.laboratory.length}</strong></p>
-        <p>• Tratamientos: <strong>${pet.treatments.length}</strong> | Cirugías: <strong>${pet.surgeries.length}</strong></p>
+        <p>• Laboratorio: <strong>${pet.laboratory.length}</strong> | Pruebas complementarias: <strong>${pet.compTests.length}</strong> | Cirugías: <strong>${pet.surgeries.length}</strong></p>
+        <p>• Visitas registradas: <strong>${pet.visits.length}</strong> | Diagnósticos presuntivos: <strong>${pet.presumptiveDiag.length}</strong></p>
 
-        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">3. Desglose de Gastos</h3>
+        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">3. Historia Clínica: Diagnósticos Definitivos y Epicrisis</h3>
+        ${epicrisisHtml}
+
+        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">4. Desglose de Gastos</h3>
         <p>Vacunas: ${vTotal.toFixed(2)} € | Visitas: ${visTotal.toFixed(2)} € | Desparasitación: ${dTotal.toFixed(2)} € | Medicación: ${medTotal.toFixed(2)} € | Cirugías: ${sTotal.toFixed(2)} €</p>
         <p style="font-size:1.05rem; font-weight:900; color:#D81B60; margin-top:0.4rem;">
           TOTAL INVERTIDO: ${(vTotal + visTotal + dTotal + medTotal + sTotal).toFixed(2)} €
@@ -3028,7 +3581,7 @@
     }
 
     // =========================================================
-    // 15. SINCRONIZACIÓN CON GITHUB SIN RECORTES
+    // 13. SINCRONIZACIÓN CON GITHUB SIN RECORTES
     // =========================================================
     function loadGitHubConfigUI() {
       if (ghConfig.gistId && !/^[a-f0-9]{20,}$/i.test(ghConfig.gistId)) {
@@ -3245,7 +3798,7 @@
       }
     }
 
-    // 16. AJUSTES, COPIAS LOCALES E INSTALACIÓN PWA
+    // 14. AJUSTES, COPIAS LOCALES E INSTALACIÓN PWA
     function toggleTheme() {
       const current = document.documentElement.getAttribute('data-theme');
       document.documentElement.setAttribute('data-theme', current === 'dark' ? 'light' : 'dark');
