@@ -440,7 +440,7 @@
     .cartilla-front {
       width: 500px;
       max-width: 100%;
-      min-height: 720px;
+      min-height: 730px;
       background: linear-gradient(135deg, #7E57C2 0%, #D81B60 100%);
       border-radius: 20px;
       padding: 1.35rem;
@@ -452,7 +452,6 @@
       gap: 0.6rem;
     }
 
-    /* Cabecera superior delantera: Izquierda (Foto + Nombre + QR) / Derecha (Logo + Nº Cartilla) */
     .cartilla-front-top {
       display: flex;
       justify-content: space-between;
@@ -496,7 +495,6 @@
       line-height: 1.1;
     }
 
-    /* Imagen del QR del colgante al lado del nombre */
     .cartilla-qr-img {
       width: 52px;
       height: 52px;
@@ -508,7 +506,6 @@
       flex-shrink: 0;
     }
 
-    /* Esquina superior derecha: Logo encima del Nº de Cartilla */
     .cartilla-logo-cardnum-box {
       display: flex;
       flex-direction: column;
@@ -538,7 +535,6 @@
       text-align: center;
     }
 
-    /* Cuadrícula de campos perfectamente alineados */
     .cartilla-grid-pills {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -572,7 +568,6 @@
       grid-column: 1 / -1;
     }
 
-    /* Bloques blancos para Vacunas, Desparasitación y Clínica Veterinaria */
     .cartilla-table-box {
       background: white;
       color: #2B0938;
@@ -595,7 +590,7 @@
     .cartilla-back {
       width: 500px;
       max-width: 100%;
-      min-height: 720px;
+      min-height: 730px;
       background: linear-gradient(135deg, #FCE4EC 0%, #F4B8E4 100%);
       border-radius: 20px;
       padding: 1.8rem;
@@ -641,7 +636,6 @@
       border-bottom: none;
     }
 
-    /* Contenedor del Código de Barras debajo de los datos del propietario */
     .cartilla-barcode-box {
       background: white;
       border: 2px solid #2B0938;
@@ -744,9 +738,10 @@
     </div>
 
     <div class="menu-group-title">Gestión Principal</div>
-    <!-- Primera pestaña llamada MASCOTAS (integra listado + opción de registrar nueva) -->
     <button class="menu-item active" onclick="showSection('view-home')">🐾 MASCOTAS</button>
     <button class="menu-item" onclick="showSection('view-families')">👨‍👩‍👧‍👦 Familias / Propietarias</button>
+    <!-- Nueva pestaña solicitada: Clínicas veterinarias -->
+    <button class="menu-item" onclick="showSection('view-clinics')">🏥 Clínicas veterinarias</button>
 
     <div class="menu-group-title">Seguimiento Clínico</div>
     <button class="menu-item" onclick="showSection('view-vaccines')">💉 Vacunas</button>
@@ -797,7 +792,7 @@
           <button class="btn btn-primary" onclick="toggleNewPetDrawer()">➕ Registrar Nueva Mascota</button>
         </div>
 
-        <!-- Panel desplegable para Registrar / Editar Mascota dentro de la misma pestaña MASCOTAS -->
+        <!-- Panel desplegable para Registrar / Editar Mascota -->
         <div id="pet-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
             <h2 id="pet-form-title" style="margin-bottom:0;">➕ Registrar Nueva Mascota</h2>
@@ -805,7 +800,7 @@
           </div>
 
           <form id="form-register-pet" onsubmit="handleSavePet(event)">
-            <!-- Fila 1: Nº Cartilla, Centro veterinario, Nombre, Fecha de nacimiento -->
+            <!-- Fila 1: Nº Cartilla, Centro veterinario (con lista de clínicas registradas), Nombre, Fecha de nacimiento -->
             <div class="form-row">
               <div class="form-group">
                 <label>Nº Cartilla:</label>
@@ -813,7 +808,8 @@
               </div>
               <div class="form-group">
                 <label>Centro veterinario:</label>
-                <input type="text" class="form-control" id="reg-clinic" placeholder="Nombre de la clínica veterinaria" required>
+                <input type="text" class="form-control" id="reg-clinic" list="clinics-datalist" placeholder="Selecciona o escribe una clínica" required>
+                <datalist id="clinics-datalist"></datalist>
               </div>
               <div class="form-group">
                 <label>Nombre:</label>
@@ -998,7 +994,76 @@
         </div>
       </section>
 
-      <!-- ================= 3. VACUNAS ================= -->
+      <!-- =========================================================
+           3. NUEVA PESTAÑA: CLÍNICAS VETERINARIAS
+           ========================================================= -->
+      <section id="view-clinics" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+          <h1 style="color: var(--primary);">🏥 Clínicas Veterinarias</h1>
+          <button class="btn btn-primary" onclick="toggleNewClinicDrawer()">➕ Registrar Nuevo</button>
+        </div>
+
+        <!-- Formulario desplegable para Registrar Nuevo / Editar Clínica -->
+        <div id="clinic-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h2 id="clinic-form-title" style="margin-bottom:0;">➕ Registrar Nueva Clínica Veterinaria</h2>
+            <button type="button" class="btn btn-outline btn-sm" onclick="cancelEdit('clinic')">✖ Cerrar formulario</button>
+          </div>
+
+          <form id="form-clinic" onsubmit="handleSaveClinic(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Clínica veterinaria:</label>
+                <input type="text" class="form-control" id="cli-name" placeholder="Nombre del centro veterinario" required>
+              </div>
+              <div class="form-group">
+                <label>Dirección:</label>
+                <input type="text" class="form-control" id="cli-address" placeholder="Calle, número" required>
+              </div>
+              <div class="form-group">
+                <label>Código Postal:</label>
+                <input type="text" class="form-control" id="cli-zip" placeholder="Ej. 43001" required>
+              </div>
+              <div class="form-group">
+                <label>Ciudad:</label>
+                <input type="text" class="form-control" id="cli-city" value="Tarragona" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Teléfono:</label>
+                <input type="text" class="form-control" id="cli-phone" placeholder="Teléfono de la clínica" required>
+              </div>
+              <div class="form-group">
+                <label>Correo electrónico:</label>
+                <input type="email" class="form-control" id="cli-email" placeholder="clinica@ejemplo.com">
+              </div>
+              <div class="form-group">
+                <label>Veterinario (Pere / Francesc):</label>
+                <select class="form-control" id="cli-vet" required>
+                  <option value="Pere">Pere</option>
+                  <option value="Francesc">Francesc</option>
+                  <option value="Pere / Francesc">Pere / Francesc</option>
+                </select>
+              </div>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 0.5rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" id="btn-cancel-clinic" onclick="cancelEdit('clinic')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-clinic">💾 Guardar Clínica</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Pantalla principal con el listado de clínicas veterinarias registradas -->
+        <div class="section-panel">
+          <h2>📋 Listado de Clínicas Veterinarias Registradas</h2>
+          <div class="table-responsive" id="table-clinics-container"></div>
+        </div>
+      </section>
+
+      <!-- ================= 4. VACUNAS ================= -->
       <section id="view-vaccines" style="display: none;">
         <div class="section-panel">
           <h2>💉 Listado de Vacunas: <span class="active-pet-name"></span></h2>
@@ -1024,7 +1089,7 @@
         </div>
       </section>
 
-      <!-- ================= 4. CONTROL DESPARASITACIÓN ================= -->
+      <!-- ================= 5. CONTROL DESPARASITACIÓN ================= -->
       <section id="view-deworming" style="display: none;">
         <div class="section-panel">
           <h2>🛡️ Control Desparasitación: <span class="active-pet-name"></span></h2>
@@ -1069,7 +1134,7 @@
         </div>
       </section>
 
-      <!-- ================= 5. HISTORIAL (PATOLOGÍAS Y VISITAS) ================= -->
+      <!-- ================= 6. HISTORIAL (PATOLOGÍAS Y VISITAS) ================= -->
       <section id="view-history" style="display: none;">
         <div class="section-panel">
           <h2>📋 Historial Clínico: <span class="active-pet-name"></span></h2>
@@ -1115,7 +1180,7 @@
         </div>
       </section>
 
-      <!-- ================= 6. LABORATORIO ================= -->
+      <!-- ================= 7. LABORATORIO ================= -->
       <section id="view-laboratory" style="display: none;">
         <div class="section-panel">
           <h2>🔬 Laboratorio: <span class="active-pet-name"></span></h2>
@@ -1142,7 +1207,7 @@
         </div>
       </section>
 
-      <!-- ================= 7. TRATAMIENTOS ================= -->
+      <!-- ================= 8. TRATAMIENTOS ================= -->
       <section id="view-treatments" style="display: none;">
         <div class="section-panel">
           <h2>💊 Tratamientos: <span class="active-pet-name"></span></h2>
@@ -1169,7 +1234,7 @@
         </div>
       </section>
 
-      <!-- ================= 8. CIRUGÍAS ================= -->
+      <!-- ================= 9. CIRUGÍAS ================= -->
       <section id="view-surgeries" style="display: none;">
         <div class="section-panel">
           <h2>🩹 Cirugías: <span class="active-pet-name"></span></h2>
@@ -1188,7 +1253,7 @@
         </div>
       </section>
 
-      <!-- ================= 9. CONTROL PESO ================= -->
+      <!-- ================= 10. CONTROL PESO ================= -->
       <section id="view-weight" style="display: none;">
         <div class="section-panel">
           <h2>⚖️ Control Peso: <span class="active-pet-name"></span></h2>
@@ -1207,7 +1272,7 @@
       </section>
 
       <!-- =========================================================
-           10. FICHA / CARNÉ DE LA MASCOTA (CON LA NUEVA DISTRIBUCIÓN)
+           11. FICHA / CARNÉ DE LA MASCOTA
            ========================================================= -->
       <section id="view-card" style="display: none;">
         <div class="section-panel">
@@ -1223,7 +1288,6 @@
             
             <!-- CARA DELANTERA (FRONTAL) -->
             <div class="cartilla-front">
-              <!-- Cabecera Frontal: Foto + Nombre + QR al lado izquierdo | Logo encima de Nº Cartilla al lado derecho -->
               <div class="cartilla-front-top">
                 <div class="cartilla-identity-group">
                   <img id="card-img" class="cartilla-avatar" src="" alt="Mascota">
@@ -1281,9 +1345,8 @@
               <!-- Datos de la Clínica Veterinaria debajo de Desparasitación -->
               <div class="cartilla-table-box" style="border-left: 4px solid #2B0938;">
                 <div class="cartilla-table-title">🏥 DATOS DE LA CLÍNICA VETERINARIA</div>
-                <div style="display:flex; justify-content:space-between; align-items:center;">
-                  <span>Centro Veterinario Asignado:</span>
-                  <strong id="card-clinic-name" style="font-size:0.82rem; color:#2B0938;">-</strong>
+                <div id="card-clinic-details" style="line-height: 1.45; color:#2B0938;">
+                  <!-- Poblado dinámicamente con el centro, dirección, teléfono y veterinario Pere/Francesc -->
                 </div>
               </div>
 
@@ -1292,7 +1355,7 @@
               </div>
             </div>
 
-            <!-- CARA TRASERA (REVERSO: SIN LOGO ARRIBA + CÓDIGO DE BARRAS DEBAJO DEL PROPIETARIO) -->
+            <!-- CARA TRASERA (REVERSO) -->
             <div class="cartilla-back">
               <div class="cartilla-back-title">👨‍👩‍👧‍👦 DATOS DE LA PROPIETARIA / FAMILIA</div>
 
@@ -1327,7 +1390,7 @@
         </div>
       </section>
 
-      <!-- ================= 11. GASTOS ================= -->
+      <!-- ================= 12. GASTOS ================= -->
       <section id="view-expenses" style="display: none;">
         <div class="section-panel">
           <h2>💰 Gastos Acumulados: <span class="active-pet-name"></span></h2>
@@ -1335,7 +1398,7 @@
         </div>
       </section>
 
-      <!-- ================= 12. INFORMES EJECUTIVOS ================= -->
+      <!-- ================= 13. INFORMES EJECUTIVOS ================= -->
       <section id="view-reports" style="display: none;">
         <div class="section-panel">
           <h2>📄 Informes Ejecutivos: <span class="active-pet-name"></span></h2>
@@ -1346,7 +1409,7 @@
         </div>
       </section>
 
-      <!-- ================= 13. AJUSTES Y SINCRONIZACIÓN CON GITHUB ================= -->
+      <!-- ================= 14. AJUSTES Y SINCRONIZACIÓN CON GITHUB ================= -->
       <section id="view-settings" style="display: none;">
         <div class="section-panel">
           <h2>⚙️ Ajustes y Sincronización en Tiempo Real (GitHub)</h2>
@@ -1433,12 +1496,18 @@
     const PHOTO_QUALITY = 0.75;     // Calidad JPEG de las fotos (0.75 = 75%)
     const SYNC_INTERVAL_MS = 30000; // Intervalo de sincronización automática (30.000 ms = 30 seg)
 
-    // 1. ESTADO DE LA BASE DE DATOS LOCAL
+    // 1. ESTADO DE LA BASE DE DATOS LOCAL (CON LISTA DE CLÍNICAS VETERINARIAS)
     let db = JSON.parse(localStorage.getItem('kontrolvet_full_db')) || {
       families: [],
+      clinics: [],
       pets: [],
       updatedAt: null
     };
+
+    // Aseguramos que la colección de clínicas exista aunque la base de datos venga de una versión anterior
+    db.families = db.families || [];
+    db.clinics = db.clinics || [];
+    db.pets = db.pets || [];
 
     const oldPets = JSON.parse(localStorage.getItem('kontrolvet_pets'));
     if (oldPets && oldPets.length > 0 && db.pets.length === 0) {
@@ -1447,7 +1516,6 @@
 
     let activePetIndex = 0;
 
-    // Almacén temporal para los 5 archivos del formulario de Mascota
     let tempPetFiles = {
       photo: '',
       qrCode: '',
@@ -1472,9 +1540,11 @@
       loadGitHubConfigUI();
       await optimizeExistingPhotosInDB();
       renderFamilySelectorInPetForm();
+      renderClinicSelectorInPetForm();
       renderPetSelector();
       renderHomePetsGrid();
       renderFamiliesTable();
+      renderClinicsTable();
       refreshActiveSection();
 
       if (ghConfig.token) {
@@ -1559,7 +1629,7 @@
 
     function showSection(sectionId) {
       const views = [
-        'view-home', 'view-families', 'view-vaccines',
+        'view-home', 'view-families', 'view-clinics', 'view-vaccines',
         'view-deworming', 'view-history', 'view-laboratory', 'view-treatments',
         'view-surgeries', 'view-weight', 'view-card', 'view-expenses',
         'view-reports', 'view-settings'
@@ -1624,6 +1694,7 @@
       });
 
       renderFamiliesTable();
+      renderClinicsTable();
       if (!pet) return;
 
       renderVaccinesTable();
@@ -1640,13 +1711,6 @@
     // =========================================================
     // 4. GESTIÓN DE IMÁGENES Y DOCUMENTOS DE LA MASCOTA
     // =========================================================
-
-    /**
-     * Comprime y guarda en memoria temporal las imágenes de la mascota:
-     * - photo: Fotografía de la mascota
-     * - qrCode: Código QR del colgante (usa PNG para máxima nitidez)
-     * - barcode: Código de barras (usa PNG para máxima nitidez de lectura)
-     */
     function handlePetImageUpload(event, key, maxSize = 500, isCode = false) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1689,11 +1753,6 @@
       reader.readAsDataURL(file);
     }
 
-    /**
-     * Procesa la subida de los archivos PDF de la mascota:
-     * - trackingPdf: Cartilla de seguimiento veterinario (PDF)
-     * - idCardPdf: Tarjeta de identificación (PDF)
-     */
     function handlePetPdfUpload(event, key) {
       const file = event.target.files[0];
       if (!file) return;
@@ -1868,6 +1927,148 @@
     }
 
     // =========================================================
+    // 5B. NUEVA SECCIÓN: CLÍNICAS VETERINARIAS (CRUD COMPLETO)
+    // =========================================================
+
+    /**
+     * Abre o cierra el formulario desplegable para registrar una nueva clínica veterinaria.
+     */
+    function toggleNewClinicDrawer() {
+      const drawer = document.getElementById('clinic-form-drawer');
+      if (drawer.style.display === 'none') {
+        cancelEdit('clinic');
+        drawer.style.display = 'block';
+        drawer.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        drawer.style.display = 'none';
+      }
+    }
+
+    /**
+     * Guarda una clínica nueva o actualiza una existente en db.clinics.
+     */
+    function handleSaveClinic(e) {
+      e.preventDefault();
+      const isEditing = (editingState.type === 'clinic');
+      const clinicObj = {
+        id: isEditing ? db.clinics[editingState.index].id : 'CLI-' + Date.now(),
+        name: document.getElementById('cli-name').value.trim(),
+        address: document.getElementById('cli-address').value.trim(),
+        zip: document.getElementById('cli-zip').value.trim(),
+        city: document.getElementById('cli-city').value.trim(),
+        phone: document.getElementById('cli-phone').value.trim(),
+        email: document.getElementById('cli-email').value.trim(),
+        vet: document.getElementById('cli-vet').value
+      };
+
+      if (isEditing) {
+        db.clinics[editingState.index] = clinicObj;
+      } else {
+        db.clinics.push(clinicObj);
+      }
+
+      cancelEdit('clinic');
+      saveDatabase();
+      renderClinicsTable();
+      renderClinicSelectorInPetForm();
+      populateCardData();
+    }
+
+    /**
+     * Renderiza el listado principal de clínicas veterinarias registradas.
+     */
+    function renderClinicsTable() {
+      const container = document.getElementById('table-clinics-container');
+      if (!container) return;
+      if (!db.clinics || db.clinics.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:0.5rem;">No hay clínicas veterinarias registradas aún. Pulsa en "➕ Registrar Nuevo" arriba a la derecha.</p>';
+        return;
+      }
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Clínica veterinaria</th>
+              <th>Dirección</th>
+              <th>Código Postal</th>
+              <th>Ciudad</th>
+              <th>Teléfono</th>
+              <th>Correo electrónico</th>
+              <th>Veterinario</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${db.clinics.map((c, i) => `
+              <tr>
+                <td><strong>${c.name}</strong></td>
+                <td>${c.address || '-'}</td>
+                <td>${c.zip || '-'}</td>
+                <td>${c.city || '-'}</td>
+                <td>${c.phone || '-'}</td>
+                <td>${c.email || '-'}</td>
+                <td><span style="background:var(--cream-logo); color:#2B0938; padding:0.2rem 0.55rem; border-radius:8px; font-weight:800; border:1px solid #2B0938;">👨‍⚕️ ${c.vet}</span></td>
+                <td>
+                  <button class="btn btn-warning btn-sm" onclick="editClinic(${i})" title="Editar">✏️</button>
+                  <button class="btn btn-danger btn-sm" onclick="deleteClinic(${i})" title="Eliminar">🗑️</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    /**
+     * Carga los datos de una clínica en el formulario para editarla.
+     */
+    function editClinic(index) {
+      const c = db.clinics[index];
+      editingState = { type: 'clinic', index };
+      document.getElementById('clinic-form-title').innerText = `✏️ Editar Clínica: ${c.name}`;
+      document.getElementById('cli-name').value = c.name || '';
+      document.getElementById('cli-address').value = c.address || '';
+      document.getElementById('cli-zip').value = c.zip || '';
+      document.getElementById('cli-city').value = c.city || '';
+      document.getElementById('cli-phone').value = c.phone || '';
+      document.getElementById('cli-email').value = c.email || '';
+      document.getElementById('cli-vet').value = c.vet || 'Pere';
+      document.getElementById('btn-submit-clinic').innerText = '💾 Actualizar Clínica';
+
+      const drawer = document.getElementById('clinic-form-drawer');
+      drawer.style.display = 'block';
+      drawer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Elimina una clínica previa confirmación del usuario.
+     */
+    function deleteClinic(index) {
+      const c = db.clinics[index];
+      if (!confirm(`¿Estás segura de que deseas eliminar la clínica "${c.name}"?`)) return;
+      db.clinics.splice(index, 1);
+      saveDatabase();
+      renderClinicsTable();
+      renderClinicSelectorInPetForm();
+      populateCardData();
+    }
+
+    /**
+     * Actualiza las sugerencias del campo "Centro veterinario" en el formulario de Mascotas.
+     */
+    function renderClinicSelectorInPetForm() {
+      const datalist = document.getElementById('clinics-datalist');
+      if (!datalist) return;
+      datalist.innerHTML = '';
+      (db.clinics || []).forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.name;
+        opt.label = `Vet: ${c.vet} - ${c.city}`;
+        datalist.appendChild(opt);
+      });
+    }
+
+    // =========================================================
     // 6. PESTAÑA "MASCOTAS": ALTA, EDICIÓN Y GENERAR FICHA
     // =========================================================
     function toggleSterilizationFields() {
@@ -1923,7 +2124,6 @@
         earCut: document.getElementById('reg-ear-cut').value,
         earRight: document.getElementById('reg-ear-right').checked,
         earLeft: document.getElementById('reg-ear-left').checked,
-        // Los 5 archivos subidos (conserva los anteriores si se está editando y no se subieron nuevos)
         photo: tempPetFiles.photo || (isEditing ? existingPet.photo : ''),
         qrCode: tempPetFiles.qrCode || (isEditing ? existingPet.qrCode : ''),
         barcode: tempPetFiles.barcode || (isEditing ? existingPet.barcode : ''),
@@ -2022,7 +2222,6 @@
         const card = document.createElement('div');
         card.className = 'pet-card';
 
-        // Enlaces opcionales si subió los PDFs de Cartilla de seguimiento o Tarjeta de identificación
         let pdfLinksHtml = '';
         if (pet.trackingPdf && pet.trackingPdf.data) {
           pdfLinksHtml += `<a href="${pet.trackingPdf.data}" download="${pet.trackingPdf.name}" target="_blank" class="btn btn-outline btn-sm" style="text-decoration:none;">📄 Cartilla PDF</a>`;
@@ -2569,6 +2768,11 @@
         document.getElementById('form-family').reset();
         document.getElementById('btn-submit-family').innerText = '+ Guardar Familia';
         document.getElementById('btn-cancel-family').style.display = 'none';
+      } else if (type === 'clinic') {
+        document.getElementById('form-clinic').reset();
+        document.getElementById('clinic-form-title').innerText = '➕ Registrar Nueva Clínica Veterinaria';
+        document.getElementById('btn-submit-clinic').innerText = '💾 Guardar Clínica';
+        document.getElementById('clinic-form-drawer').style.display = 'none';
       } else if (type === 'pet') {
         document.getElementById('form-register-pet').reset();
         tempPetFiles = { photo: '', qrCode: '', barcode: '', trackingPdf: null, idCardPdf: null };
@@ -2622,7 +2826,6 @@
       const pet = getActivePet();
       if (!pet) return;
 
-      // Parte delantera superior: Nombre, QR del colgante al lado, y Nº de Cartilla debajo del Logo
       document.getElementById('card-number-badge').innerText = pet.cardNumber || 'S/N';
       document.getElementById('card-name').innerText = pet.name.toUpperCase();
 
@@ -2634,7 +2837,6 @@
         qrImg.style.display = 'none';
       }
 
-      // Campos de identificación perfectamente alineados
       document.getElementById('card-sex').innerText = pet.gender;
       document.getElementById('card-species').innerText = pet.species;
       document.getElementById('card-color').innerText = pet.color || '-';
@@ -2682,8 +2884,31 @@
       document.getElementById('card-dew-ext').innerText = lastExt ? lastExt.med : 'Ninguna';
       document.getElementById('card-dew-ext-date').innerText = lastExt ? lastExt.date : '-';
 
-      // Clínica Veterinaria debajo de Desparasitación en la parte delantera
-      document.getElementById('card-clinic-name').innerText = pet.clinic || 'No especificado';
+      // Datos completos de la Clínica Veterinaria debajo de Desparasitación
+      const matchedClinic = (db.clinics || []).find(
+        c => c.name.toLowerCase() === (pet.clinic || '').trim().toLowerCase()
+      ) || db.clinics[0];
+
+      const clinicContainer = document.getElementById('card-clinic-details');
+      if (matchedClinic) {
+        clinicContainer.innerHTML = `
+          <div style="display:flex; justify-content:space-between;">
+            <span><strong>Clínica:</strong> ${matchedClinic.name}</span>
+            <span><strong>Veterinario:</strong> ${matchedClinic.vet}</span>
+          </div>
+          <div style="display:flex; justify-content:space-between; font-size:0.71rem; color:#555;">
+            <span>📍 ${matchedClinic.address}, ${matchedClinic.zip} ${matchedClinic.city}</span>
+            <span>📞 ${matchedClinic.phone}</span>
+          </div>
+        `;
+      } else {
+        clinicContainer.innerHTML = `
+          <div style="display:flex; justify-content:space-between;">
+            <span><strong>Centro Veterinario:</strong></span>
+            <strong>${pet.clinic || 'No especificado'}</strong>
+          </div>
+        `;
+      }
 
       // Parte trasera: Datos de la Propietaria / Familia
       const fam = db.families.find(f => f.id === pet.familyId) || db.families[0] || {};
@@ -2695,7 +2920,7 @@
       document.getElementById('card-owner-email').innerText = fam.email || '-';
       document.getElementById('card-owner-country').innerText = fam.country || 'España';
 
-      // Código de barras debajo de los datos del propietario en la parte trasera
+      // Código de barras debajo de los datos del propietario
       const barcodeImg = document.getElementById('card-barcode-img');
       const barcodeEmpty = document.getElementById('card-barcode-empty');
       if (pet.barcode) {
@@ -2995,6 +3220,9 @@
           const remoteDb = JSON.parse(fileContent);
           if (!db.updatedAt || (remoteDb.updatedAt && new Date(remoteDb.updatedAt) >= new Date(db.updatedAt)) || showAlert) {
             db = remoteDb;
+            db.families = db.families || [];
+            db.clinics = db.clinics || [];
+            db.pets = db.pets || [];
             await optimizeExistingPhotosInDB();
             try {
               localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
@@ -3002,6 +3230,7 @@
               console.warn('Almacenamiento local al límite, optimizando...');
             }
             renderFamilySelectorInPetForm();
+            renderClinicSelectorInPetForm();
             renderPetSelector();
             renderHomePetsGrid();
             refreshActiveSection();
@@ -3040,10 +3269,14 @@
             db.pets = imported;
           } else {
             db = imported;
+            db.families = db.families || [];
+            db.clinics = db.clinics || [];
+            db.pets = db.pets || [];
           }
           await saveDatabase();
           activePetIndex = 0;
           renderFamilySelectorInPetForm();
+          renderClinicSelectorInPetForm();
           renderPetSelector();
           renderHomePetsGrid();
           refreshActiveSection();
