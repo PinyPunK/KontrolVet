@@ -136,11 +136,11 @@
       display: flex;
       align-items: center;
       gap: 0.7rem;
-      padding: 0.6rem 1.2rem;
+      padding: 0.58rem 1.2rem;
       background: none;
       border: none;
       color: var(--text);
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       font-weight: 600;
       cursor: pointer;
       text-align: left;
@@ -450,6 +450,119 @@
       background: #E8F5E9;
       color: #1B5E20;
       border: 1px solid #81C784;
+    }
+
+    /* =========================================================
+       ESTILOS DE LA ESCALA GRIMACE FELINA (EVALUACIÓN DE DOLOR)
+       ========================================================= */
+    .grimace-notice-banner {
+      background: linear-gradient(90deg, rgba(255, 247, 214, 0.9) 0%, rgba(244, 184, 228, 0.35) 100%);
+      border: 2px solid #2B0938;
+      border-left: 6px solid var(--secondary);
+      color: #2B0938;
+      padding: 1rem 1.2rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+      line-height: 1.55;
+    }
+
+    .grimace-action-block {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 1.15rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .grimace-action-title {
+      font-size: 1rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .grimace-options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 0.85rem;
+    }
+
+    .grimace-option-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      padding: 0.9rem;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      gap: 0.45rem;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .grimace-option-card:hover {
+      border-color: var(--primary-accent);
+      transform: translateY(-2px);
+    }
+
+    .grimace-option-card input[type="radio"] {
+      accent-color: var(--secondary);
+      transform: scale(1.2);
+      margin-right: 0.4rem;
+    }
+
+    .grimace-option-card.selected-0 {
+      border-color: #2E7D32;
+      background: rgba(46, 125, 50, 0.06);
+    }
+
+    .grimace-option-card.selected-1 {
+      border-color: #EF6C00;
+      background: rgba(239, 108, 0, 0.06);
+    }
+
+    .grimace-option-card.selected-2 {
+      border-color: #C62828;
+      background: rgba(198, 40, 40, 0.07);
+    }
+
+    .grimace-pts-pill {
+      display: inline-block;
+      padding: 0.15rem 0.55rem;
+      border-radius: 10px;
+      font-size: 0.75rem;
+      font-weight: 900;
+    }
+
+    .pts-0 { background: #E8F5E9; color: #1B5E20; }
+    .pts-1 { background: #FFF3E0; color: #E65100; }
+    .pts-2 { background: #FFEBEE; color: #B71C1C; }
+
+    .grimace-score-summary {
+      padding: 1.4rem;
+      border-radius: 14px;
+      margin: 1.5rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      border: 2px solid #2B0938;
+      transition: background 0.3s ease;
+    }
+
+    .grimace-score-ok {
+      background: #E8F5E9;
+      color: #1B5E20;
+    }
+
+    .grimace-score-alert {
+      background: #FFEBEE;
+      color: #B71C1C;
     }
 
     /* =========================================================
@@ -874,12 +987,13 @@
     <button class="menu-item" onclick="showSection('view-visits')">🩺 Registro de visitas</button>
     <button class="menu-item" onclick="showSection('view-presumptive')">🔍 Diagnóstico Presuntivo</button>
     <button class="menu-item" onclick="showSection('view-definitive')">✅ Diagnóstico definitivo</button>
+    <!-- Nueva pestaña solicitada: Escala Grimace Felina -->
+    <button class="menu-item" onclick="showSection('view-grimace')">😺 Escala Grimace Felina</button>
 
     <div class="menu-group-title">Documentos y Finanzas</div>
     <button class="menu-item" onclick="showSection('view-card')">🪪 Ficha / Carné Mascota</button>
     <button class="menu-item" onclick="showSection('view-expenses')">💰 Gastos</button>
     <button class="menu-item" onclick="showSection('view-reports')">📄 Informes Ejecutivos</button>
-    <!-- Nueva pestaña añadida en Documentos y Finanzas: "Todo sobre..." -->
     <button class="menu-item" onclick="showSection('view-knowledge')">📚 Todo sobre...</button>
 
     <div class="menu-group-title">Sistema</div>
@@ -1581,6 +1695,204 @@
       </section>
 
       <!-- =========================================================
+           SC 11. NUEVA PESTAÑA: ESCALA GRIMACE FELINA (DOLOR AGUDO)
+           ========================================================= -->
+      <section id="view-grimace" style="display: none;">
+        <div class="section-panel">
+          <h2 id="grimace-form-title">😺 Escala Grimace Felina (Evaluación del Dolor Agudo): <span class="active-pet-name"></span></h2>
+
+          <!-- Banner de instrucciones oficiales de observación -->
+          <div class="grimace-notice-banner">
+            <strong>📋 Instrucciones de observación antes de puntuar:</strong><br>
+            Se evaluarán <strong>5 acciones</strong> observando al gato <strong>despierto y a distancia sin ser molestado</strong>, puntuando cada unidad de acción de 0 a 2 puntos. <br>
+            ⚠️ <em>Si el gato está comiendo, vocalizando o se está acicalando, esperar hasta que estas actividades hayan finalizado.</em>
+          </div>
+
+          <form id="form-grimace" onsubmit="handleSaveGrimace(event)">
+            <div class="form-row">
+              <div class="form-group" style="max-width: 240px;">
+                <label>Fecha de la evaluación:</label>
+                <input type="date" class="form-control" id="grim-date" required>
+              </div>
+              <div class="form-group">
+                <label>Observaciones / Contexto opcional:</label>
+                <input type="text" class="form-control" id="grim-notes" placeholder="Ej. Control postoperatorio, observación en casa...">
+              </div>
+            </div>
+
+            <!-- 1ª ACCIÓN: POSICIÓN DE LAS OREJAS -->
+            <div class="grimace-action-block">
+              <div class="grimace-action-title">1. Primera acción: Posición de las orejas</div>
+              <div class="grimace-options-grid">
+                <label class="grimace-option-card selected-0" id="card-ears-0">
+                  <div>
+                    <input type="radio" name="grim-ears" value="0" checked onchange="calculateGrimaceScore()">
+                    <strong>Opción a</strong> <span class="grimace-pts-pill pts-0">0 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Las orejas están hacia arriba y hacia adelante.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-ears-1">
+                  <div>
+                    <input type="radio" name="grim-ears" value="1" onchange="calculateGrimaceScore()">
+                    <strong>Opción b</strong> <span class="grimace-pts-pill pts-1">1 punto</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Las orejas se separan ligeramente.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-ears-2">
+                  <div>
+                    <input type="radio" name="grim-ears" value="2" onchange="calculateGrimaceScore()">
+                    <strong>Opción c</strong> <span class="grimace-pts-pill pts-2">2 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Orejas aplanadas y rotadas hacia afuera. Las puntas de las orejas están claramente separadas. A veces se visualiza la parte posterior de las orejas.</p>
+                </label>
+              </div>
+            </div>
+
+            <!-- 2ª ACCIÓN: APERTURA ORBITAL -->
+            <div class="grimace-action-block">
+              <div class="grimace-action-title">2. Segunda acción: Apertura orbital</div>
+              <div class="grimace-options-grid">
+                <label class="grimace-option-card selected-0" id="card-eyes-0">
+                  <div>
+                    <input type="radio" name="grim-eyes" value="0" checked onchange="calculateGrimaceScore()">
+                    <strong>Opción a</strong> <span class="grimace-pts-pill pts-0">0 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los ojos están redondos y abiertos.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-eyes-1">
+                  <div>
+                    <input type="radio" name="grim-eyes" value="1" onchange="calculateGrimaceScore()">
+                    <strong>Opción b</strong> <span class="grimace-pts-pill pts-1">1 punto</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los ojos están parcialmente abiertos.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-eyes-2">
+                  <div>
+                    <input type="radio" name="grim-eyes" value="2" onchange="calculateGrimaceScore()">
+                    <strong>Opción c</strong> <span class="grimace-pts-pill pts-2">2 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los ojos están entrecerrados.</p>
+                </label>
+              </div>
+            </div>
+
+            <!-- 3ª ACCIÓN: TENSIÓN DEL HOCICO -->
+            <div class="grimace-action-block">
+              <div class="grimace-action-title">3. Tercera acción: Tensión del hocico</div>
+              <div class="grimace-options-grid">
+                <label class="grimace-option-card selected-0" id="card-muzzle-0">
+                  <div>
+                    <input type="radio" name="grim-muzzle" value="0" checked onchange="calculateGrimaceScore()">
+                    <strong>Opción a</strong> <span class="grimace-pts-pill pts-0">0 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">El hocico está relajado.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-muzzle-1">
+                  <div>
+                    <input type="radio" name="grim-muzzle" value="1" onchange="calculateGrimaceScore()">
+                    <strong>Opción b</strong> <span class="grimace-pts-pill pts-1">1 punto</span>
+                  </div>
+                  <p style="font-size:0.83rem;">El hocico está levemente tenso.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-muzzle-2">
+                  <div>
+                    <input type="radio" name="grim-muzzle" value="2" onchange="calculateGrimaceScore()">
+                    <strong>Opción c</strong> <span class="grimace-pts-pill pts-2">2 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">El hocico está claramente tenso y aplanado/estirado. Tiene forma elíptica.</p>
+                </label>
+              </div>
+            </div>
+
+            <!-- 4ª ACCIÓN: POSICIÓN DE LOS BIGOTES -->
+            <div class="grimace-action-block">
+              <div class="grimace-action-title">4. Cuarta acción: Posición de los bigotes</div>
+              <div class="grimace-options-grid">
+                <label class="grimace-option-card selected-0" id="card-whiskers-0">
+                  <div>
+                    <input type="radio" name="grim-whiskers" value="0" checked onchange="calculateGrimaceScore()">
+                    <strong>Opción a</strong> <span class="grimace-pts-pill pts-0">0 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los bigotes están relajados y curvos.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-whiskers-1">
+                  <div>
+                    <input type="radio" name="grim-whiskers" value="1" onchange="calculateGrimaceScore()">
+                    <strong>Opción b</strong> <span class="grimace-pts-pill pts-1">1 punto</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los bigotes están más juntos en su base. Están levemente curvos o rectos.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-whiskers-2">
+                  <div>
+                    <input type="radio" name="grim-whiskers" value="2" onchange="calculateGrimaceScore()">
+                    <strong>Opción c</strong> <span class="grimace-pts-pill pts-2">2 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">Los bigotes están tensos y usualmente rectos hacia delante.</p>
+                </label>
+              </div>
+            </div>
+
+            <!-- 5ª ACCIÓN: POSICIÓN DE LA CABEZA -->
+            <div class="grimace-action-block">
+              <div class="grimace-action-title">5. Quinta acción: Posición de la cabeza</div>
+              <div class="grimace-options-grid">
+                <label class="grimace-option-card selected-0" id="card-head-0">
+                  <div>
+                    <input type="radio" name="grim-head" value="0" checked onchange="calculateGrimaceScore()">
+                    <strong>Opción a</strong> <span class="grimace-pts-pill pts-0">0 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">La cabeza está sobre la línea de los hombros. El gato puede estar levantado o acostado (en una posición cómoda y relajada).</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-head-1">
+                  <div>
+                    <input type="radio" name="grim-head" value="1" onchange="calculateGrimaceScore()">
+                    <strong>Opción b</strong> <span class="grimace-pts-pill pts-1">1 punto</span>
+                  </div>
+                  <p style="font-size:0.83rem;">La cabeza está alineada con la línea de los hombros.</p>
+                </label>
+
+                <label class="grimace-option-card" id="card-head-2">
+                  <div>
+                    <input type="radio" name="grim-head" value="2" onchange="calculateGrimaceScore()">
+                    <strong>Opción c</strong> <span class="grimace-pts-pill pts-2">2 puntos</span>
+                  </div>
+                  <p style="font-size:0.83rem;">La cabeza está bajo la línea de los hombros o inclinada hacia abajo (mentón hacia el pecho).</p>
+                </label>
+              </div>
+            </div>
+
+            <!-- PANEL DE SUMA AUTOMÁTICA Y ALERTA CLÍNICA (>= 4 PUNTOS) -->
+            <div id="grimace-result-banner" class="grimace-score-summary grimace-score-ok">
+              <div>
+                <div style="font-size: 1.35rem; font-weight: 900;">
+                  Puntuación Total: <span id="grimace-total-score">0</span> / 10 puntos
+                </div>
+                <div id="grimace-recommendation-text" style="font-size: 0.95rem; font-weight: 700; margin-top: 0.25rem;">
+                  ✅ Puntuación inferior a 4 puntos: No se detectan signos faciales de dolor agudo que requieran analgesia inmediata.
+                </div>
+              </div>
+              <div style="display:flex; gap:0.5rem;">
+                <button type="button" class="btn btn-outline" id="btn-cancel-grimace" style="display:none; background:white; color:#2B0938;" onclick="cancelEdit('grimace')">Cancelar Edición</button>
+                <button type="submit" class="btn btn-primary" id="btn-submit-grimace">💾 Guardar Evaluación</button>
+              </div>
+            </div>
+          </form>
+
+          <h3 style="color: var(--primary); margin-top: 2rem;">📋 Historial de Evaluaciones (Escala Grimace Felina)</h3>
+          <div class="table-responsive" id="table-grimace-container"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================
            D1. FICHA / CARNÉ DE LA MASCOTA
            ========================================================= -->
       <section id="view-card" style="display: none;">
@@ -1708,14 +2020,14 @@
         <div class="section-panel">
           <h2>📄 Informes Ejecutivos e Historia Clínica: <span class="active-pet-name"></span></h2>
           <p style="font-size:0.9rem; color:var(--text-muted); margin-bottom:1rem;">
-            Genera el informe completo incluyendo la Anamnesis pretérita, Diagnósticos definitivos y las Epicrisis registradas en la Historia Clínica.
+            Genera el informe completo incluyendo la Anamnesis pretérita, Escala Grimace Felina, Diagnósticos definitivos y las Epicrisis registradas en la Historia Clínica.
           </p>
           <button class="btn btn-primary" onclick="generateExecutiveReport()">Generar Informe Ejecutivo</button>
         </div>
       </section>
 
       <!-- =========================================================
-           D4. NUEVA PESTAÑA: "TODO SOBRE..." (CLASIFICADO EN CARPETAS POR TEMA)
+           D4. "TODO SOBRE..." (CLASIFICADO EN CARPETAS POR TEMA)
            ========================================================= -->
       <section id="view-knowledge" style="display: none;">
         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
@@ -1723,7 +2035,6 @@
           <button class="btn btn-primary" onclick="toggleKnowledgeDrawer()">➕ Añadir Nuevo Registro</button>
         </div>
 
-        <!-- Formulario desplegable para añadir o editar un recurso en "Todo sobre..." -->
         <div id="knowledge-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
           <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
             <h2 id="knowledge-form-title" style="margin-bottom:0;">➕ Añadir Nuevo Registro en "Todo sobre..."</h2>
@@ -1765,7 +2076,6 @@
           </form>
         </div>
 
-        <!-- Contenedor donde se dibujan automáticamente las carpetas agrupadas por "Tema" -->
         <div class="section-panel">
           <h2>🗂️ Carpetas Clasificadas por Tema</h2>
           <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
@@ -1860,12 +2170,13 @@
        ========================================================= -->
   <script>
     // PARÁMETROS CONFIGURABLES DE LA APLICACIÓN
-    const PHOTO_MAX_SIZE = 500;     // Tamaño máximo en píxeles (ancho o alto) para comprimir fotos
-    const PHOTO_QUALITY = 0.75;     // Calidad JPEG de las fotos (0.75 = 75%)
-    const MAX_FILE_SIZE_MB = 3;     // Tamaño máximo recomendado en MB para PDFs o vídeos cortos
-    const SYNC_INTERVAL_MS = 30000; // Intervalo de sincronización automática (30.000 ms = 30 seg)
+    const PHOTO_MAX_SIZE = 500;           // Tamaño máximo en píxeles (ancho o alto) para comprimir fotos
+    const PHOTO_QUALITY = 0.75;           // Calidad JPEG de las fotos (0.75 = 75%)
+    const MAX_FILE_SIZE_MB = 3;           // Tamaño máximo recomendado en MB para PDFs o vídeos cortos
+    const GRIMACE_ALERT_THRESHOLD = 4;    // A partir de 4 puntos en la Escala Grimace recomienda analgesia veterinaria
+    const SYNC_INTERVAL_MS = 30000;       // Intervalo de sincronización automática (30.000 ms = 30 seg)
 
-    // 1. ESTADO DE LA BASE DE DATOS LOCAL (CON COLECCIÓN knowledgeBase PARA "TODO SOBRE...")
+    // 1. ESTADO DE LA BASE DE DATOS LOCAL
     let db = JSON.parse(localStorage.getItem('kontrolvet_full_db')) || {
       families: [],
       clinics: [],
@@ -1900,9 +2211,7 @@
       surgeries: []
     };
 
-    // Archivo temporal subido en la pestaña "Todo sobre..."
     let tempKnowledgeFile = null;
-
     let editingState = { type: null, index: null };
     let deferredInstallPrompt = null;
 
@@ -1924,6 +2233,9 @@
       renderFamiliesTable();
       renderClinicsTable();
       renderKnowledgeFolders();
+      // Fecha de hoy por defecto en el formulario Grimace
+      document.getElementById('grim-date').value = new Date().toISOString().split('T')[0];
+      calculateGrimaceScore();
       refreshActiveSection();
 
       if (ghConfig.token) {
@@ -2011,7 +2323,7 @@
         'view-home', 'view-families', 'view-clinics',
         'view-weight', 'view-deworming', 'view-vaccines',
         'view-laboratory', 'view-comp-tests', 'view-surgeries',
-        'view-anamnesis', 'view-visits', 'view-presumptive', 'view-definitive',
+        'view-anamnesis', 'view-visits', 'view-presumptive', 'view-definitive', 'view-grimace',
         'view-card', 'view-expenses', 'view-reports', 'view-knowledge', 'view-settings'
       ];
       views.forEach(id => {
@@ -2045,6 +2357,7 @@
       pet.visits = pet.visits || [];
       pet.presumptiveDiag = pet.presumptiveDiag || [];
       pet.definitiveDiag = pet.definitiveDiag || [];
+      pet.grimaceScores = pet.grimaceScores || [];
       pet.treatments = pet.treatments || [];
       return pet;
     }
@@ -2091,6 +2404,7 @@
       renderVisitsTable();
       renderPresumptiveTable();
       renderDefinitiveTable();
+      renderGrimaceTable();
       populateCardData();
       renderExpensesBreakdown();
     }
@@ -2514,6 +2828,7 @@
         visits: isEditing ? (existingPet.visits || []) : [],
         presumptiveDiag: isEditing ? (existingPet.presumptiveDiag || []) : [],
         definitiveDiag: isEditing ? (existingPet.definitiveDiag || []) : [],
+        grimaceScores: isEditing ? (existingPet.grimaceScores || []) : [],
         treatments: isEditing ? (existingPet.treatments || []) : []
       };
 
@@ -3373,12 +3688,177 @@
     }
 
     // =========================================================
-    // 10B. NUEVO MÓDULO: "TODO SOBRE..." (AGRUPADO EN CARPETAS POR TEMA)
+    // 10B. NUEVO MÓDULO: ESCALA GRIMACE FELINA (CÁLCULO AUTOMÁTICO)
     // =========================================================
 
     /**
-     * Abre o cierra el cajón del formulario para añadir un nuevo registro en "Todo sobre...".
+     * Lee el valor seleccionado (0, 1 o 2) en cada una de las 5 unidades de acción,
+     * resalta visualmente las tarjetas elegidas, suma la puntuación total
+     * y muestra la alerta clínica si el resultado es igual o superior a 4 puntos.
      */
+    function calculateGrimaceScore() {
+      const actions = ['ears', 'eyes', 'muzzle', 'whiskers', 'head'];
+      let total = 0;
+      const scores = {};
+
+      actions.forEach(act => {
+        const checkedRadio = document.querySelector(`input[name="grim-${act}"]:checked`);
+        const val = checkedRadio ? parseInt(checkedRadio.value, 10) : 0;
+        scores[act] = val;
+        total += val;
+
+        // Actualizar el borde de color de la tarjeta seleccionada
+        [0, 1, 2].forEach(pts => {
+          const card = document.getElementById(`card-${act}-${pts}`);
+          if (card) {
+            card.classList.remove('selected-0', 'selected-1', 'selected-2');
+            if (pts === val) {
+              card.classList.add(`selected-${pts}`);
+            }
+          }
+        });
+      });
+
+      const scoreSpan = document.getElementById('grimace-total-score');
+      const recText = document.getElementById('grimace-recommendation-text');
+      const banner = document.getElementById('grimace-result-banner');
+
+      if (scoreSpan) scoreSpan.innerText = total;
+
+      if (banner && recText) {
+        if (total >= GRIMACE_ALERT_THRESHOLD) {
+          banner.classList.remove('grimace-score-ok');
+          banner.classList.add('grimace-score-alert');
+          recText.innerHTML = '⚠️ <strong>A partir de 4 puntos es aconsejable visitar al veterinario para indicar analgesia.</strong>';
+        } else {
+          banner.classList.remove('grimace-score-alert');
+          banner.classList.add('grimace-score-ok');
+          recText.innerHTML = '✅ Puntuación inferior a 4 puntos: No se alcanza el umbral de intervención analgésica.';
+        }
+      }
+
+      return { ...scores, total };
+    }
+
+    /**
+     * Guarda la evaluación de la Escala Grimace Felina en el historial de la mascota activa.
+     */
+    function handleSaveGrimace(e) {
+      e.preventDefault();
+      const pet = getActivePet();
+      if (!pet) return;
+
+      const calc = calculateGrimaceScore();
+      const record = {
+        date: document.getElementById('grim-date').value,
+        notes: document.getElementById('grim-notes').value.trim() || '-',
+        ears: calc.ears,
+        eyes: calc.eyes,
+        muzzle: calc.muzzle,
+        whiskers: calc.whiskers,
+        head: calc.head,
+        total: calc.total
+      };
+
+      if (editingState.type === 'grimace') {
+        pet.grimaceScores[editingState.index] = record;
+      } else {
+        pet.grimaceScores.push(record);
+      }
+
+      cancelEdit('grimace');
+      saveDatabase();
+      renderGrimaceTable();
+    }
+
+    /**
+     * Muestra la tabla con todas las evaluaciones de la Escala Grimace Felina ordenadas por fecha.
+     */
+    function renderGrimaceTable() {
+      const pet = getActivePet();
+      const container = document.getElementById('table-grimace-container');
+      if (!container) return;
+      if (!pet || !pet.grimaceScores || pet.grimaceScores.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted); margin-top:0.8rem;">No hay evaluaciones de la Escala Grimace registradas para esta mascota.</p>';
+        return;
+      }
+
+      const sorted = getSortedByDateDesc(pet.grimaceScores);
+      container.innerHTML = `
+        <table class="custom-table">
+          <thead>
+            <tr>
+              <th>Fecha</th>
+              <th>1. Orejas</th>
+              <th>2. Orbital</th>
+              <th>3. Hocico</th>
+              <th>4. Bigotes</th>
+              <th>5. Cabeza</th>
+              <th>Puntuación Total</th>
+              <th>Recomendación Clínica</th>
+              <th>Observaciones</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${sorted.map(({ item: g, originalIndex }) => {
+              const needsVet = g.total >= GRIMACE_ALERT_THRESHOLD;
+              return `
+                <tr>
+                  <td><strong>${g.date}</strong></td>
+                  <td>${g.ears} pt</td>
+                  <td>${g.eyes} pt</td>
+                  <td>${g.muzzle} pt</td>
+                  <td>${g.whiskers} pt</td>
+                  <td>${g.head} pt</td>
+                  <td><strong style="font-size:1rem; color:${needsVet ? 'var(--danger)' : 'var(--success)'};">${g.total} / 10</strong></td>
+                  <td>
+                    <span class="episode-badge ${needsVet ? 'episode-open' : 'episode-closed'}">
+                      ${needsVet ? '⚠️ Visitar veterinario (Analgesia)' : '✅ Normal (< 4 pts)'}
+                    </span>
+                  </td>
+                  <td>${g.notes || '-'}</td>
+                  <td>
+                    <button class="btn btn-warning btn-sm" onclick="editGrimace(${originalIndex})" title="Editar">✏️</button>
+                    <button class="btn btn-danger btn-sm" onclick="deleteRecord('grimaceScores', ${originalIndex})" title="Eliminar">🗑️</button>
+                  </td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    /**
+     * Carga una evaluación Grimace existente en el formulario para editarla.
+     */
+    function editGrimace(i) {
+      const g = getActivePet().grimaceScores[i];
+      editingState = { type: 'grimace', index: i };
+
+      document.getElementById('grim-date').value = g.date;
+      document.getElementById('grim-notes').value = g.notes !== '-' ? (g.notes || '') : '';
+
+      const setRadio = (name, val) => {
+        const radio = document.querySelector(`input[name="grim-${name}"][value="${val}"]`);
+        if (radio) radio.checked = true;
+      };
+      setRadio('ears', g.ears);
+      setRadio('eyes', g.eyes);
+      setRadio('muzzle', g.muzzle);
+      setRadio('whiskers', g.whiskers);
+      setRadio('head', g.head);
+
+      calculateGrimaceScore();
+      document.getElementById('btn-submit-grimace').innerText = '💾 Actualizar Evaluación';
+      document.getElementById('btn-cancel-grimace').style.display = 'inline-flex';
+      document.getElementById('form-grimace').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // =========================================================
+    // 10C. MÓDULO: "TODO SOBRE..." (AGRUPADO EN CARPETAS POR TEMA)
+    // =========================================================
     function toggleKnowledgeDrawer() {
       const drawer = document.getElementById('knowledge-form-drawer');
       if (drawer.style.display === 'none') {
@@ -3390,10 +3870,6 @@
       }
     }
 
-    /**
-     * Procesa el archivo subido en "Todo sobre..." (PDF, JPG, PNG o Vídeo).
-     * Si es imagen la optimiza con canvas; si es PDF o vídeo verifica que no supere MAX_FILE_SIZE_MB.
-     */
     function handleKnowledgeFileUpload(event) {
       const file = event.target.files[0];
       if (!file) return;
@@ -3441,9 +3917,6 @@
       }
     }
 
-    /**
-     * Guarda o actualiza un registro en db.knowledgeBase y regenera las carpetas por Tema.
-     */
     function handleSaveKnowledge(e) {
       e.preventDefault();
       const isEditing = (editingState.type === 'knowledge');
@@ -3470,10 +3943,6 @@
       renderKnowledgeFolders();
     }
 
-    /**
-     * Agrupa todos los registros de db.knowledgeBase en carpetas según su campo "Tema" (topic)
-     * y los muestra ordenados por fecha dentro de cada carpeta.
-     */
     function renderKnowledgeFolders() {
       const container = document.getElementById('knowledge-folders-container');
       const datalist = document.getElementById('topics-datalist');
@@ -3481,7 +3950,6 @@
 
       db.knowledgeBase = db.knowledgeBase || [];
 
-      // Actualizar las sugerencias de temas existentes en el formulario
       if (datalist) {
         const uniqueTopics = [...new Set(db.knowledgeBase.map(k => k.topic))].sort();
         datalist.innerHTML = uniqueTopics.map(t => `<option value="${t}">`).join('');
@@ -3492,7 +3960,6 @@
         return;
       }
 
-      // Agrupamos por "Tema" conservando el índice real (originalIndex) para poder editar/borrar
       const foldersMap = new Map();
       db.knowledgeBase.forEach((item, originalIndex) => {
         const topicName = (item.topic || 'General').trim();
@@ -3502,11 +3969,9 @@
         foldersMap.get(topicName).push({ item, originalIndex });
       });
 
-      // Ordenamos los nombres de las carpetas alfabéticamente
       const sortedTopicNames = Array.from(foldersMap.keys()).sort((a, b) => a.localeCompare(b));
 
       container.innerHTML = sortedTopicNames.map(topicName => {
-        // Ordenamos los archivos de dentro de la carpeta por Fecha (más recientes primero)
         const recordsInFolder = foldersMap.get(topicName).sort(
           (a, b) => (b.item.date || '').localeCompare(a.item.date || '')
         );
@@ -3552,9 +4017,6 @@
       }).join('');
     }
 
-    /**
-     * Renderiza la vista previa o botón de descarga según sea PDF, Imagen (JPG/PNG), Vídeo o URL.
-     */
     function renderKnowledgeMediaCell(k) {
       let html = '';
 
@@ -3619,7 +4081,7 @@
       renderKnowledgeFolders();
     }
 
-    // ELIMINACIÓN GENÉRICA DE REGISTROS DE MASCOTA Y CANCELACIÓN DE EDICIÓN
+    // ELIMINACIÓN GENÉRICA Y CANCELACIÓN DE EDICIÓN
     function deleteRecord(arrayName, index) {
       if (!confirm('¿Estás segura de que deseas eliminar este registro? Esta acción no se puede deshacer.')) return;
       const pet = getActivePet();
@@ -3693,6 +4155,12 @@
         document.getElementById('form-definitive').reset();
         document.getElementById('btn-submit-definitive').innerText = '+ Guardar Diagnóstico Definitivo';
         document.getElementById('btn-cancel-definitive').style.display = 'none';
+      } else if (type === 'grimace') {
+        document.getElementById('form-grimace').reset();
+        document.getElementById('grim-date').value = new Date().toISOString().split('T')[0];
+        calculateGrimaceScore();
+        document.getElementById('btn-submit-grimace').innerText = '💾 Guardar Evaluación';
+        document.getElementById('btn-cancel-grimace').style.display = 'none';
       } else if (type === 'knowledge') {
         document.getElementById('form-knowledge').reset();
         tempKnowledgeFile = null;
@@ -3892,6 +4360,11 @@
             </div>
           `).join('');
 
+      const lastGrimace = getSortedByDateDesc(pet.grimaceScores)[0]?.item;
+      const grimaceSummary = lastGrimace
+        ? `${lastGrimace.total}/10 puntos (${lastGrimace.date}) - ${lastGrimace.total >= GRIMACE_ALERT_THRESHOLD ? 'Se recomendó valoración analgésica' : 'Normal'}`
+        : 'Sin evaluaciones registradas';
+
       document.getElementById('report-rendered-body').innerHTML = `
         <h3 style="color:#2B0938; margin: 0.8rem 0 0.4rem;">1. Ficha e Identificación</h3>
         <p><strong>Nombre:</strong> ${pet.name} | <strong>Especie:</strong> ${pet.species} | <strong>Raza:</strong> ${pet.race || '-'} | <strong>Género:</strong> ${pet.gender}</p>
@@ -3902,6 +4375,7 @@
 
         <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">2. Anamnesis Pretérita y Actividad Clínica</h3>
         <p><strong>Estilo de vida:</strong> ${pet.lifestyle || 'No especificado'}</p>
+        <p><strong>Última Evaluación Escala Grimace Felina:</strong> ${grimaceSummary}</p>
         <p>• Vacunas: <strong>${pet.vaccines.length}</strong> | Desparasitaciones (Int/Ext): <strong>${pet.dewormingInternal.length}/${pet.dewormingExternal.length}</strong></p>
         <p>• Laboratorio: <strong>${pet.laboratory.length}</strong> | Pruebas complementarias: <strong>${pet.compTests.length}</strong> | Cirugías: <strong>${pet.surgeries.length}</strong></p>
         <p>• Visitas registradas: <strong>${pet.visits.length}</strong> | Diagnósticos presuntivos: <strong>${pet.presumptiveDiag.length}</strong></p>
