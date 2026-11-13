@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
@@ -263,7 +262,7 @@
     .btn-outline { background: transparent; border: 1.5px solid var(--border); color: var(--text); }
     .btn-sm { padding: 0.32rem 0.62rem; font-size: 0.76rem; border-radius: 6px; }
 
-    /* CUADRÍCULA DE MASCOTAS EN PESTAÑA "MASCOTAS" */
+    /* CUADRÍCULA DE MASCOTAS */
     .pets-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
@@ -453,6 +452,76 @@
       border: 1px solid #81C784;
     }
 
+    /* =========================================================
+       ESTILOS DE CARPETAS POR TEMA ("TODO SOBRE...")
+       ========================================================= */
+    .topic-folder {
+      background: var(--surface);
+      border: 1.5px solid var(--border);
+      border-radius: 14px;
+      margin-bottom: 1.1rem;
+      overflow: hidden;
+      box-shadow: 0 3px 10px rgba(43, 9, 56, 0.05);
+    }
+
+    .topic-folder-header {
+      background: linear-gradient(90deg, rgba(244, 184, 228, 0.35) 0%, rgba(184, 196, 248, 0.25) 100%);
+      padding: 0.95rem 1.25rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-weight: 800;
+      font-size: 1.05rem;
+      color: var(--primary);
+      list-style: none;
+      user-select: none;
+    }
+
+    .topic-folder-header::-webkit-details-marker {
+      display: none;
+    }
+
+    .topic-folder-title {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    .topic-count-badge {
+      background: var(--cream-logo);
+      color: #2B0938;
+      border: 1.5px solid #2B0938;
+      padding: 0.2rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .topic-folder-body {
+      padding: 1rem 1.25rem;
+      border-top: 1px solid var(--border);
+    }
+
+    .media-preview-thumb {
+      max-width: 110px;
+      max-height: 75px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      object-fit: cover;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
+    .video-preview-player {
+      max-width: 220px;
+      max-height: 130px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+
     /* TABLAS RESPONSIVAS */
     .table-responsive {
       overflow-x: auto;
@@ -461,7 +530,7 @@
     .custom-table {
       width: 100%;
       border-collapse: collapse;
-      margin-top: 1rem;
+      margin-top: 0.5rem;
       font-size: 0.83rem;
     }
 
@@ -781,7 +850,7 @@
   </svg>
 
   <!-- =========================================================
-       MENÚ DESPLEGABLE A LA IZQUIERDA (CON EL NUEVO ORDEN CLÍNICO)
+       MENÚ DESPLEGABLE A LA IZQUIERDA (SIDEBAR)
        ========================================================= -->
   <aside id="sidebar">
     <div class="sidebar-header">
@@ -794,7 +863,6 @@
     <button class="menu-item" onclick="showSection('view-families')">👨‍👩‍👧‍👦 Familias / Propietarias</button>
     <button class="menu-item" onclick="showSection('view-clinics')">🏥 Clínicas veterinarias</button>
 
-    <!-- APARTADO SEGUIMIENTO CLÍNICO EN EL ORDEN EXACTO SOLICITADO -->
     <div class="menu-group-title">Seguimiento Clínico</div>
     <button class="menu-item" onclick="showSection('view-weight')">⚖️ Control Peso</button>
     <button class="menu-item" onclick="showSection('view-deworming')">🛡️ Control Desparasitación</button>
@@ -811,6 +879,8 @@
     <button class="menu-item" onclick="showSection('view-card')">🪪 Ficha / Carné Mascota</button>
     <button class="menu-item" onclick="showSection('view-expenses')">💰 Gastos</button>
     <button class="menu-item" onclick="showSection('view-reports')">📄 Informes Ejecutivos</button>
+    <!-- Nueva pestaña añadida en Documentos y Finanzas: "Todo sobre..." -->
+    <button class="menu-item" onclick="showSection('view-knowledge')">📚 Todo sobre...</button>
 
     <div class="menu-group-title">Sistema</div>
     <button class="menu-item" onclick="showSection('view-settings')">⚙️ Ajustes y Sincronización</button>
@@ -1235,7 +1305,7 @@
       </section>
 
       <!-- =========================================================
-           SC 5. PRUEBAS COMPLEMENTARIAS (NUEVA + MÚLTIPLES PDFs POR FECHA)
+           SC 5. PRUEBAS COMPLEMENTARIAS (MÚLTIPLES PDFs POR FECHA)
            ========================================================= -->
       <section id="view-comp-tests" style="display: none;">
         <div class="section-panel">
@@ -1297,7 +1367,6 @@
             Los datos de peso, desparasitación y vacunas vigentes se autocompletan en tiempo real con los últimos registros introducidos en sus pestañas correspondientes.
           </p>
 
-          <!-- Bloques autocompletados -->
           <div class="auto-box-grid">
             <div class="auto-info-card">
               <h4>⚖️ Control de peso (Último registro)</h4>
@@ -1315,7 +1384,6 @@
             </div>
           </div>
 
-          <!-- Estilo de vida editable -->
           <form onsubmit="handleSaveLifestyle(event)">
             <div class="form-group">
               <label style="font-size: 0.95rem; color: var(--primary);">🏡 Estilo de vida (Hábitos, entorno, convivencia con otros animales, actividad, etc.):</label>
@@ -1447,7 +1515,6 @@
               </div>
             </div>
 
-            <!-- Bloque estructurado de Tratamiento -->
             <h4 style="color: var(--secondary); margin: 1rem 0 0.5rem;">💊 Tratamiento Pautado</h4>
             <div style="background: rgba(126, 87, 194, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem;">
               <div class="form-row">
@@ -1480,13 +1547,11 @@
               </div>
             </div>
 
-            <!-- Evolución Clínica -->
             <div class="form-group">
               <label>📈 Evolución clínica (Durante y después del tratamiento):</label>
               <textarea class="form-control" id="def-evolution" rows="3" placeholder="Anota cómo responde la mascota durante el tratamiento y su estado posterior..."></textarea>
             </div>
 
-            <!-- Epicrisis y Estado del Episodio -->
             <h4 style="color: var(--primary); margin: 1rem 0 0.5rem;">📑 Epicrisis (Se incorpora automáticamente a la Historia Clínica)</h4>
             <div style="background: rgba(216, 27, 96, 0.05); padding: 1rem; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 1rem;">
               <div class="form-group">
@@ -1650,6 +1715,67 @@
       </section>
 
       <!-- =========================================================
+           D4. NUEVA PESTAÑA: "TODO SOBRE..." (CLASIFICADO EN CARPETAS POR TEMA)
+           ========================================================= -->
+      <section id="view-knowledge" style="display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap:wrap; gap:1rem;">
+          <h1 style="color: var(--primary);">📚 Todo sobre... (Biblioteca por Temas)</h1>
+          <button class="btn btn-primary" onclick="toggleKnowledgeDrawer()">➕ Añadir Nuevo Registro</button>
+        </div>
+
+        <!-- Formulario desplegable para añadir o editar un recurso en "Todo sobre..." -->
+        <div id="knowledge-form-drawer" class="section-panel" style="display: none; border: 2px solid var(--secondary);">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h2 id="knowledge-form-title" style="margin-bottom:0;">➕ Añadir Nuevo Registro en "Todo sobre..."</h2>
+            <button type="button" class="btn btn-outline btn-sm" onclick="cancelEdit('knowledge')">✖ Cerrar formulario</button>
+          </div>
+
+          <form id="form-knowledge" onsubmit="handleSaveKnowledge(event)">
+            <div class="form-row">
+              <div class="form-group">
+                <label>Fecha:</label>
+                <input type="date" class="form-control" id="know-date" required>
+              </div>
+              <div class="form-group">
+                <label>Tema (Nombre de la carpeta):</label>
+                <input type="text" class="form-control" id="know-topic" list="topics-datalist" placeholder="Ej. Nutrición, Primeros Auxilios, Normativa..." required>
+                <datalist id="topics-datalist"></datalist>
+              </div>
+              <div class="form-group">
+                <label>Título:</label>
+                <input type="text" class="form-control" id="know-title" placeholder="Título del documento, guía o vídeo" required>
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label>Subir archivo (PDF / JPG / PNG / Vídeo corto):</label>
+                <input type="file" class="form-control" id="know-file" accept="application/pdf,image/jpeg,image/png,video/mp4,video/webm,video/*" onchange="handleKnowledgeFileUpload(event)">
+              </div>
+              <div class="form-group">
+                <label>O Enlace externo (Opcional para vídeos largos o webs):</label>
+                <input type="url" class="form-control" id="know-url" placeholder="https://...">
+              </div>
+            </div>
+
+            <div style="display:flex; justify-content:flex-end; gap:0.5rem; margin-top: 1rem;">
+              <button type="button" class="btn btn-outline" onclick="cancelEdit('knowledge')">Cancelar</button>
+              <button type="submit" class="btn btn-primary" id="btn-submit-knowledge">💾 Guardar en Carpeta</button>
+            </div>
+          </form>
+        </div>
+
+        <!-- Contenedor donde se dibujan automáticamente las carpetas agrupadas por "Tema" -->
+        <div class="section-panel">
+          <h2>🗂️ Carpetas Clasificadas por Tema</h2>
+          <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.2rem;">
+            Haz clic sobre cualquier carpeta para desplegar u ocultar los documentos, imágenes y vídeos que comparten ese mismo <strong>Tema</strong>.
+          </p>
+          <div id="knowledge-folders-container"></div>
+        </div>
+      </section>
+
+      <!-- =========================================================
            S1. AJUSTES Y SINCRONIZACIÓN CON GITHUB
            ========================================================= -->
       <section id="view-settings" style="display: none;">
@@ -1736,19 +1862,22 @@
     // PARÁMETROS CONFIGURABLES DE LA APLICACIÓN
     const PHOTO_MAX_SIZE = 500;     // Tamaño máximo en píxeles (ancho o alto) para comprimir fotos
     const PHOTO_QUALITY = 0.75;     // Calidad JPEG de las fotos (0.75 = 75%)
+    const MAX_FILE_SIZE_MB = 3;     // Tamaño máximo recomendado en MB para PDFs o vídeos cortos
     const SYNC_INTERVAL_MS = 30000; // Intervalo de sincronización automática (30.000 ms = 30 seg)
 
-    // 1. ESTADO DE LA BASE DE DATOS LOCAL
+    // 1. ESTADO DE LA BASE DE DATOS LOCAL (CON COLECCIÓN knowledgeBase PARA "TODO SOBRE...")
     let db = JSON.parse(localStorage.getItem('kontrolvet_full_db')) || {
       families: [],
       clinics: [],
       pets: [],
+      knowledgeBase: [],
       updatedAt: null
     };
 
     db.families = db.families || [];
     db.clinics = db.clinics || [];
     db.pets = db.pets || [];
+    db.knowledgeBase = db.knowledgeBase || [];
 
     const oldPets = JSON.parse(localStorage.getItem('kontrolvet_pets'));
     if (oldPets && oldPets.length > 0 && db.pets.length === 0) {
@@ -1765,12 +1894,14 @@
       idCardPdf: null
     };
 
-    // Almacén temporal para múltiples documentos PDF en Laboratorio, Pruebas complementarias y Cirugías
     let tempMultiDocs = {
       laboratory: [],
       compTests: [],
       surgeries: []
     };
+
+    // Archivo temporal subido en la pestaña "Todo sobre..."
+    let tempKnowledgeFile = null;
 
     let editingState = { type: null, index: null };
     let deferredInstallPrompt = null;
@@ -1792,6 +1923,7 @@
       renderHomePetsGrid();
       renderFamiliesTable();
       renderClinicsTable();
+      renderKnowledgeFolders();
       refreshActiveSection();
 
       if (ghConfig.token) {
@@ -1880,7 +2012,7 @@
         'view-weight', 'view-deworming', 'view-vaccines',
         'view-laboratory', 'view-comp-tests', 'view-surgeries',
         'view-anamnesis', 'view-visits', 'view-presumptive', 'view-definitive',
-        'view-card', 'view-expenses', 'view-reports', 'view-settings'
+        'view-card', 'view-expenses', 'view-reports', 'view-knowledge', 'view-settings'
       ];
       views.forEach(id => {
         const el = document.getElementById(id);
@@ -1898,9 +2030,6 @@
       refreshActiveSection();
     }
 
-    /**
-     * Garantiza que la mascota activa tenga inicializadas todas las colecciones clínicas nuevas.
-     */
     function getActivePet() {
       if (db.pets.length === 0) return null;
       if (activePetIndex >= db.pets.length) activePetIndex = 0;
@@ -1949,6 +2078,7 @@
 
       renderFamiliesTable();
       renderClinicsTable();
+      renderKnowledgeFolders();
       if (!pet) return;
 
       renderWeightsTable();
@@ -1965,10 +2095,6 @@
       renderExpensesBreakdown();
     }
 
-    /**
-     * Función auxiliar clave: Ordena cualquier lista de registros por fecha (de más reciente a más antigua)
-     * conservando el índice real (originalIndex) para que los botones Editar y Eliminar funcionen siempre con precisión.
-     */
     function getSortedByDateDesc(arr) {
       return (arr || [])
         .map((item, originalIndex) => ({ item, originalIndex }))
@@ -2033,10 +2159,6 @@
       reader.readAsDataURL(file);
     }
 
-    /**
-     * Lee varios archivos PDF o imágenes seleccionados a la vez (atributo multiple)
-     * para Laboratorio, Pruebas complementarias y Cirugías.
-     */
     async function handleMultiplePdfUpload(event, category) {
       const files = Array.from(event.target.files || []);
       if (files.length === 0) return;
@@ -2056,9 +2178,6 @@
       tempMultiDocs[category] = encodedList;
     }
 
-    /**
-     * Muestra en las tablas la lista de todos los documentos PDF subidos a un registro.
-     */
     function renderMultiDocsLinks(record) {
       let docsArray = [];
       if (record.docs && Array.isArray(record.docs)) {
@@ -2529,11 +2648,7 @@
       showSection('view-card');
     }
 
-    // =========================================================
     // 7. SEGUIMIENTO CLÍNICO: PESO, DESPARASITACIÓN Y VACUNAS
-    // =========================================================
-
-    // 7.1 CONTROL DE PESO
     function handleSaveWeight(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2588,7 +2703,6 @@
       document.getElementById('btn-cancel-weight').style.display = 'inline-flex';
     }
 
-    // 7.2 CONTROL DESPARASITACIÓN
     function handleSaveDeworming(e, subType) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2674,7 +2788,6 @@
       document.getElementById('btn-cancel-dew-external').style.display = 'inline-flex';
     }
 
-    // 7.3 VACUNAS
     function handleSaveVaccine(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2745,11 +2858,7 @@
       document.getElementById('btn-cancel-vaccine').style.display = 'inline-flex';
     }
 
-    // =========================================================
-    // 8. LABORATORIO, PRUEBAS COMPLEMENTARIAS Y CIRUGÍAS (MÚLTIPLES PDFs POR FECHA)
-    // =========================================================
-
-    // 8.1 LABORATORIO
+    // 8. LABORATORIO, PRUEBAS COMPLEMENTARIAS Y CIRUGÍAS
     function handleSaveLab(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2815,7 +2924,6 @@
       document.getElementById('btn-cancel-lab').style.display = 'inline-flex';
     }
 
-    // 8.2 PRUEBAS COMPLEMENTARIAS
     function handleSaveCompTest(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2879,7 +2987,6 @@
       document.getElementById('btn-cancel-comp').style.display = 'inline-flex';
     }
 
-    // 8.3 CIRUGÍAS (CON MÚLTIPLES PDFs POR FECHA)
     function handleSaveSurgery(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -2941,14 +3048,11 @@
       document.getElementById('btn-cancel-surgery').style.display = 'inline-flex';
     }
 
-    // =========================================================
-    // 9. ANAMNESIS PRETÉRITA (AUTOCOMPLETADO EN TIEMPO REAL)
-    // =========================================================
+    // 9. ANAMNESIS PRETÉRITA
     function renderAnamnesisView() {
       const pet = getActivePet();
       if (!pet) return;
 
-      // 1. Autocompletado de Control de Peso (último peso registrado)
       const sortedWeights = getSortedByDateDesc(pet.weights);
       const weightBox = document.getElementById('anam-auto-weight');
       if (sortedWeights.length > 0) {
@@ -2958,7 +3062,6 @@
         weightBox.innerHTML = '<span style="color:var(--text-muted);">Sin registros en la pestaña Control Peso.</span>';
       }
 
-      // 2. Autocompletado de Desparasitación (último registro interna y externa)
       const sortedInt = getSortedByDateDesc(pet.dewormingInternal);
       const sortedExt = getSortedByDateDesc(pet.dewormingExternal);
       const dewBox = document.getElementById('anam-auto-deworming');
@@ -2970,13 +3073,11 @@
         : `<strong>Externa:</strong> Sin registros`;
       dewBox.innerHTML = `${intText}<br>${extText}`;
 
-      // 3. Autocompletado de Vacunas vigentes (última dosis de cada vacuna administrada)
       const vacBox = document.getElementById('anam-auto-vaccines');
       const sortedVacs = getSortedByDateDesc(pet.vaccines);
       if (sortedVacs.length === 0) {
         vacBox.innerHTML = '<span style="color:var(--text-muted);">Sin vacunas registradas.</span>';
       } else {
-        // Agrupar por nombre de vacuna quedándonos con la fecha más reciente de cada una
         const latestByVaccineName = new Map();
         sortedVacs.forEach(({ item: v }) => {
           const key = (v.name || '').trim().toUpperCase();
@@ -2989,7 +3090,6 @@
         `).join('');
       }
 
-      // 4. Estilo de vida guardado
       document.getElementById('anam-lifestyle').value = pet.lifestyle || '';
     }
 
@@ -3002,11 +3102,7 @@
       alert('Estilo de vida guardado correctamente en la Anamnesis pretérita.');
     }
 
-    // =========================================================
     // 10. REGISTRO DE VISITAS, DIAGNÓSTICO PRESUNTIVO Y DEFINITIVO
-    // =========================================================
-
-    // 10.1 REGISTRO DE VISITAS
     function toggleVisitDrawer() {
       const drawer = document.getElementById('visit-form-drawer');
       if (drawer.style.display === 'none') {
@@ -3102,7 +3198,6 @@
       drawer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 10.2 DIAGNÓSTICO PRESUNTIVO
     function togglePresumptiveDrawer() {
       const drawer = document.getElementById('presumptive-form-drawer');
       if (drawer.style.display === 'none') {
@@ -3174,7 +3269,6 @@
       drawer.scrollIntoView({ behavior: 'smooth' });
     }
 
-    // 10.3 DIAGNÓSTICO DEFINITIVO (CON TRATAMIENTO, EVOLUCIÓN Y EPICRISIS ABIERTA/CERRADA)
     function handleSaveDefinitive(e) {
       e.preventDefault();
       const pet = getActivePet();
@@ -3278,7 +3372,254 @@
       document.getElementById('form-definitive').scrollIntoView({ behavior: 'smooth' });
     }
 
-    // ELIMINACIÓN Y CANCELACIÓN DE EDICIÓN
+    // =========================================================
+    // 10B. NUEVO MÓDULO: "TODO SOBRE..." (AGRUPADO EN CARPETAS POR TEMA)
+    // =========================================================
+
+    /**
+     * Abre o cierra el cajón del formulario para añadir un nuevo registro en "Todo sobre...".
+     */
+    function toggleKnowledgeDrawer() {
+      const drawer = document.getElementById('knowledge-form-drawer');
+      if (drawer.style.display === 'none') {
+        cancelEdit('knowledge');
+        drawer.style.display = 'block';
+        drawer.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        drawer.style.display = 'none';
+      }
+    }
+
+    /**
+     * Procesa el archivo subido en "Todo sobre..." (PDF, JPG, PNG o Vídeo).
+     * Si es imagen la optimiza con canvas; si es PDF o vídeo verifica que no supere MAX_FILE_SIZE_MB.
+     */
+    function handleKnowledgeFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const fileSizeMB = file.size / (1024 * 1024);
+      if (fileSizeMB > MAX_FILE_SIZE_MB) {
+        alert(`El archivo seleccionado pesa ${fileSizeMB.toFixed(1)} MB. Para garantizar que la sincronización con GitHub funcione rápido en el móvil, sube archivos de hasta ${MAX_FILE_SIZE_MB} MB o pega un enlace en el campo URL.`);
+        event.target.value = '';
+        tempKnowledgeFile = null;
+        return;
+      }
+
+      if (file.type.startsWith('image/')) {
+        const reader = new FileReader();
+        reader.onload = e => {
+          const img = new Image();
+          img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const max = 800;
+            let w = img.width, h = img.height;
+            if (w > h && w > max) { h = Math.round(h * (max / w)); w = max; }
+            else if (h >= w && h > max) { w = Math.round(w * (max / h)); h = max; }
+            canvas.width = w;
+            canvas.height = h;
+            canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+            tempKnowledgeFile = {
+              name: file.name,
+              mime: 'image/jpeg',
+              data: canvas.toDataURL('image/jpeg', 0.8)
+            };
+          };
+          img.src = e.target.result;
+        };
+        reader.readAsDataURL(file);
+      } else {
+        const reader = new FileReader();
+        reader.onload = e => {
+          tempKnowledgeFile = {
+            name: file.name,
+            mime: file.type || 'application/octet-stream',
+            data: e.target.result
+          };
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+
+    /**
+     * Guarda o actualiza un registro en db.knowledgeBase y regenera las carpetas por Tema.
+     */
+    function handleSaveKnowledge(e) {
+      e.preventDefault();
+      const isEditing = (editingState.type === 'knowledge');
+      const existing = isEditing ? db.knowledgeBase[editingState.index] : null;
+
+      const record = {
+        id: isEditing ? existing.id : 'KNOW-' + Date.now(),
+        date: document.getElementById('know-date').value,
+        topic: document.getElementById('know-topic').value.trim(),
+        title: document.getElementById('know-title').value.trim(),
+        url: document.getElementById('know-url').value.trim() || '',
+        file: tempKnowledgeFile || (isEditing ? existing.file : null)
+      };
+
+      if (isEditing) {
+        db.knowledgeBase[editingState.index] = record;
+      } else {
+        db.knowledgeBase.push(record);
+      }
+
+      tempKnowledgeFile = null;
+      cancelEdit('knowledge');
+      saveDatabase();
+      renderKnowledgeFolders();
+    }
+
+    /**
+     * Agrupa todos los registros de db.knowledgeBase en carpetas según su campo "Tema" (topic)
+     * y los muestra ordenados por fecha dentro de cada carpeta.
+     */
+    function renderKnowledgeFolders() {
+      const container = document.getElementById('knowledge-folders-container');
+      const datalist = document.getElementById('topics-datalist');
+      if (!container) return;
+
+      db.knowledgeBase = db.knowledgeBase || [];
+
+      // Actualizar las sugerencias de temas existentes en el formulario
+      if (datalist) {
+        const uniqueTopics = [...new Set(db.knowledgeBase.map(k => k.topic))].sort();
+        datalist.innerHTML = uniqueTopics.map(t => `<option value="${t}">`).join('');
+      }
+
+      if (db.knowledgeBase.length === 0) {
+        container.innerHTML = '<p style="color:var(--text-muted);">Aún no hay documentos ni temas guardados. Pulsa en "➕ Añadir Nuevo Registro" arriba a la derecha para crear tu primera carpeta.</p>';
+        return;
+      }
+
+      // Agrupamos por "Tema" conservando el índice real (originalIndex) para poder editar/borrar
+      const foldersMap = new Map();
+      db.knowledgeBase.forEach((item, originalIndex) => {
+        const topicName = (item.topic || 'General').trim();
+        if (!foldersMap.has(topicName)) {
+          foldersMap.set(topicName, []);
+        }
+        foldersMap.get(topicName).push({ item, originalIndex });
+      });
+
+      // Ordenamos los nombres de las carpetas alfabéticamente
+      const sortedTopicNames = Array.from(foldersMap.keys()).sort((a, b) => a.localeCompare(b));
+
+      container.innerHTML = sortedTopicNames.map(topicName => {
+        // Ordenamos los archivos de dentro de la carpeta por Fecha (más recientes primero)
+        const recordsInFolder = foldersMap.get(topicName).sort(
+          (a, b) => (b.item.date || '').localeCompare(a.item.date || '')
+        );
+
+        return `
+          <details class="topic-folder" open>
+            <summary class="topic-folder-header">
+              <div class="topic-folder-title">
+                <span style="font-size:1.3rem;">📁</span>
+                <span>Carpeta: ${topicName}</span>
+              </div>
+              <span class="topic-count-badge">${recordsInFolder.length} registro(s)</span>
+            </summary>
+            <div class="topic-folder-body">
+              <div class="table-responsive">
+                <table class="custom-table">
+                  <thead>
+                    <tr>
+                      <th style="width:120px;">Fecha</th>
+                      <th>Título</th>
+                      <th>Archivo (PDF / Imagen / Vídeo / Enlace)</th>
+                      <th style="width:110px;">Acciones</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    ${recordsInFolder.map(({ item: k, originalIndex }) => `
+                      <tr>
+                        <td><strong>${k.date}</strong></td>
+                        <td><strong style="color:var(--secondary); font-size:0.92rem;">${k.title}</strong></td>
+                        <td>${renderKnowledgeMediaCell(k)}</td>
+                        <td>
+                          <button class="btn btn-warning btn-sm" onclick="editKnowledge(${originalIndex})" title="Editar">✏️</button>
+                          <button class="btn btn-danger btn-sm" onclick="deleteKnowledge(${originalIndex})" title="Eliminar">🗑️</button>
+                        </td>
+                      </tr>
+                    `).join('')}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </details>
+        `;
+      }).join('');
+    }
+
+    /**
+     * Renderiza la vista previa o botón de descarga según sea PDF, Imagen (JPG/PNG), Vídeo o URL.
+     */
+    function renderKnowledgeMediaCell(k) {
+      let html = '';
+
+      if (k.file && k.file.data) {
+        const mime = k.file.mime || '';
+        if (mime.startsWith('image/') || k.file.data.startsWith('data:image/')) {
+          html += `
+            <div>
+              <img src="${k.file.data}" class="media-preview-thumb" alt="${k.title}">
+              <a href="${k.file.data}" download="${k.file.name || 'imagen.jpg'}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">🖼️ Ver / Descargar Imagen</a>
+            </div>
+          `;
+        } else if (mime.startsWith('video/') || k.file.data.startsWith('data:video/')) {
+          html += `
+            <div>
+              <video src="${k.file.data}" controls class="video-preview-player"></video>
+              <a href="${k.file.data}" download="${k.file.name || 'video.mp4'}" class="btn btn-secondary btn-sm" style="text-decoration:none;">🎬 Descargar Vídeo</a>
+            </div>
+          `;
+        } else {
+          html += `
+            <a href="${k.file.data}" download="${k.file.name || 'documento.pdf'}" target="_blank" class="btn btn-secondary btn-sm" style="text-decoration:none;">
+              📄 ${k.file.name || 'Abrir PDF'}
+            </a>
+          `;
+        }
+      }
+
+      if (k.url) {
+        html += `
+          <div style="margin-top:0.3rem;">
+            <a href="${k.url}" target="_blank" rel="noopener noreferrer" class="btn btn-outline btn-sm" style="text-decoration:none;">
+              🔗 Abrir Enlace Externo
+            </a>
+          </div>
+        `;
+      }
+
+      return html || '<span style="color:var(--text-muted);">Sin archivo adjunto</span>';
+    }
+
+    function editKnowledge(index) {
+      const k = db.knowledgeBase[index];
+      editingState = { type: 'knowledge', index };
+      document.getElementById('knowledge-form-title').innerText = `✏️ Editar Registro: ${k.title}`;
+      document.getElementById('know-date').value = k.date || '';
+      document.getElementById('know-topic').value = k.topic || '';
+      document.getElementById('know-title').value = k.title || '';
+      document.getElementById('know-url').value = k.url || '';
+      document.getElementById('btn-submit-knowledge').innerText = '💾 Actualizar Registro';
+
+      const drawer = document.getElementById('knowledge-form-drawer');
+      drawer.style.display = 'block';
+      drawer.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function deleteKnowledge(index) {
+      const k = db.knowledgeBase[index];
+      if (!confirm(`¿Estás segura de que deseas eliminar "${k.title}" de la carpeta "${k.topic}"?`)) return;
+      db.knowledgeBase.splice(index, 1);
+      saveDatabase();
+      renderKnowledgeFolders();
+    }
+
+    // ELIMINACIÓN GENÉRICA DE REGISTROS DE MASCOTA Y CANCELACIÓN DE EDICIÓN
     function deleteRecord(arrayName, index) {
       if (!confirm('¿Estás segura de que deseas eliminar este registro? Esta acción no se puede deshacer.')) return;
       const pet = getActivePet();
@@ -3352,12 +3693,16 @@
         document.getElementById('form-definitive').reset();
         document.getElementById('btn-submit-definitive').innerText = '+ Guardar Diagnóstico Definitivo';
         document.getElementById('btn-cancel-definitive').style.display = 'none';
+      } else if (type === 'knowledge') {
+        document.getElementById('form-knowledge').reset();
+        tempKnowledgeFile = null;
+        document.getElementById('knowledge-form-title').innerText = '➕ Añadir Nuevo Registro en "Todo sobre..."';
+        document.getElementById('btn-submit-knowledge').innerText = '💾 Guardar en Carpeta';
+        document.getElementById('knowledge-form-drawer').style.display = 'none';
       }
     }
 
-    // =========================================================
     // 11. AUTOCOMPLETADO DE LA FICHA / CARNÉ DE LA MASCOTA
-    // =========================================================
     function populateCardData() {
       const pet = getActivePet();
       if (!pet) return;
@@ -3489,9 +3834,7 @@
       });
     }
 
-    // =========================================================
-    // 12. GASTOS E INFORMES EJECUTIVOS (CON HISTORIA CLÍNICA Y EPICRISIS)
-    // =========================================================
+    // 12. GASTOS E INFORMES EJECUTIVOS
     function renderExpensesBreakdown() {
       const pet = getActivePet();
       const container = document.getElementById('expenses-breakdown-zone');
@@ -3537,7 +3880,6 @@
                        (pet.definitiveDiag || []).reduce((a, b) => a + Number(b.price || 0), 0);
       const sTotal = (pet.surgeries || []).reduce((a, b) => a + Number(b.price || 0), 0);
 
-      // Construcción de la sección de Epicrisis e Historia Clínica
       const sortedDefinitive = getSortedByDateDesc(pet.definitiveDiag);
       const epicrisisHtml = sortedDefinitive.length === 0
         ? '<p>Sin episodios registrados en Diagnóstico definitivo.</p>'
@@ -3558,7 +3900,7 @@
         <p><strong>Esterilización:</strong> ${pet.sterilized === 'si' ? `Sí (${pet.sterilizationDate || '-'})` : 'No'} | <strong>Corte en oreja:</strong> ${pet.earCut === 'si' ? `Sí (${earSides.join(', ')})` : 'No'}</p>
         <p><strong>Nº Chip:</strong> ${pet.chip || '-'} | <strong>Nº Cartilla:</strong> ${pet.cardNumber || '-'} | <strong>Centro Veterinario:</strong> ${pet.clinic || '-'}</p>
 
-        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">2. Anamnesis Pretérita yActividad Clínica</h3>
+        <h3 style="color:#2B0938; margin: 1.1rem 0 0.4rem;">2. Anamnesis Pretérita y Actividad Clínica</h3>
         <p><strong>Estilo de vida:</strong> ${pet.lifestyle || 'No especificado'}</p>
         <p>• Vacunas: <strong>${pet.vaccines.length}</strong> | Desparasitaciones (Int/Ext): <strong>${pet.dewormingInternal.length}/${pet.dewormingExternal.length}</strong></p>
         <p>• Laboratorio: <strong>${pet.laboratory.length}</strong> | Pruebas complementarias: <strong>${pet.compTests.length}</strong> | Cirugías: <strong>${pet.surgeries.length}</strong></p>
@@ -3581,9 +3923,7 @@
       document.getElementById('modal-report-overlay').classList.remove('active');
     }
 
-    // =========================================================
     // 13. SINCRONIZACIÓN CON GITHUB SIN RECORTES
-    // =========================================================
     function loadGitHubConfigUI() {
       if (ghConfig.gistId && !/^[a-f0-9]{20,}$/i.test(ghConfig.gistId)) {
         ghConfig.gistId = '';
@@ -3777,6 +4117,7 @@
             db.families = db.families || [];
             db.clinics = db.clinics || [];
             db.pets = db.pets || [];
+            db.knowledgeBase = db.knowledgeBase || [];
             await optimizeExistingPhotosInDB();
             try {
               localStorage.setItem('kontrolvet_full_db', JSON.stringify(db));
@@ -3826,6 +4167,7 @@
             db.families = db.families || [];
             db.clinics = db.clinics || [];
             db.pets = db.pets || [];
+            db.knowledgeBase = db.knowledgeBase || [];
           }
           await saveDatabase();
           activePetIndex = 0;
